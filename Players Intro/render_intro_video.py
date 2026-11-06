@@ -94,9 +94,23 @@ def ease_out_back(t, s=1.35):
     return t * t * ((s + 1.0) * t + s) + 1.0
 
 
+def logo_fit_box(src, box_w, box_h):
+    """Crop transparent padding and fit the logo into a box without stretching."""
+    bbox = src.getbbox()
+    crop = src.crop(bbox) if bbox else src
+    scale = min(box_w / crop.width, box_h / crop.height)
+    w = max(1, int(round(crop.width * scale)))
+    h = max(1, int(round(crop.height * scale)))
+    fitted = crop.resize((w, h), Image.Resampling.LANCZOS)
+    out = Image.new("RGBA", (box_w, box_h), (0, 0, 0, 0))
+    out.alpha_composite(fitted, ((box_w - w) // 2, (box_h - h) // 2))
+    return out
+
+
 logo_src = Image.open(LOGO_PATH).convert("RGBA")
-logo_small = logo_src.resize((26, 26), Image.Resampling.LANCZOS)
-logo_watermark = logo_src.resize((int(H * 0.58), int(H * 0.58)), Image.Resampling.LANCZOS)
+logo_intro_base = logo_fit_box(logo_src, 512, 512)
+logo_small = logo_fit_box(logo_src, 26, 26)
+logo_watermark = logo_fit_box(logo_src, int(H * 0.58), int(H * 0.58))
 wm_arr = np.asarray(logo_watermark, dtype=np.float32).copy()
 wm_arr[..., 3] *= 0.22
 logo_watermark = Image.fromarray(wm_arr.astype(np.uint8), "RGBA")
@@ -278,7 +292,7 @@ def render_segment_frame(seg, lt, global_t):
         pop = ease_out_back(c01((lt - 0.08) / 0.55))
         if pop > 0.02:
             lsize = max(12, int(185 * pop))
-            l_im = logo_src.resize((lsize, lsize), Image.Resampling.LANCZOS)
+            l_im = logo_intro_base.resize((lsize, lsize), Image.Resampling.LANCZOS)
             im.alpha_composite(l_im, (W // 2 - lsize // 2, int(H * 0.41) - lsize // 2))
 
         ta = int(255 * ease_out_cubic(c01((lt - 0.18) / 0.45)))
@@ -400,7 +414,7 @@ def render_segment_frame(seg, lt, global_t):
         pop = ease_out_back(c01((lt - 0.08) / 0.55))
         if pop > 0.02:
             lsize = max(12, int(185 * pop))
-            l_im = logo_src.resize((lsize, lsize), Image.Resampling.LANCZOS)
+            l_im = logo_intro_base.resize((lsize, lsize), Image.Resampling.LANCZOS)
             im.alpha_composite(l_im, (W // 2 - lsize // 2, int(H * 0.41) - lsize // 2))
 
         ta = int(255 * ease_out_cubic(c01((lt - 0.18) / 0.45)))
@@ -432,7 +446,7 @@ def render_segment_frame(seg, lt, global_t):
 
         dr = ImageDraw.Draw(im)
 
-        l_im = logo_src.resize((150, 150), Image.Resampling.LANCZOS)
+        l_im = logo_intro_base.resize((150, 150), Image.Resampling.LANCZOS)
         im.alpha_composite(l_im, (int(W * 0.26) - 75, int(H * 0.42) - 75))
         im.alpha_composite(l_im, (int(W * 0.74) - 75, int(H * 0.42) - 75))
 

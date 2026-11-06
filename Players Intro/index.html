@@ -60,6 +60,7 @@
       height: 36px;
       border-radius: 50%;
       border: 1.5px solid var(--neon-violet);
+      object-fit: cover;
     }
 
     .brand-title h1 {
@@ -1178,6 +1179,63 @@
       return im;
     }
 
+    // Team logo files often carry a lot of transparent padding (e.g. the department
+    // logos are 3375x6000 with the artwork in the middle). Drawing the raw bitmap
+    // into a square box therefore squashes it. Crop the transparent border once,
+    // then fit the remaining artwork into the box while keeping its aspect ratio.
+    function getLogoTrim(im) {
+      if (!im || !im.naturalWidth || !im.naturalHeight) return null;
+      if (im._trimRect) return im._trimRect;
+      let rect = { sx: 0, sy: 0, sw: im.naturalWidth, sh: im.naturalHeight };
+      try {
+        const maxSide = 320;
+        const ratio = Math.min(1, maxSide / Math.max(im.naturalWidth, im.naturalHeight));
+        const cw = Math.max(1, Math.round(im.naturalWidth * ratio));
+        const ch = Math.max(1, Math.round(im.naturalHeight * ratio));
+        const canvas = document.createElement('canvas');
+        canvas.width = cw;
+        canvas.height = ch;
+        const g = canvas.getContext('2d', { willReadFrequently: true });
+        g.drawImage(im, 0, 0, cw, ch);
+        const data = g.getImageData(0, 0, cw, ch).data;
+        let minX = cw, minY = ch, maxX = -1, maxY = -1;
+        for (let y = 0; y < ch; y++) {
+          for (let x = 0; x < cw; x++) {
+            if (data[(y * cw + x) * 4 + 3] > 8) {
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+              if (y < minY) minY = y;
+              if (y > maxY) maxY = y;
+            }
+          }
+        }
+        if (maxX >= minX && maxY >= minY) {
+          const inv = 1 / ratio;
+          rect = {
+            sx: Math.max(0, Math.floor(minX * inv)),
+            sy: Math.max(0, Math.floor(minY * inv)),
+            sw: Math.min(im.naturalWidth, Math.ceil((maxX - minX + 1) * inv)),
+            sh: Math.min(im.naturalHeight, Math.ceil((maxY - minY + 1) * inv))
+          };
+        }
+      } catch (e) {
+        // Fall back to the full bitmap if pixel access is blocked.
+      }
+      im._trimRect = rect;
+      return rect;
+    }
+
+    // Draw a logo centred inside the given box without stretching it.
+    function drawLogoContain(ctx, im, x, y, w, h) {
+      if (!im || !im.complete || !im.naturalWidth) return;
+      const r = getLogoTrim(im);
+      if (!r || !r.sw || !r.sh) return;
+      const fit = Math.min(w / r.sw, h / r.sh);
+      const dw = r.sw * fit;
+      const dh = r.sh * fit;
+      ctx.drawImage(im, r.sx, r.sy, r.sw, r.sh, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+    }
+
     function processPlayerImage(player, teamObj) {
       const key = [
         player.photo,
@@ -1567,7 +1625,7 @@
       if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
         ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
         ctx.shadowBlur = 28;
-        ctx.drawImage(logoIm, -135, -135, 270, 270);
+        drawLogoContain(ctx, logoIm, -135, -135, 270, 270);
       }
       ctx.restore();
 
@@ -1670,7 +1728,7 @@
       if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
         ctx.save();
         ctx.globalAlpha = 0.22;
-        ctx.drawImage(logoIm, wmX, wmY, wmSize, wmSize);
+        drawLogoContain(ctx, logoIm, wmX, wmY, wmSize, wmSize);
         ctx.restore();
       }
       interactiveHitBoxes.push({
@@ -1939,7 +1997,7 @@
       const logoY = ty - hFontPx * 0.42 - hLogoSize * 0.5;
       const logoIm = getLogoImg(teamObj.logoDataUrl);
       if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
-        ctx.drawImage(logoIm, logoX, logoY, hLogoSize, hLogoSize);
+        drawLogoContain(ctx, logoIm, logoX, logoY, hLogoSize, hLogoSize);
       }
       ctx.textAlign = 'center';
       ctx.fillText(teamText, tx, ty);
@@ -2087,7 +2145,7 @@
       if (logoA && logoA.complete && logoA.naturalWidth > 0) {
         ctx.shadowColor = 'rgba(0,0,0,0.85)';
         ctx.shadowBlur = 26 * scaleRatio;
-        ctx.drawImage(logoA, axLogo - lSizeA * 0.5, ayLogo - lSizeA * 0.5, lSizeA, lSizeA);
+        drawLogoContain(ctx, logoA, axLogo - lSizeA * 0.5, ayLogo - lSizeA * 0.5, lSizeA, lSizeA);
       }
       ctx.textAlign = 'center';
       ctx.font = `italic 900 ${Math.round(42 * vsTScale)}px "Segoe UI", Impact, sans-serif`;
@@ -2128,7 +2186,7 @@
       if (logoB && logoB.complete && logoB.naturalWidth > 0) {
         ctx.shadowColor = 'rgba(0,0,0,0.85)';
         ctx.shadowBlur = 26 * scaleRatio;
-        ctx.drawImage(logoB, bxLogo - lSizeB * 0.5, byLogo - lSizeB * 0.5, lSizeB, lSizeB);
+        drawLogoContain(ctx, logoB, bxLogo - lSizeB * 0.5, byLogo - lSizeB * 0.5, lSizeB, lSizeB);
       }
       ctx.textAlign = 'center';
       ctx.font = `italic 900 ${Math.round(42 * vsTScale)}px "Segoe UI", Impact, sans-serif`;
@@ -2839,7 +2897,7 @@
         </h3>
         <div style="display: flex; align-items: center; gap: 12px;">
           <div class="photo-slot" data-act="uploadLogo" style="width: 68px; height: 68px; border-radius: 50%; flex-shrink: 0;">
-            <img src="${teamObj.logoDataUrl}" alt="Team Logo">
+            <img src="${teamObj.logoDataUrl}" alt="Team Logo" style="object-fit: cover;">
             <div class="upload-overlay">UPLOAD<br>LOGO</div>
             <input type="file" accept="image/*" style="display: none;">
           </div>

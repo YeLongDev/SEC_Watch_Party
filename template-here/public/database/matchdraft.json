@@ -8,35 +8,17 @@
         {
           "hero": "/Assets/HeroPick/alice.png"
         },
-        {
-          "hero": "/Assets/HeroPick/aldous.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/beatrix.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/yisunshin.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/lesley.png"
-        }
+        {},
+        {},
+        {},
+        {}
       ],
       "pick": [
-        {
-          "hero": "/Assets/HeroPick/cyclops.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/ixia.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/irithel.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/hilda.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/moskov.png"
-        }
+        {},
+        {},
+        {},
+        {},
+        {}
       ]
     },
     "redside": {
@@ -44,35 +26,17 @@
         {
           "hero": "/Assets/HeroPick/alpha.png"
         },
-        {
-          "hero": "/Assets/HeroPick/aamon.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/floryn.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/alpha.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/hilda.png"
-        }
+        {},
+        {},
+        {},
+        {}
       ],
       "pick": [
-        {
-          "hero": "/Assets/HeroPick/granger.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/harith.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/floryn.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/suyou.png"
-        },
-        {
-          "hero": ""
-        }
+        {},
+        {},
+        {},
+        {},
+        {}
       ]
     },
     "timer_end_at": null

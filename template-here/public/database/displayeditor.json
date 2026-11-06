@@ -3,66 +3,25 @@
   "pages": {
     "display.html": {
       "slots": {
-        "#displayImage1": {
-          "x": 1,
-          "y": 0,
-          "fit": "cover"
-        },
-        "#displayImage2": {
-          "fit": "cover",
-          "visible": false
-        },
-        "#name-image-box-12": {
-          "x": 5,
-          "y": 14
+        "#name-image-box-6": {
+          "x": 0,
+          "y": -45
         },
         "#name-image-box-14": {
-          "x": 357,
-          "y": 36
-        },
-        "#name-image-box-13": {
-          "x": 13,
-          "y": 206
-        },
-        "#name-image-box-10": {
           "x": 0,
           "y": 13
         },
-        "#image-display-10": {
-          "x": 85,
-          "y": -294
+        "#name-image-box-13": {
+          "x": 3,
+          "y": 13
         },
-        "#name-image-box-3": {
-          "x": -11,
-          "y": -14
+        "#name-image-box-12": {
+          "x": 3,
+          "y": 17
         },
         "#name-image-box-11": {
-          "x": -4,
-          "y": 55
-        },
-        "#image-display-11": {
-          "x": -3,
-          "y": -15
-        },
-        "#image-display-13": {
-          "x": -9,
-          "y": -10
-        },
-        "#image-display-12": {
-          "x": -5,
-          "y": 9
-        },
-        "#image-display-15": {
-          "x": 11,
-          "y": 16
-        },
-        "#name-image-box-6": {
-          "x": 14,
-          "y": -26
-        },
-        "#image-display-9": {
-          "x": -3,
-          "y": -3
+          "x": -14,
+          "y": 56
         }
       }
     },
@@ -81,8 +40,8 @@
     "postgame.html": {
       "slots": {
         "#name-image-box-14": {
-          "x": 16,
-          "y": -46,
+          "x": 15,
+          "y": 57,
           "fit": "scale-down"
         },
         "#image-display-10": {
@@ -90,42 +49,42 @@
           "y": -22
         },
         "#name-image-box-4": {
-          "x": -15,
-          "y": -68
+          "x": 12,
+          "y": 38
         },
         "#name-image-box-3": {
-          "x": -17,
-          "y": -91,
+          "x": 8,
+          "y": 33,
           "fit": "",
           "visible": true
         },
         "#name-image-box-5": {
-          "x": -21,
-          "y": -72
+          "x": 4,
+          "y": 52
         },
         "#name-image-box-6": {
-          "x": -14,
-          "y": -76
+          "x": 2,
+          "y": -20
         },
         "#name-image-box-7": {
-          "x": -13,
-          "y": -83
+          "x": -10,
+          "y": 32
         },
         "#name-image-box-11": {
-          "x": 5,
-          "y": -23
+          "x": -1,
+          "y": 116
         },
         "#name-image-box-10": {
-          "x": 13,
-          "y": -49
+          "x": 2,
+          "y": 54
         },
         "#name-image-box-12": {
-          "x": 14,
-          "y": -55
+          "x": 3,
+          "y": 65
         },
         "#name-image-box-13": {
-          "x": 25,
-          "y": -52
+          "x": -4,
+          "y": 50
         },
         "#image-display-6": {
           "x": 1,
