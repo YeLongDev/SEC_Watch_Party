@@ -4,7 +4,7 @@
     {
       "id": "team_dcs_1",
       "name": "DCS 1",
-      "logo": "Assets/presets/asset_preset_1793793663791.png",
+      "logo": "Assets/presets/team-logo_team_dcs_1_1793977614679.png",
       "roster": [
         "player_dcs_1_1",
         "player_dcs_1_2",
@@ -14,12 +14,12 @@
         "player_dcs_1_6"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977614690
     },
     {
       "id": "team_dcs_2",
       "name": "DCS 2",
-      "logo": "Assets/presets/asset_preset_1793793673954.png",
+      "logo": "Assets/presets/team-logo_team_dcs_2_1793977679139.png",
       "roster": [
         "player_dcs_2_1",
         "player_dcs_2_2",
@@ -29,12 +29,12 @@
         "player_dcs_2_6"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977679145
     },
     {
       "id": "team_de_1",
       "name": "DE 1",
-      "logo": "Assets/presets/asset_preset_1793793685133.png",
+      "logo": "Assets/presets/team-logo_team_de_1_1793977742899.png",
       "roster": [
         "player_de_1_1",
         "player_de_1_2",
@@ -44,12 +44,12 @@
         "player_de_1_6"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977742911
     },
     {
       "id": "team_de_2",
       "name": "DE 2",
-      "logo": "Assets/presets/asset_preset_1793793699921.png",
+      "logo": "Assets/presets/team-logo_team_de_2_1793977748342.png",
       "roster": [
         "player_de_2_1",
         "player_de_2_2",
@@ -58,12 +58,12 @@
         "player_de_2_5"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977748377
     },
     {
       "id": "team_dhm_1",
       "name": "DHM 1",
-      "logo": "Assets/presets/asset_preset_1793793706388.png",
+      "logo": "Assets/presets/team-logo_team_dhm_1_1793977825662.png",
       "roster": [
         "player_dhm_1_1",
         "player_dhm_1_2",
@@ -72,12 +72,12 @@
         "player_dhm_1_5"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977825668
     },
     {
       "id": "team_dhm_2",
       "name": "DHM 2",
-      "logo": "Assets/presets/asset_preset_1793793719699.png",
+      "logo": "Assets/presets/team-logo_team_dhm_2_1793977836452.png",
       "roster": [
         "player_dhm_2_1",
         "player_dhm_2_2",
@@ -87,12 +87,12 @@
         "player_dhm_2_6"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977836459
     },
     {
       "id": "team_dit_1",
       "name": "DIT 1",
-      "logo": "Assets/presets/asset_preset_1793793725592.png",
+      "logo": "Assets/presets/team-logo_team_dit_1_1793977864036.png",
       "roster": [
         "player_dit_1_1",
         "player_dit_1_2",
@@ -101,12 +101,12 @@
         "player_dit_1_5"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977864050
     },
     {
       "id": "team_dit_2",
       "name": "DIT 2",
-      "logo": "Assets/presets/asset_preset_1793793734584.png",
+      "logo": "Assets/presets/team-logo_team_dit_2_1793977869611.png",
       "roster": [
         "player_dit_2_1",
         "player_dit_2_2",
@@ -115,12 +115,12 @@
         "player_dit_2_5"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977869625
     },
     {
       "id": "team_dte_1",
       "name": "DTE 1",
-      "logo": "Assets/presets/asset_preset_1793793743914.png",
+      "logo": "Assets/presets/team-logo_team_dte_1_1793977906024.png",
       "roster": [
         "player_dte_1_1",
         "player_dte_1_2",
@@ -130,7 +130,51 @@
         "player_dte_1_6"
       ],
       "createdAt": 1793960784038,
-      "updatedAt": 1793960784038
+      "updatedAt": 1793977906040
+    },
+    {
+      "id": "team_mw53q9jp_i64scg",
+      "name": "DBA 1",
+      "logo": "Assets/presets/team-logo_team_mw53q9jp_i64scg_1793977240037.png",
+      "roster": [
+        "player_mw54qlgh_fqbmq8",
+        "player_mw54qwac_dz5c7c",
+        "player_mw54r3ob_ank42a",
+        "player_mw54rfdn_3exi2t",
+        "player_mw54rnd4_u3p60h",
+        "player_mw54rupr_ojj6kj"
+      ],
+      "createdAt": 1793977240069,
+      "updatedAt": 1793977240069
+    },
+    {
+      "id": "team_mw53r5fe_4dzdwd",
+      "name": "DBA 2",
+      "logo": "Assets/presets/team-logo_team_mw53r5fe_4dzdwd_1793977291565.png",
+      "roster": [
+        "player_mw54st2c_jxrgkq",
+        "player_mw54t030_bds5i3",
+        "player_mw54t6dl_r5koig",
+        "player_mw54td9c_virhdb",
+        "player_mw54tkie_bfgb9r"
+      ],
+      "createdAt": 1793977281338,
+      "updatedAt": 1793977291608
+    },
+    {
+      "id": "team_mw53uklv_gmdy67",
+      "name": "DTE 2",
+      "logo": "Assets/presets/team-logo_team_mw53uklv_gmdy67_1793977913930.png",
+      "roster": [
+        "player_mw54u6u1_65hf4n",
+        "player_mw54ucfh_1811iu",
+        "player_mw54uiex_rayps8",
+        "player_mw54unzm_f89uh1",
+        "player_mw54uu7a_tobkx6",
+        "player_mw54v18j_6wznnt"
+      ],
+      "createdAt": 1793977440992,
+      "updatedAt": 1793977913974
     }
   ],
   "players": [
@@ -683,6 +727,176 @@
       "order": 5,
       "createdAt": 1793960784038,
       "updatedAt": 1793960784038
+    },
+    {
+      "id": "player_mw54qlgh_fqbmq8",
+      "ign": "1kdulce",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54qlgh_fqbmq8_1793978935078.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978936757,
+      "updatedAt": 1793978936757
+    },
+    {
+      "id": "player_mw54qwac_dz5c7c",
+      "ign": "Axelderis",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54qwac_dz5c7c_1793978949113.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978949119,
+      "updatedAt": 1793978949119
+    },
+    {
+      "id": "player_mw54r3ob_ank42a",
+      "ign": "Cherie Belle",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54r3ob_ank42a_1793978958688.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978958695,
+      "updatedAt": 1793978958695
+    },
+    {
+      "id": "player_mw54rfdn_3exi2t",
+      "ign": "Cruel",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54rfdn_3exi2t_1793978973855.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978973861,
+      "updatedAt": 1793978973861
+    },
+    {
+      "id": "player_mw54rnd4_u3p60h",
+      "ign": "PHI. J.E. BORGONIA",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54rnd4_u3p60h_1793978984205.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978984320,
+      "updatedAt": 1793978984320
+    },
+    {
+      "id": "player_mw54rupr_ojj6kj",
+      "ign": "Uncledags",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54rupr_ojj6kj_1793978993731.png",
+      "role": "gold",
+      "teamId": "team_mw53q9jp_i64scg",
+      "createdAt": 1793978993736,
+      "updatedAt": 1793978993736
+    },
+    {
+      "id": "player_mw54st2c_jxrgkq",
+      "ign": "Hwang Yeji 사랑",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54st2c_jxrgkq_1793979038249.png",
+      "role": "gold",
+      "teamId": "team_mw53r5fe_4dzdwd",
+      "createdAt": 1793979038261,
+      "updatedAt": 1793979038261
+    },
+    {
+      "id": "player_mw54t030_bds5i3",
+      "ign": "Petàls",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54t030_bds5i3_1793979047344.png",
+      "role": "gold",
+      "teamId": "team_mw53r5fe_4dzdwd",
+      "createdAt": 1793979047355,
+      "updatedAt": 1793979047355
+    },
+    {
+      "id": "player_mw54t6dl_r5koig",
+      "ign": "Rellycious",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54t6dl_r5koig_1793979055501.png",
+      "role": "gold",
+      "teamId": "team_mw53r5fe_4dzdwd",
+      "createdAt": 1793979055626,
+      "updatedAt": 1793979055626
+    },
+    {
+      "id": "player_mw54td9c_virhdb",
+      "ign": "縁•Yukari",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54td9c_virhdb_1793979064419.png",
+      "role": "gold",
+      "teamId": "team_mw53r5fe_4dzdwd",
+      "createdAt": 1793979064437,
+      "updatedAt": 1793979064437
+    },
+    {
+      "id": "player_mw54tkie_bfgb9r",
+      "ign": "聪_•ᴊᴀ۶ৎ_",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54tkie_bfgb9r_1793979073819.png",
+      "role": "gold",
+      "teamId": "team_mw53r5fe_4dzdwd",
+      "createdAt": 1793979073831,
+      "updatedAt": 1793979073831
+    },
+    {
+      "id": "player_mw54u6u1_65hf4n",
+      "ign": "♡ maki ⸝",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54u6u1_65hf4n_1793979102750.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979102756,
+      "updatedAt": 1793979102756
+    },
+    {
+      "id": "player_mw54ucfh_1811iu",
+      "ign": "ʟᴏᴠᴇʟʏ",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54ucfh_1811iu_1793979110003.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979110111,
+      "updatedAt": 1793979110111
+    },
+    {
+      "id": "player_mw54uiex_rayps8",
+      "ign": "Pats",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54uiex_rayps8_1793979117758.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979117763,
+      "updatedAt": 1793979117763
+    },
+    {
+      "id": "player_mw54unzm_f89uh1",
+      "ign": "ꜱʜᴀɴɴᴇ",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54unzm_f89uh1_1793979124983.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979124989,
+      "updatedAt": 1793979124989
+    },
+    {
+      "id": "player_mw54uu7a_tobkx6",
+      "ign": "Venny",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54uu7a_tobkx6_1793979133035.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979133040,
+      "updatedAt": 1793979133040
+    },
+    {
+      "id": "player_mw54v18j_6wznnt",
+      "ign": "venskie",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_mw54v18j_6wznnt_1793979142152.png",
+      "role": "gold",
+      "teamId": "team_mw53uklv_gmdy67",
+      "createdAt": 1793979142156,
+      "updatedAt": 1793979142156
     }
   ]
 }

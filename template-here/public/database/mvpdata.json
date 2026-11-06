@@ -1,22 +1,3 @@
 {
-  "mvp": {
-    "checkboxId": "mvp-blueteam-1",
-    "side": "blue",
-    "nickname": "Jhin.",
-    "teamName": "DE 1",
-    "heroImg": "Assets/HeroPick/idle.png",
-    "playerPhoto": "Assets/team-player-images/DE 1/Jhin..png",
-    "stats": {
-      "LVL": "0",
-      "KDA": "0/0/0",
-      "GOLD": "0",
-      "SPELL": "",
-      "ITEM 1": "idle",
-      "ITEM 2": "idle",
-      "ITEM 3": "idle",
-      "ITEM 4": "idle",
-      "ITEM 5": "idle",
-      "ITEM 6": "idle"
-    }
-  }
+  "mvp": null
 }

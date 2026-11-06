@@ -6,37 +6,57 @@
     "blueside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/alice.png"
+          "hero": "/Assets/HeroPick/hirara.png"
         },
-        {},
-        {},
-        {},
-        {}
+        {
+          "hero": "/Assets/HeroPick/faramis.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/aldous.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/fanny.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/akai.png"
+        }
       ],
       "pick": [
         {},
         {},
         {},
-        {},
-        {}
+        {
+          "hero": "/Assets/HeroPick/alpha.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/aulus.png"
+        }
       ]
     },
     "redside": {
       "ban": [
-        {
-          "hero": "/Assets/HeroPick/alpha.png"
-        },
+        {},
         {},
         {},
         {},
         {}
       ],
       "pick": [
-        {},
-        {},
-        {},
-        {},
-        {}
+        {
+          "hero": "/Assets/HeroPick/aamon.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/akai.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/aldous.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/alice.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/diggie.png"
+        }
       ]
     },
     "timer_end_at": null

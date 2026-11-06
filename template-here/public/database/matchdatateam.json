@@ -3,45 +3,25 @@
   "game_number": "1",
   "teamdata": {
     "blueteam": {
-      "teamname": "DE 1",
+      "teamname": "DCS 1",
       "score": "0",
-      "logo": "Assets/presets/asset_preset_1793793685133.png",
+      "logo": "Assets/presets/team-logo_team_dcs_1_1793977614679.png",
       "totalgold": 0,
       "turret": 0,
       "lord": 0,
       "turtle": 0,
       "playerlist": [
         {
-          "name": "Zaizen.",
-          "hero": "",
-          "level": "3",
-          "KDA": "0/0/0",
-          "gold": 0,
-          "spell": "idle",
-          "banhero": "Alice",
-          "lane": "gold",
-          "role": "gold",
-          "photo": "Assets/team-player-images/DE 1/Zaizen..png",
-          "itemlist": [
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle"
-          ]
-        },
-        {
-          "name": "Jhin.",
+          "name": "Aizen.",
           "hero": "",
           "level": 0,
           "KDA": "0/0/0",
           "gold": 0,
-          "spell": "idle",
-          "banhero": "",
+          "spell": "Retribution",
+          "banhero": "Hirara",
           "lane": "exp",
           "role": "exp",
-          "photo": "Assets/team-player-images/DE 1/Jhin..png",
+          "photo": "Assets/team-player-images/DCS 1/Aizen..png",
           "itemlist": [
             "idle",
             "idle",
@@ -52,108 +32,16 @@
           ]
         },
         {
-          "name": "Licht",
+          "name": "Aizen.",
           "hero": "",
           "level": 0,
           "KDA": "0/0/0",
           "gold": 0,
           "spell": "idle",
-          "banhero": "",
-          "lane": "gold",
-          "role": "gold",
-          "photo": "Assets/team-player-images/DE 1/Licht.png",
-          "itemlist": [
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle"
-          ]
-        },
-        {
-          "name": "愛してる",
-          "hero": "",
-          "level": 0,
-          "KDA": "0/0/0",
-          "gold": 0,
-          "spell": "idle",
-          "banhero": "",
-          "lane": "gold",
-          "role": "gold",
-          "photo": "Assets/team-player-images/DE 1/愛してる.png",
-          "itemlist": [
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle"
-          ]
-        },
-        {
-          "name": "Zedd.",
-          "hero": "",
-          "level": 0,
-          "KDA": "0/0/0",
-          "gold": 0,
-          "spell": "idle",
-          "banhero": "",
-          "lane": "roam",
-          "role": "roam",
-          "photo": "Assets/team-player-images/DE 1/Zedd..png",
-          "itemlist": [
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle"
-          ]
-        }
-      ],
-      "presetId": "team_de_1"
-    },
-    "redteam": {
-      "teamname": "DIT 1",
-      "score": "0",
-      "logo": "Assets/presets/asset_preset_1793793725592.png",
-      "totalgold": 0,
-      "turret": 0,
-      "lord": 0,
-      "turtle": 0,
-      "playerlist": [
-        {
-          "name": "player 1",
-          "hero": "",
-          "level": 0,
-          "KDA": "0/0/0",
-          "gold": 0,
-          "spell": "idle",
-          "banhero": "Alpha",
-          "lane": "gold",
-          "role": "gold",
-          "photo": "Assets/team-player-images/DIT 1/player 1.png",
-          "itemlist": [
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle",
-            "idle"
-          ]
-        },
-        {
-          "name": "player 2",
-          "hero": "",
-          "level": 0,
-          "KDA": "0/0/0",
-          "gold": 0,
-          "spell": "idle",
-          "banhero": "",
+          "banhero": "Faramis",
           "lane": "exp",
           "role": "exp",
-          "photo": "Assets/team-player-images/DIT 1/player 2.png",
+          "photo": "Assets/team-player-images/DCS 1/Aizen..png",
           "itemlist": [
             "idle",
             "idle",
@@ -164,16 +52,16 @@
           ]
         },
         {
-          "name": "player 3",
+          "name": "bewitched cyann",
           "hero": "",
           "level": 0,
           "KDA": "0/0/0",
           "gold": 0,
           "spell": "idle",
-          "banhero": "",
+          "banhero": "Aldous",
           "lane": "mid",
           "role": "mid",
-          "photo": "Assets/team-player-images/DIT 1/player 3.png",
+          "photo": "Assets/team-player-images/DCS 1/bewitched cyann.png",
           "itemlist": [
             "idle",
             "idle",
@@ -184,16 +72,16 @@
           ]
         },
         {
-          "name": "player 4",
-          "hero": "",
+          "name": "Nozu",
+          "hero": "Alpha",
           "level": 0,
           "KDA": "0/0/0",
           "gold": 0,
           "spell": "idle",
-          "banhero": "",
+          "banhero": "Fanny",
           "lane": "junggle",
           "role": "junggle",
-          "photo": "Assets/team-player-images/DIT 1/player 4.png",
+          "photo": "Assets/team-player-images/DCS 1/Nozu.png",
           "itemlist": [
             "idle",
             "idle",
@@ -204,16 +92,16 @@
           ]
         },
         {
-          "name": "player 5",
-          "hero": "",
+          "name": "Jung",
+          "hero": "Aulus",
           "level": 0,
           "KDA": "0/0/0",
           "gold": 0,
           "spell": "idle",
-          "banhero": "",
+          "banhero": "Akai",
           "lane": "roam",
           "role": "roam",
-          "photo": "Assets/team-player-images/DIT 1/player 5.png",
+          "photo": "Assets/team-player-images/DCS 1/Jung.png",
           "itemlist": [
             "idle",
             "idle",
@@ -224,7 +112,119 @@
           ]
         }
       ],
-      "presetId": "team_dit_1"
+      "presetId": "team_dcs_1"
+    },
+    "redteam": {
+      "teamname": "DBA 2",
+      "score": "0",
+      "logo": "Assets/presets/team-logo_team_mw53r5fe_4dzdwd_1793977291565.png",
+      "totalgold": 0,
+      "turret": 0,
+      "lord": 0,
+      "turtle": 0,
+      "playerlist": [
+        {
+          "name": "",
+          "hero": "Aamon",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "",
+          "hero": "Akai",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "",
+          "hero": "Aldous",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "",
+          "hero": "Alice",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "",
+          "hero": "Diggie",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        }
+      ],
+      "presetId": "team_mw53r5fe_4dzdwd"
     }
   },
   "winmatches": "none"
