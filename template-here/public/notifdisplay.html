@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Display</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent; /* Keep transparent for OBS */
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #videoPlayer {
+            width: 1920px;
+            height: 1080px;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            background: transparent;
+        }
+        #debugStatus {
+            display: none;
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 20;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #b9c4d4;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <video id="videoPlayer" playsinline preload="auto">
+            <source id="videoSource" src="" type="video/webm">
+        </video>
+    </div>
+    <div id="debugStatus">WAITING</div>
+
+    <script>
+        const videoDatabase = {
+            'videoPlayer1': 'Assets/notification/turtlespawn.webm',
+            'videoPlayer2': 'Assets/notification/blueturtleslain.webm',
+            'videoPlayer3': 'Assets/notification/redturtleslain.webm',
+            'videoPlayer4': 'Assets/notification/lordspawnn.webm',
+            'videoPlayer5': 'Assets/notification/bluelordslain.webm',
+            'videoPlayer6': 'Assets/notification/redlordslain.webm',
+            'videoPlayer7': 'Assets/notification/firstblood.webm',
+            'videoPlayer8': 'Assets/notification/doublekill.webm',
+            'videoPlayer9': 'Assets/notification/triplekill.webm',
+            'videoPlayer10': 'Assets/notification/maniac.webm',
+            'videoPlayer11': 'Assets/notification/savage.webm',
+            'videoPlayer12': 'Assets/notification/wipeout.webm'
+        };
+
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        const debugStatus = document.getElementById('debugStatus');
+        const debugMode = new URLSearchParams(window.location.search).has('debug');
+        if (debugMode) debugStatus.style.display = 'block';
+
+        let isPlaying = false;
+        let reconnectTimer = null;
+        let socket = null;
+
+        function setDebug(message) {
+            debugStatus.textContent = message;
+            console.log('[Notification Display]', message);
+        }
+
+        function connectSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            socket = new WebSocket(`${wsProtocol}//${window.location.host}`);
+
+            socket.onopen = () => {
+                clearTimeout(reconnectTimer);
+                setDebug('CONNECTED');
+                checkLastNotification();
+            };
+
+            socket.onmessage = (event) => {
+                try {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'notification_trigger' && msg.videoId) {
+                        playVideoById(msg.videoId);
+                    }
+                } catch (error) {
+                    console.error('Error parsing notification WS message:', error);
+                }
+            };
+
+            socket.onclose = () => {
+                setDebug('RECONNECTING...');
+                reconnectTimer = setTimeout(connectSocket, 2000);
+            };
+
+            socket.onerror = () => {
+                try { socket.close(); } catch (error) {}
+            };
+        }
+
+        function checkLastNotification() {
+            if (isPlaying) return;
+            fetch('/api/notification')
+                .then(response => response.json())
+                .then(data => {
+                    const age = Date.now() - Number(data.timestamp || 0);
+                    if (data.currentVideo && age >= 0 && age < 7000) {
+                        setDebug('CATCH-UP: ' + data.currentVideo);
+                        playVideoById(data.currentVideo);
+                    }
+                })
+                .catch(() => {});
+        }
+
+        async function playVideoById(playerId) {
+            const videoPath = videoDatabase[playerId];
+            if (!videoPath) {
+                setDebug('UNKNOWN VIDEO: ' + playerId);
+                return;
+            }
+
+            if (isPlaying) {
+                videoPlayer.pause();
+                videoPlayer.currentTime = 0;
+            }
+
+            videoSource.src = videoPath;
+            videoPlayer.load();
+            videoPlayer.style.display = 'block';
+            isPlaying = true;
+            setDebug('PLAYING: ' + playerId);
+
+            videoPlayer.onended = () => {
+                isPlaying = false;
+                videoPlayer.style.display = 'none';
+                videoSource.src = '';
+                setDebug('READY');
+            };
+
+            videoPlayer.onerror = () => {
+                isPlaying = false;
+                videoPlayer.style.display = 'none';
+                setDebug('VIDEO ERROR: ' + videoPath);
+            };
+
+            // Try unmuted first so notification audio still works.
+            // If the browser blocks autoplay, retry muted so the visual still plays.
+            videoPlayer.muted = false;
+            try {
+                await videoPlayer.play();
+            } catch (firstError) {
+                console.warn('Unmuted playback blocked, retrying muted:', firstError);
+                videoPlayer.muted = true;
+                try {
+                    await videoPlayer.play();
+                    setDebug('PLAYING MUTED: ' + playerId);
+                } catch (secondError) {
+                    console.error('Video playback failed:', secondError);
+                    isPlaying = false;
+                    videoPlayer.style.display = 'none';
+                    setDebug('PLAY BLOCKED: ' + playerId);
+                }
+            }
+        }
+
+        // Unlock audio after the first user interaction, when available.
+        document.addEventListener('click', () => {
+            if (isPlaying) {
+                videoPlayer.muted = false;
+                videoPlayer.play().catch(() => {});
+            }
+        }, { once: true });
+
+        connectSocket();
+    </script>
+</body>
+</html>

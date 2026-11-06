@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEC Countdown Control</title>
+    <link rel="stylesheet" href="sec-countdowncontrol.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand-block">
+            <button class="brand-mark" id="brandUploadBtn" type="button" title="Upload the SEC logo">
+                <img id="brandPreview" src="Assets/SEC/sec-logo.png" alt="SEC logo">
+                <span class="brand-fallback">SEC</span>
+                <span class="brand-upload">CHANGE</span>
+            </button>
+            <div class="brand-copy">
+                <span class="brand-kicker">SEC SERIES</span>
+                <h1>COUNTDOWN CONTROL</h1>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <div class="pill" id="connPill"><span class="dot"></span><span id="connText">CONNECTING</span></div>
+            <div class="pill" id="timerPill"><span class="dot"></span><span id="timerPillText">IDLE</span></div>
+            <div class="pill warn" id="dirtyPill" hidden>UNSAVED</div>
+            <button class="btn ghost" id="copyUrlBtn" type="button">COPY DISPLAY URL</button>
+            <button class="btn save" id="saveBtn" type="button">SAVE ALL</button>
+            <button class="btn primary" id="openDisplayBtn" type="button">OPEN DISPLAY</button>
+        </div>
+    </header>
+
+    <main class="control-layout">
+        <div class="column column--left">
+            <section class="panel teams-panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="eyebrow">01 / TEAM ASSETS</span>
+                        <h2>TEAMS</h2>
+                    </div>
+                    <span class="hint">Logo, name and match score</span>
+                </div>
+
+                <div class="team-editors">
+                    <article class="team-editor team-blue">
+                        <div class="team-editor-top">
+                            <button class="team-logo-btn" id="teamLogoBtn0" data-upload="team0-logo" type="button">
+                                <img id="teamLogoPreview0" alt="Team 1 logo">
+                                <span class="team-logo-fallback" id="teamLogoFallback0">T1</span>
+                                <span class="asset-hint">UPLOAD</span>
+                            </button>
+                            <div class="team-fields">
+                                <label class="field">
+                                    <span>TEAM NAME</span>
+                                    <input id="teamNameInput0" type="text" maxlength="80" placeholder="TEAM 1" autocomplete="off">
+                                </label>
+                                <label class="field score-field">
+                                    <span>MATCH SCORE</span>
+                                    <input id="teamScoreInput0" type="text" maxlength="20" placeholder="0" autocomplete="off">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="team-editor-foot">
+                            <span class="team-side">BLUE SIDE</span>
+                            <button class="mini-btn" data-clear-logo="0" type="button">REMOVE LOGO</button>
+                        </div>
+                    </article>
+
+                    <article class="team-editor team-red">
+                        <div class="team-editor-top">
+                            <button class="team-logo-btn" id="teamLogoBtn1" data-upload="team1-logo" type="button">
+                                <img id="teamLogoPreview1" alt="Team 2 logo">
+                                <span class="team-logo-fallback" id="teamLogoFallback1">T2</span>
+                                <span class="asset-hint">UPLOAD</span>
+                            </button>
+                            <div class="team-fields">
+                                <label class="field">
+                                    <span>TEAM NAME</span>
+                                    <input id="teamNameInput1" type="text" maxlength="80" placeholder="TEAM 2" autocomplete="off">
+                                </label>
+                                <label class="field score-field">
+                                    <span>MATCH SCORE</span>
+                                    <input id="teamScoreInput1" type="text" maxlength="20" placeholder="0" autocomplete="off">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="team-editor-foot">
+                            <span class="team-side">RED SIDE</span>
+                            <button class="mini-btn" data-clear-logo="1" type="button">REMOVE LOGO</button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="panel lineup-panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="eyebrow">02 / STARTING LINEUPS</span>
+                        <h2>PLAYERS</h2>
+                    </div>
+                    <span class="hint">Click a portrait to upload</span>
+                </div>
+                <div class="lineup-grid" id="lineupGrid"></div>
+            </section>
+        </div>
+
+        <div class="column column--mid">
+            <section class="panel timer-panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="eyebrow">03 / COUNTDOWN</span>
+                        <h2>TIMER</h2>
+                    </div>
+                    <div class="pill small" id="timerModePill"><span class="dot"></span><span id="timerModeText">IDLE</span></div>
+                </div>
+
+                <div class="timer-live">
+                    <span class="timer-live-label" id="timerLiveLabel">MATCH BEGINS IN</span>
+                    <div class="timer-live-value" id="timerLiveValue">05:00</div>
+                    <div class="timer-live-track"><span id="timerLiveProgress"></span></div>
+                    <div class="timer-live-status" id="timerLiveStatus">READY TO START</div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-label">DURATION</span>
+                    <div class="duration-row">
+                        <label class="duration-field">
+                            <span>MIN</span>
+                            <input id="durationMin" type="number" min="0" max="1440" value="5">
+                        </label>
+                        <span class="duration-colon">:</span>
+                        <label class="duration-field">
+                            <span>SEC</span>
+                            <input id="durationSec" type="number" min="0" max="59" value="0">
+                        </label>
+                        <button class="btn" id="setDurationBtn" type="button">SET</button>
+                    </div>
+                    <div class="preset-row" id="presetRow">
+                        <button class="chip" data-seconds="60" type="button">1:00</button>
+                        <button class="chip" data-seconds="180" type="button">3:00</button>
+                        <button class="chip active" data-seconds="300" type="button">5:00</button>
+                        <button class="chip" data-seconds="600" type="button">10:00</button>
+                    </div>
+                </div>
+
+                <label class="toggle-row">
+                    <input id="autoRevealToggle" type="checkbox" checked>
+                    <span class="toggle-ui"></span>
+                    <span class="toggle-copy">
+                        <strong>AUTO REVEAL</strong>
+                        <small>Animate into role pairs at 0:00</small>
+                    </span>
+                </label>
+
+                <div class="timer-actions">
+                    <button class="btn primary wide" id="startBtn" type="button">START COUNTDOWN</button>
+                    <button class="btn" id="pauseBtn" type="button">PAUSE</button>
+                    <button class="btn" id="resetBtn" type="button">RESET</button>
+                    <button class="btn reveal" id="revealBtn" type="button">REVEAL PAIRS</button>
+                    <button class="btn ghost" id="hideRevealBtn" type="button">SHOW ROSTER</button>
+                </div>
+
+                <div class="status-line" id="statusLine">Ready. Waiting for countdown state.</div>
+            </section>
+
+            <section class="panel help-panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="eyebrow">QUICK GUIDE</span>
+                        <h2>OPERATOR NOTES</h2>
+                    </div>
+                </div>
+                <ul class="help-list">
+                    <li><strong>Timer</strong> is server-side, so the display and control stay in sync even after a refresh.</li>
+                    <li><strong>Auto reveal</strong> flips the portraits into side-by-side role pairs at <span class="mono">0:00</span>. Use <strong>Reveal Pairs</strong> to do it early.</li>
+                    <li><strong>Show Roster</strong> returns to the stacked view without stopping the timer.</li>
+                    <li>All uploads are stored in <span class="mono">Assets/SEC/countdown/</span>. The SEC logo slot is replaceable.</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="column column--right">
+            <section class="panel preview-panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="eyebrow">04 / OUTPUT</span>
+                        <h2>LIVE PREVIEW</h2>
+                    </div>
+                    <span class="hint" id="previewHint">1920 × 1080</span>
+                </div>
+
+                <div class="preview-shell">
+                    <div class="preview-frame" id="previewFrame">
+                        <iframe id="previewIframe" src="sec-countdown.html" title="SEC countdown live preview" scrolling="no"></iframe>
+                    </div>
+                </div>
+
+                <div class="output-row">
+                    <input class="output-input" id="outputUrl" readonly>
+                    <button class="btn ghost" id="copyOutputBtn" type="button">COPY</button>
+                </div>
+
+                <div class="preview-notes">
+                    Add <span class="mono">sec-countdown.html</span> as a browser source at <span class="mono">1920 × 1080</span>.
+                    The preview updates live through the same WebSocket feed.
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <input type="file" id="assetUploadInput" accept="image/png,image/jpeg,image/webp" hidden>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script/sec-countdowncontrol.js"></script>
+</body>
+</html>

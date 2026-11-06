@@ -1,0 +1,231 @@
+{
+  "game_duration": "00:00",
+  "game_number": "1",
+  "teamdata": {
+    "blueteam": {
+      "teamname": "DE 1",
+      "score": "0",
+      "logo": "Assets/presets/asset_preset_1793793685133.png",
+      "totalgold": 0,
+      "turret": 0,
+      "lord": 0,
+      "turtle": 0,
+      "playerlist": [
+        {
+          "name": "愛してる",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/presets/player-photo_player_mw4mafhg_hgu443_1793953847259.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Zaizen.",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/presets/playersintro/de_1/01.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Jhin.",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "exp",
+          "role": "exp",
+          "photo": "Assets/presets/playersintro/de_1/02.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Licht",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "none",
+          "role": "none",
+          "photo": "Assets/presets/playersintro/de_1/06.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Zedd.",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "roam",
+          "role": "roam",
+          "photo": "Assets/presets/playersintro/de_1/05.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        }
+      ],
+      "presetId": "team_intro_de_1"
+    },
+    "redteam": {
+      "teamname": "DIT 1",
+      "score": "0",
+      "logo": "Assets/presets/asset_preset_1793793725592.png",
+      "totalgold": 0,
+      "turret": 0,
+      "lord": 0,
+      "turtle": 0,
+      "playerlist": [
+        {
+          "name": "1793106743805",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/presets/playersintro/dit_1/01.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "1793107101796",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "exp",
+          "role": "exp",
+          "photo": "Assets/presets/playersintro/dit_1/02.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "1793107362791",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "mid",
+          "role": "mid",
+          "photo": "Assets/presets/playersintro/dit_1/03.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "1793112082730",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "junggle",
+          "role": "junggle",
+          "photo": "Assets/presets/playersintro/dit_1/04.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "1793114049187",
+          "hero": "",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "",
+          "lane": "roam",
+          "role": "roam",
+          "photo": "Assets/presets/playersintro/dit_1/05.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        }
+      ],
+      "presetId": "team_intro_dit_1"
+    }
+  },
+  "winmatches": "none"
+}

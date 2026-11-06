@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEC Match Countdown</title>
+    <link rel="stylesheet" href="sec.css">
+    <link rel="stylesheet" href="sec-countdown.css">
+</head>
+<body class="sec-page sec-countdown-page">
+    <div class="countdown-stage" id="countdownStage">
+        <header class="countdown-header">
+            <div class="header-cluster">
+                <span class="header-kicker">SEC SERIES</span>
+                <span class="header-rule"></span>
+                <span class="header-sub">MATCH COUNTDOWN</span>
+            </div>
+
+            <div class="sec-brand-slot countdown-brand">
+                <img id="brandLogo" src="Assets/SEC/sec-logo.png" alt="SEC logo"
+                     onerror="this.style.visibility='hidden'">
+            </div>
+
+            <div class="header-cluster header-cluster--right">
+                <span class="header-sub">OFFICIAL BROADCAST</span>
+                <span class="header-rule"></span>
+                <span class="header-kicker">PREGAME</span>
+            </div>
+        </header>
+
+        <main class="countdown-main">
+            <section class="team-rail" aria-label="Teams and match score">
+                <article class="team-card team-blue" data-team="0">
+                    <div class="team-logo">
+                        <img class="team-logo-img" id="teamLogo0" src="" alt="Team 1 logo"
+                             onerror="this.classList.add('is-broken')">
+                        <span class="team-logo-fallback" id="teamLogoFallback0">T1</span>
+                    </div>
+                    <div class="team-copy">
+                        <span class="team-slot">TEAM 1</span>
+                        <h1 class="team-name" id="teamName0">TEAM 1</h1>
+                        <div class="team-score-line">
+                            <span class="score-label">MATCH SCORE</span>
+                            <span class="score-value" id="teamScore0">0</span>
+                        </div>
+                    </div>
+                    <span class="team-side-mark">BLUE SIDE</span>
+                </article>
+
+                <div class="rail-divider">
+                    <span class="rail-line"></span>
+                    <span class="rail-vs">VS</span>
+                    <span class="rail-line"></span>
+                </div>
+
+                <article class="team-card team-red" data-team="1">
+                    <div class="team-logo">
+                        <img class="team-logo-img" id="teamLogo1" src="" alt="Team 2 logo"
+                             onerror="this.classList.add('is-broken')">
+                        <span class="team-logo-fallback" id="teamLogoFallback1">T2</span>
+                    </div>
+                    <div class="team-copy">
+                        <span class="team-slot">TEAM 2</span>
+                        <h1 class="team-name" id="teamName1">TEAM 2</h1>
+                        <div class="team-score-line">
+                            <span class="score-label">MATCH SCORE</span>
+                            <span class="score-value" id="teamScore1">0</span>
+                        </div>
+                    </div>
+                    <span class="team-side-mark">RED SIDE</span>
+                </article>
+            </section>
+
+            <section class="roster-panel" aria-label="Starting lineups">
+                <div class="roster-head">
+                    <div class="roster-head-left">
+                        <span class="roster-kicker">STARTING LINEUP</span>
+                        <span class="roster-rule"></span>
+                    </div>
+                    <span class="roster-mode" id="rosterMode">ROLE MATCHUPS ON REVEAL</span>
+                </div>
+
+                <div class="role-grid" id="roleGrid"></div>
+            </section>
+        </main>
+
+        <footer class="countdown-footer">
+            <div class="timer-side">
+                <span class="timer-side-label">STATUS</span>
+                <span class="timer-side-value" id="timerStatus">READY TO START</span>
+            </div>
+
+            <div class="timer-core">
+                <span class="timer-eyebrow" id="timerEyebrow">MATCH BEGINS IN</span>
+                <div class="timer-digits" id="timerDisplay">05:00</div>
+                <div class="timer-track">
+                    <span class="timer-progress" id="timerProgress"></span>
+                </div>
+            </div>
+
+            <div class="timer-side timer-side--right">
+                <span class="timer-side-label">ROLE REVEAL</span>
+                <span class="timer-side-value" id="revealState">AUTO</span>
+            </div>
+        </footer>
+    </div>
+
+    <div class="reveal-flash" id="revealFlash"></div>
+
+    <script src="script/sec-countdown.js"></script>
+</body>
+</html>

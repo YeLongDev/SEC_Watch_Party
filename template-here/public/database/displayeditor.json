@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "pages": {
+    "display.html": {
+      "slots": {
+        "#displayImage1": {
+          "x": 1,
+          "y": 0,
+          "fit": "cover"
+        },
+        "#displayImage2": {
+          "fit": "cover",
+          "visible": false
+        },
+        "#name-image-box-12": {
+          "x": 5,
+          "y": 14
+        },
+        "#name-image-box-14": {
+          "x": 357,
+          "y": 36
+        },
+        "#name-image-box-13": {
+          "x": 13,
+          "y": 206
+        },
+        "#name-image-box-10": {
+          "x": 0,
+          "y": 13
+        },
+        "#image-display-10": {
+          "x": 85,
+          "y": -294
+        },
+        "#name-image-box-3": {
+          "x": -11,
+          "y": -14
+        },
+        "#name-image-box-11": {
+          "x": -4,
+          "y": 55
+        },
+        "#image-display-11": {
+          "x": -3,
+          "y": -15
+        },
+        "#image-display-13": {
+          "x": -9,
+          "y": -10
+        },
+        "#image-display-12": {
+          "x": -5,
+          "y": 9
+        },
+        "#image-display-15": {
+          "x": 11,
+          "y": 16
+        },
+        "#name-image-box-6": {
+          "x": 14,
+          "y": -26
+        },
+        "#image-display-9": {
+          "x": -3,
+          "y": -3
+        }
+      }
+    },
+    "postdraftcostum.html": {
+      "slots": {
+        "#name-image-box-14": {
+          "x": 10,
+          "y": -4
+        },
+        "#name-image-box-11": {
+          "x": -33,
+          "y": 108
+        }
+      }
+    },
+    "postgame.html": {
+      "slots": {
+        "#name-image-box-14": {
+          "x": 16,
+          "y": -46,
+          "fit": "scale-down"
+        },
+        "#image-display-10": {
+          "x": -3,
+          "y": -22
+        },
+        "#name-image-box-4": {
+          "x": -15,
+          "y": -68
+        },
+        "#name-image-box-3": {
+          "x": -17,
+          "y": -91,
+          "fit": "",
+          "visible": true
+        },
+        "#name-image-box-5": {
+          "x": -21,
+          "y": -72
+        },
+        "#name-image-box-6": {
+          "x": -14,
+          "y": -76
+        },
+        "#name-image-box-7": {
+          "x": -13,
+          "y": -83
+        },
+        "#name-image-box-11": {
+          "x": 5,
+          "y": -23
+        },
+        "#name-image-box-10": {
+          "x": 13,
+          "y": -49
+        },
+        "#name-image-box-12": {
+          "x": 14,
+          "y": -55
+        },
+        "#name-image-box-13": {
+          "x": 25,
+          "y": -52
+        },
+        "#image-display-6": {
+          "x": 1,
+          "y": -8
+        },
+        "#image-display-7": {
+          "x": 1,
+          "y": -16
+        },
+        "#displayImage1": {
+          "fit": "cover"
+        },
+        "#displayImage2": {
+          "fit": "cover"
+        },
+        "#image-display-1": {
+          "fit": "fill"
+        }
+      }
+    },
+    "mvpdisplay.html": {
+      "slots": {
+        "#mvp-player-photo-img": {
+          "x": 2,
+          "y": -53
+        },
+        ".mvp-stage": {
+          "x": 5,
+          "y": 2,
+          "backgroundMode": true
+        },
+        "#mvp-items-container .item-box:nth-child(5)": {
+          "visible": false,
+          "image": "",
+          "imageMode": "auto"
+        }
+      }
+    }
+  },
+  "draft": {
+    "autoAdvance": true,
+    "phaseDurations": [
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      60,
+      60,
+      60,
+      60,
+      30,
+      30,
+      30,
+      30,
+      60,
+      60,
+      60
+    ]
+  }
+}

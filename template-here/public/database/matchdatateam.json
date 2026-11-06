@@ -1,0 +1,231 @@
+{
+  "game_duration": "00:00",
+  "game_number": "1",
+  "teamdata": {
+    "blueteam": {
+      "teamname": "DE 1",
+      "score": "0",
+      "logo": "Assets/presets/asset_preset_1793793685133.png",
+      "totalgold": 0,
+      "turret": 0,
+      "lord": 0,
+      "turtle": 0,
+      "playerlist": [
+        {
+          "name": "Zaizen.",
+          "hero": "Cyclops",
+          "level": "3",
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Alice",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/team-player-images/DE 1/Zaizen..png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Jhin.",
+          "hero": "Ixia",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Aldous",
+          "lane": "exp",
+          "role": "exp",
+          "photo": "Assets/team-player-images/DE 1/Jhin..png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Licht",
+          "hero": "Irithel",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Beatrix",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/team-player-images/DE 1/Licht.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Jhin.",
+          "hero": "Hilda",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Yisunshin",
+          "lane": "exp",
+          "role": "exp",
+          "photo": "Assets/team-player-images/DE 1/Jhin..png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "Zedd.",
+          "hero": "Moskov",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Lesley",
+          "lane": "roam",
+          "role": "roam",
+          "photo": "Assets/team-player-images/DE 1/Zedd..png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        }
+      ],
+      "presetId": "team_de_1"
+    },
+    "redteam": {
+      "teamname": "DIT 1",
+      "score": "0",
+      "logo": "Assets/presets/asset_preset_1793793725592.png",
+      "totalgold": 0,
+      "turret": 0,
+      "lord": 0,
+      "turtle": 0,
+      "playerlist": [
+        {
+          "name": "player 1",
+          "hero": "Granger",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Alpha",
+          "lane": "gold",
+          "role": "gold",
+          "photo": "Assets/team-player-images/DIT 1/player 1.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "player 2",
+          "hero": "Harith",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Aamon",
+          "lane": "exp",
+          "role": "exp",
+          "photo": "Assets/team-player-images/DIT 1/player 2.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "player 3",
+          "hero": "Floryn",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Floryn",
+          "lane": "mid",
+          "role": "mid",
+          "photo": "Assets/team-player-images/DIT 1/player 3.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "player 4",
+          "hero": "Suyou",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Alpha",
+          "lane": "junggle",
+          "role": "junggle",
+          "photo": "Assets/team-player-images/DIT 1/player 4.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        },
+        {
+          "name": "player 5",
+          "hero": "Natalia",
+          "level": 0,
+          "KDA": "0/0/0",
+          "gold": 0,
+          "spell": "idle",
+          "banhero": "Hilda",
+          "lane": "roam",
+          "role": "roam",
+          "photo": "Assets/team-player-images/DIT 1/player 5.png",
+          "itemlist": [
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle",
+            "idle"
+          ]
+        }
+      ],
+      "presetId": "team_dit_1"
+    }
+  },
+  "winmatches": "none"
+}

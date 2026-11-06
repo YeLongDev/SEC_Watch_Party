@@ -1,0 +1,80 @@
+{
+  "brand": {
+    "logo": "Assets/SEC/sec-logo.png"
+  },
+  "teams": [
+    {
+      "name": "TEAM 1",
+      "score": "0",
+      "logo": "",
+      "players": [
+        {
+          "name": "",
+          "role": "gold",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "exp",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "mid",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "jungle",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "roam",
+          "photo": ""
+        }
+      ]
+    },
+    {
+      "name": "TEAM 2",
+      "score": "0",
+      "logo": "",
+      "players": [
+        {
+          "name": "",
+          "role": "gold",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "exp",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "mid",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "jungle",
+          "photo": ""
+        },
+        {
+          "name": "",
+          "role": "roam",
+          "photo": ""
+        }
+      ]
+    }
+  ],
+  "timer": {
+    "duration": 300,
+    "remaining": 300,
+    "running": false,
+    "startedAt": null,
+    "revealed": false,
+    "autoReveal": true
+  },
+  "updatedAt": null
+}

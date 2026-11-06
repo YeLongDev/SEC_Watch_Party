@@ -1,0 +1,167 @@
+/* SEC SERIES — MVP display skin.
+   Reuses the existing Prime Reveal MVP display and its data feed. */
+
+body.sec-mvp-page {
+    --gold: #e9d5ff;
+    --gold-bright: #fdf4ff;
+    --accent: #c084fc;
+    --accent-rgb: 192, 132, 252;
+    --bg-deep: #170a1e;
+    --panel: rgba(26, 12, 34, 0.9);
+    --muted: #b9a6c9;
+}
+
+.sec-mvp-page .sec-brand-slot--mvp {
+    top: 4px;
+    width: 240px;
+    height: 56px;
+    z-index: 90;
+}
+
+.sec-mvp-page .mvp-stage {
+    background:
+        radial-gradient(circle at 76% 46%, rgba(192, 132, 252, 0.18), transparent 30%),
+        radial-gradient(circle at 12% 86%, rgba(240, 171, 252, 0.08), transparent 28%),
+        linear-gradient(125deg, rgba(13, 6, 18, 0.8), rgba(43, 19, 56, 0.54) 44%, rgba(10, 4, 14, 0.86));
+}
+
+.sec-mvp-page .bg-grid {
+    opacity: 0.28;
+    background:
+        repeating-linear-gradient(115deg, rgba(216, 180, 254, 0.045) 0 1px, transparent 1px 74px),
+        repeating-linear-gradient(25deg, rgba(216, 180, 254, 0.025) 0 1px, transparent 1px 120px);
+}
+
+.sec-mvp-page .bg-glow.accent {
+    background: #a855f7;
+    opacity: 0.34;
+}
+
+.sec-mvp-page .bg-glow.gold {
+    background: #f0abfc;
+    opacity: 0.18;
+}
+
+.sec-mvp-page .info-panel {
+    background:
+        linear-gradient(100deg,
+            rgba(18, 8, 24, 0.97) 0%,
+            rgba(35, 16, 46, 0.9) 58%,
+            rgba(35, 16, 46, 0.3) 88%,
+            rgba(35, 16, 46, 0) 100%);
+    border-left-color: var(--gold);
+}
+
+.sec-mvp-page .info-panel::before {
+    background: linear-gradient(90deg, var(--gold), rgba(216, 180, 254, 0.04));
+}
+
+.sec-mvp-page .info-panel::after {
+    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.8), transparent);
+}
+
+.sec-mvp-page .eyebrow {
+    color: var(--accent);
+}
+
+.sec-mvp-page .team-tag {
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.28);
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+.sec-mvp-page .role {
+    color: var(--muted);
+}
+
+.sec-mvp-page .nickname {
+    color: var(--sec-white);
+    text-shadow: 0 0 28px rgba(216, 180, 254, 0.18);
+}
+
+.sec-mvp-page .divider {
+    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.45), rgba(255, 255, 255, 0.04));
+}
+
+.sec-mvp-page .stat {
+    background: rgba(31, 14, 41, 0.66);
+    border: 1px solid rgba(222, 196, 242, 0.14);
+}
+
+.sec-mvp-page .stat .label {
+    color: var(--muted);
+}
+
+.sec-mvp-page .stat strong {
+    color: var(--sec-white);
+}
+
+.sec-mvp-page .stat.gold-stat strong {
+    color: var(--gold-bright);
+}
+
+.sec-mvp-page .spell-box,
+.sec-mvp-page .items-block {
+    border-color: rgba(222, 196, 242, 0.16);
+    background: rgba(25, 11, 33, 0.56);
+}
+
+.sec-mvp-page .slot-label {
+    color: var(--muted);
+}
+
+.sec-mvp-page .item-box {
+    background: rgba(38, 18, 50, 0.72);
+    border-color: rgba(222, 196, 242, 0.16);
+}
+
+.sec-mvp-page .item-box.empty {
+    background: rgba(31, 14, 41, 0.5);
+}
+
+.sec-mvp-page .photo-ring {
+    border-color: rgba(var(--accent-rgb), 0.3);
+}
+
+.sec-mvp-page .photo-ring.ring-2 {
+    border-color: rgba(233, 213, 255, 0.16);
+}
+
+.sec-mvp-page .photo-ring.ring-2::before,
+.sec-mvp-page .photo-ring.ring-2::after {
+    border-color: rgba(233, 213, 255, 0.1);
+}
+
+.sec-mvp-page .photo-glow {
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 68%);
+}
+
+.sec-mvp-page .photo-floor {
+    background: radial-gradient(ellipse, rgba(var(--accent-rgb), 0.2), transparent 68%);
+}
+
+.sec-mvp-page .photo-tag {
+    border-color: rgba(233, 213, 255, 0.2);
+    background: rgba(26, 12, 34, 0.74);
+    color: var(--gold-bright);
+}
+
+.sec-mvp-page .watermark {
+    color: rgba(216, 180, 254, 0.05);
+}
+
+.sec-mvp-page .corner {
+    border-color: rgba(233, 213, 255, 0.34);
+}
+
+.sec-mvp-page .corner::after {
+    background: var(--gold);
+}
+
+.sec-mvp-page .corner-br::after {
+    background: var(--accent);
+}
+
+.sec-mvp-page .footer {
+    color: var(--muted);
+}

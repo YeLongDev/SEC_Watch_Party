@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP Display - Prime Reveal</title>
+    <style>
+        @font-face {
+            font-family: 'Renegade';
+            src: url('Assets/Font/Renegade%20Pursuit.otf') format('opentype');
+        }
+
+        :root {
+            /* Championship Gold Accents */
+            --gold: #facc15;
+            --gold-bright: #fef08a;
+            --gold-glow: rgba(250, 204, 21, 0.45);
+            
+            /* Team Accent (Dynamic Blue / Red) */
+            --accent: #38bdf8;
+            --accent-rgb: 56, 189, 248;
+            
+            /* Backgrounds & Glassmorphism */
+            --bg-deep: #160a24;
+            --panel-bg: linear-gradient(102deg, rgba(16, 7, 26, 0.95) 0%, rgba(30, 13, 48, 0.9) 60%, rgba(30, 13, 48, 0.38) 90%, transparent 100%);
+            --glass-border: rgba(216, 180, 254, 0.22);
+            
+            /* Typography & Foreground */
+            --text-main: #ffffff;
+            --text-soft: #f8fafc;
+            --text-lilac: #d8b4fe;
+            --text-muted: #c4b5fd;
+            --text-dim: #a794b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        body {
+            font-family: 'Renegade', 'Big Noodle Titling', sans-serif;
+            color: var(--text-main);
+            user-select: none;
+        }
+
+        /* ================= 1920x1080 STAGE WITH BRANDING WALLPAPER ================= */
+        .mvp-stage {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            overflow: hidden;
+            background-color: #170b25;
+            background-image:
+                radial-gradient(circle at 74% 48%, rgba(var(--accent-rgb), 0.28), transparent 38%),
+                radial-gradient(circle at 18% 82%, var(--gold-glow), transparent 34%),
+                linear-gradient(135deg, rgba(16, 7, 24, 0.32) 0%, rgba(38, 16, 56, 0.1) 48%, rgba(10, 4, 16, 0.55) 100%),
+                url('Assets/mvp/mvp-bg-branding.jpg');
+            background-size: cover, cover, cover, cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            isolation: isolate;
+        }
+
+        .mvp-stage.blue-side {
+            --accent: #38bdf8;
+            --accent-rgb: 56, 189, 248;
+        }
+
+        .mvp-stage.red-side {
+            --accent: #fb7185;
+            --accent-rgb: 251, 113, 133;
+        }
+
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: -20%;
+            background:
+                repeating-linear-gradient(115deg, rgba(216, 180, 254, 0.035) 0 1px, transparent 1px 74px),
+                repeating-linear-gradient(25deg, rgba(216, 180, 254, 0.02) 0 1px, transparent 1px 120px);
+            opacity: 0.45;
+            transform: rotate(-4deg);
+        }
+
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(85px);
+            opacity: 0.6;
+        }
+
+        .bg-glow.accent {
+            width: 780px;
+            height: 780px;
+            right: 80px;
+            top: 150px;
+            background: rgba(var(--accent-rgb), 0.22);
+            animation: glowPulse 7s ease-in-out infinite;
+        }
+
+        .bg-glow.gold {
+            width: 520px;
+            height: 520px;
+            left: -140px;
+            bottom: -140px;
+            background: rgba(250, 204, 21, 0.14);
+        }
+
+        .watermark {
+            position: absolute;
+            left: 25px;
+            top: 245px;
+            font-size: 650px;
+            line-height: 0.7;
+            letter-spacing: -30px;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(216, 180, 254, 0.06);
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        .scanline {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(216, 180, 254, 0.015) 0 1px,
+                transparent 1px 4px
+            );
+            mix-blend-mode: overlay;
+            opacity: 0.4;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 38%, rgba(12, 5, 18, 0.62) 100%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding: 72px 82px 62px 92px;
+            gap: 0;
+        }
+
+        /* ================= LEFT INFO PANEL ================= */
+        .info-panel {
+            position: relative;
+            width: 61%;
+            height: 100%;
+            padding: 58px 100px 56px 62px;
+            background: var(--panel-bg);
+            border-left: 5px solid var(--gold);
+            box-shadow: -4px 0 28px rgba(250, 204, 21, 0.3);
+            clip-path: polygon(0 0, 100% 0, 94.5% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .info-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), rgba(250, 204, 21, 0.1));
+            opacity: 0.8;
+        }
+
+        .info-panel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 440px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.9), transparent);
+            box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.7);
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--accent);
+            font-size: 19px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            margin-bottom: 34px;
+            text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.45);
+        }
+
+        .eyebrow .line {
+            width: 64px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.85);
+        }
+
+        .eyebrow .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            margin-left: 2px;
+        }
+
+        .identity {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            min-height: 206px;
+        }
+
+        .hero-frame {
+            position: relative;
+            width: 196px;
+            height: 196px;
+            flex: 0 0 196px;
+            border: 2px solid var(--gold);
+            background: #140722;
+            clip-path: polygon(0 0, 100% 0, 100% 79%, 79% 100%, 0 100%);
+            box-shadow: 0 0 34px rgba(250, 204, 21, 0.28), 0 12px 28px rgba(0, 0, 0, 0.65);
+            animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .hero-frame::after {
+            content: '';
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(216, 180, 254, 0.22);
+            clip-path: inherit;
+            pointer-events: none;
+        }
+
+        .hero-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .level-badge {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 3;
+            padding: 5px 12px 3px;
+            background: linear-gradient(135deg, #fef08a, var(--gold));
+            color: #160824;
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            line-height: 1;
+            clip-path: polygon(9px 0, 100% 0, 100% 100%, 0 100%, 0 9px);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.55);
+        }
+
+        .name-block {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .team-tag {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 7px 18px 5px;
+            color: #ffffff;
+            background: rgba(var(--accent-rgb), 0.22);
+            border-left: 3px solid var(--accent);
+            border-top: 1px solid rgba(var(--accent-rgb), 0.45);
+            border-right: 1px solid rgba(var(--accent-rgb), 0.25);
+            border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
+            border-radius: 0 6px 6px 0;
+            font-size: 21px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.65);
+        }
+
+        .nickname {
+            display: block;
+            width: 100%;
+            font-size: 108px;
+            line-height: 0.82;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffffff;
+            text-shadow: 0 6px 0 rgba(0, 0, 0, 0.45), 0 0 35px rgba(255, 255, 255, 0.3);
+        }
+
+        .role {
+            margin-top: 13px;
+            color: var(--gold);
+            font-size: 20px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            text-shadow: 0 0 18px rgba(250, 204, 21, 0.5);
+        }
+
+        .divider {
+            position: relative;
+            height: 1px;
+            margin: 32px 0 28px;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.7), rgba(216, 180, 254, 0.2) 48%, transparent 100%);
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 64px;
+            height: 5px;
+            background: var(--accent);
+            box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.85);
+        }
+
+        .stats {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+        }
+
+        .stat {
+            background: rgba(36, 16, 56, 0.55);
+            border: 1px solid rgba(216, 180, 254, 0.22);
+            border-radius: 8px;
+            padding: 10px 22px 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .stat .label {
+            display: block;
+            color: var(--text-lilac);
+            font-size: 16px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .stat strong {
+            display: block;
+            font-weight: normal;
+            font-size: 72px;
+            line-height: 0.95;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 24px rgba(255, 255, 255, 0.22);
+        }
+
+        .stat.gold-stat strong {
+            color: var(--gold-bright);
+            text-shadow: 0 0 24px rgba(250, 204, 21, 0.42);
+        }
+
+        .stat.level-stat strong {
+            color: #ffffff;
+        }
+
+        .loadout {
+            display: flex;
+            align-items: stretch;
+            gap: 26px;
+            margin-top: 36px;
+        }
+
+        .spell-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 146px;
+            padding: 13px 14px 12px;
+            background: rgba(24, 10, 38, 0.72);
+            border: 1px solid rgba(216, 180, 254, 0.24);
+            clip-path: polygon(0 0, 100% 0, 100% 84%, 84% 100%, 0 100%);
+            border-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .slot-label {
+            color: var(--text-lilac);
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .spell-image {
+            width: 76px;
+            height: 76px;
+            margin: 8px auto 0;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            background: #11061c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.35);
+        }
+
+        .spell-image img { width: 88%; height: 88%; object-fit: contain; }
+        .spell-image .empty { color: #5a4270; font-size: 24px; letter-spacing: 2px; }
+
+        .items-block {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .items-grid {
+            display: flex;
+            gap: 11px;
+            margin-top: 8px;
+        }
+
+        .item-box {
+            position: relative;
+            width: 82px;
+            height: 82px;
+            flex: 0 0 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(150deg, rgba(42, 18, 66, 0.92), rgba(20, 8, 32, 0.96));
+            border: 1px solid rgba(216, 180, 254, 0.26);
+            clip-path: polygon(0 0, 100% 0, 100% 78%, 78% 100%, 0 100%);
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        }
+
+        .item-box::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+            opacity: 0.95;
+        }
+
+        .item-box img { width: 86%; height: 86%; object-fit: contain; }
+        .item-box.empty {
+            border-style: dashed;
+            border-color: rgba(216, 180, 254, 0.15);
+            background: rgba(26, 11, 40, 0.45);
+            opacity: 0.45;
+        }
+        .item-box.empty::after { display: none; }
+
+        /* ================= RIGHT PHOTO PANEL ================= */
+        .photo-panel {
+            position: relative;
+            width: 39%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .photo-ring {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            width: 640px;
+            height: 640px;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(var(--accent-rgb), 0.32);
+            border-radius: 50%;
+            animation: ringSpin 34s linear infinite;
+        }
+
+        .photo-ring::before,
+        .photo-ring::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(216, 180, 254, 0.22);
+        }
+
+        .photo-ring::before { inset: 32px; border-style: dashed; }
+        .photo-ring::after { inset: 74px; }
+
+        .photo-ring.ring-2 {
+            width: 500px;
+            height: 500px;
+            border-color: rgba(250, 204, 21, 0.28);
+            animation-direction: reverse;
+            animation-duration: 46s;
+        }
+
+        .photo-ring.ring-2::before,
+        .photo-ring.ring-2::after { border-color: rgba(250, 204, 21, 0.16); }
+
+        .photo-glow {
+            position: absolute;
+            left: 50%;
+            bottom: 60px;
+            width: 660px;
+            height: 430px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.35), rgba(var(--accent-rgb), 0.2), transparent 70%);
+            filter: blur(28px);
+            z-index: 0;
+        }
+
+        .photo-floor {
+            position: absolute;
+            left: 50%;
+            bottom: 38px;
+            width: 700px;
+            height: 100px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(14, 6, 22, 0.95), transparent 70%);
+            z-index: 1;
+        }
+
+        .photo-floor::after {
+            content: '';
+            position: absolute;
+            left: 8%;
+            right: 8%;
+            bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.9), transparent);
+            box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.5);
+        }
+
+        #mvp-player-photo-img {
+            position: relative;
+            z-index: 2;
+            max-width: 96%;
+            height: 92%;
+            object-fit: contain;
+            object-position: bottom center;
+            margin-bottom: 34px;
+            filter: drop-shadow(-18px 24px 28px rgba(0, 0, 0, 0.78));
+            animation: photoIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .photo-tag {
+            position: absolute;
+            right: 18px;
+            top: 100px;
+            z-index: 1;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(250, 204, 21, 0.25);
+            font-size: 118px;
+            letter-spacing: 12px;
+            line-height: 1;
+        }
+
+        .corner {
+            position: absolute;
+            z-index: 4;
+            width: 54px;
+            height: 54px;
+            pointer-events: none;
+        }
+
+        .corner-tl { left: 28px; top: 28px; border-left: 2px solid var(--gold); border-top: 2px solid var(--gold); }
+        .corner-br { right: 28px; bottom: 28px; border-right: 2px solid rgba(var(--accent-rgb), 0.8); border-bottom: 2px solid rgba(var(--accent-rgb), 0.8); }
+
+        .corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+        }
+
+        .corner-tl::after { left: -1px; top: -1px; }
+        .corner-br::after { right: -1px; bottom: -1px; background: var(--accent); }
+
+        /* ================= ANIMATIONS ================= */
+        @keyframes photoIn {
+            from { opacity: 0; transform: translateX(90px) scale(0.97); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes heroIn {
+            from { opacity: 0; transform: translateY(26px) rotate(-3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.55; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes ringSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes namePop {
+            0% { opacity: 0.15; transform: translateY(12px); filter: blur(3px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        .animate-name { animation: namePop 0.55s ease-out; }
+        .animate-photo { animation: photoIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .preview-mode .watermark { opacity: 0.55; }
+
+    </style>
+</head>
+<body>
+
+    <div class="mvp-stage" id="main-display">
+
+        <div class="bg-layer">
+            <div class="bg-grid"></div>
+            <div class="bg-glow accent"></div>
+            <div class="bg-glow gold"></div>
+            <div class="watermark">MVP</div>
+            <div class="vignette"></div>
+            <div class="scanline"></div>
+        </div>
+
+        <div class="content">
+
+            <section class="info-panel">
+                <div class="eyebrow">
+                    <span class="line"></span>
+                    <span>MOBILE LEGENDS</span>
+                    <span class="dot"></span>
+                    <span>MATCH MVP</span>
+                </div>
+
+                <div class="identity">
+                    <div class="hero-frame">
+                        <img id="mvp-hero-img" src="Assets/HeroPick/idle.png" alt="Hero">
+                        <div class="level-badge">LV <span id="mvp-lvl-badge">15</span></div>
+                    </div>
+
+                    <div class="name-block">
+                        <div class="team-tag" id="mvp-team">BLUE TEAM</div>
+                        <h1 class="nickname" id="mvp-nickname">PLAYER NAME</h1>
+                        <div class="role" id="mvp-role">MOST VALUABLE PLAYER</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <span class="label">K / D / A</span>
+                        <strong id="mvp-kda">0/0/0</strong>
+                    </div>
+                    <div class="stat gold-stat">
+                        <span class="label">GOLD</span>
+                        <strong id="mvp-gold">0</strong>
+                    </div>
+                    <div class="stat level-stat">
+                        <span class="label">LEVEL</span>
+                        <strong id="mvp-lvl">15</strong>
+                    </div>
+                </div>
+
+                <div class="loadout">
+                    <div class="spell-box">
+                        <div class="slot-label">SPELL</div>
+                        <div class="spell-image" id="mvp-spell-container">
+                            <span class="empty">--</span>
+                        </div>
+                    </div>
+
+                    <div class="items-block">
+                        <div class="slot-label">ITEM BUILD</div>
+                        <div class="items-grid" id="mvp-items-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="photo-panel">
+                <div class="photo-ring"></div>
+                <div class="photo-ring ring-2"></div>
+                <div class="photo-glow"></div>
+                <div class="photo-floor"></div>
+                <div class="photo-tag">MVP</div>
+                <img id="mvp-player-photo-img" src="Assets/player/playertemp.png" alt="MVP Player">
+            </section>
+
+        </div>
+
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-br"></div>
+    </div>
+
+    <script src="script/mvp-live-sync.js"></script>
+    <script>
+        const mainDisplay = document.getElementById('main-display');
+        const previewMode = new URLSearchParams(window.location.search).has('preview');
+        if (previewMode) document.documentElement.classList.add('preview-mode');
+        let activeMvp = null;
+        let latestMatchData = null;
+
+        const PLACEHOLDER_MVP = {
+            side: 'blue',
+            nickname: 'PLAYER NAME',
+            teamName: 'BLUE TEAM',
+            heroImg: 'Assets/HeroPick/idle.png',
+            playerPhoto: 'Assets/player/playertemp.png',
+            stats: {
+                LVL: '15',
+                KDA: '0/0/0',
+                GOLD: '0',
+                SPELL: 'Inspire',
+                'ITEM 1': 'Azure Blade',
+                'ITEM 2': 'Brute Force Breastplate',
+                'ITEM 3': 'Dreadnaught Armor',
+                'ITEM 4': 'Clock of Destiny',
+                'ITEM 5': 'idle',
+                'ITEM 6': 'idle'
+            }
+        };
+
+        function assetPath(value, folder) {
+            if (!value) return '';
+            const text = String(value).trim();
+            if (!text || text === 'idle') return '';
+            if (/^(https?:|data:|blob:|\/)/i.test(text)) return text;
+            if (text.startsWith('Assets/')) return text;
+            if (text.includes('/')) return text;
+            return `Assets/${folder}/${text}.png`;
+        }
+
+        function fitNickname() {
+            const el = document.getElementById('mvp-nickname');
+            const maxWidth = el.parentElement ? el.parentElement.clientWidth : el.clientWidth;
+            let size = 108;
+            el.style.fontSize = `${size}px`;
+            while (el.scrollWidth > maxWidth && size > 42) {
+                size -= 2;
+                el.style.fontSize = `${size}px`;
+            }
+        }
+
+        function retriggerAnimation(el, className) {
+            el.classList.remove(className);
+            void el.offsetWidth;
+            el.classList.add(className);
+        }
+
+        function updateMvpDisplay(mvpData) {
+            if (!previewMode) activeMvp = mvpData || null;
+
+            if (!mvpData) {
+                if (!previewMode) {
+                    mainDisplay.style.display = 'none';
+                    return;
+                }
+                mvpData = PLACEHOLDER_MVP;
+            }
+
+            mainDisplay.style.display = 'flex';
+
+            const side = mvpData.side === 'red' ? 'red' : 'blue';
+            mainDisplay.classList.remove('blue-side', 'red-side');
+            mainDisplay.classList.add(`${side}-side`);
+
+            const stats = mvpData.stats || {};
+            const heroImg = document.getElementById('mvp-hero-img');
+            const playerPhotoImg = document.getElementById('mvp-player-photo-img');
+            const nicknameEl = document.getElementById('mvp-nickname');
+            const teamEl = document.getElementById('mvp-team');
+            const roleEl = document.getElementById('mvp-role');
+            const lvlBadgeEl = document.getElementById('mvp-lvl-badge');
+            const lvlEl = document.getElementById('mvp-lvl');
+            const kdaEl = document.getElementById('mvp-kda');
+            const goldEl = document.getElementById('mvp-gold');
+            const spellContainer = document.getElementById('mvp-spell-container');
+            const itemsContainer = document.getElementById('mvp-items-container');
+
+            const level = stats.LVL ?? stats.lvl ?? '15';
+            const kda = stats.KDA ?? stats.kda ?? '0/0/0';
+            const gold = stats.GOLD ?? stats.gold ?? '0';
+            const spell = stats.SPELL ?? stats.spell ?? '';
+            const teamName = mvpData.teamName || mvpData.team || (side === 'blue' ? 'BLUE TEAM' : 'RED TEAM');
+
+            heroImg.onerror = () => { heroImg.src = 'Assets/HeroPick/idle.png'; };
+            heroImg.src = assetPath(mvpData.heroImg, 'HeroPick') || 'Assets/HeroPick/idle.png';
+
+            playerPhotoImg.onerror = () => { playerPhotoImg.src = 'Assets/player/playertemp.png'; };
+            playerPhotoImg.src = assetPath(mvpData.playerPhoto, 'player') || 'Assets/player/playertemp.png';
+
+            nicknameEl.textContent = mvpData.nickname || 'PLAYER';
+            teamEl.textContent = teamName;
+            roleEl.textContent = mvpData.role || 'MOST VALUABLE PLAYER';
+            lvlBadgeEl.textContent = level;
+            lvlEl.textContent = level;
+            kdaEl.textContent = kda;
+            goldEl.textContent = gold;
+
+            spellContainer.innerHTML = '';
+            const spellSrc = assetPath(spell, 'itemandspell');
+            if (spellSrc) {
+                const spellImg = document.createElement('img');
+                spellImg.src = spellSrc;
+                spellImg.alt = spell;
+                spellImg.onerror = () => {
+                    spellContainer.innerHTML = '<span class="empty">--</span>';
+                };
+                spellContainer.appendChild(spellImg);
+            } else {
+                spellContainer.innerHTML = '<span class="empty">--</span>';
+            }
+
+            itemsContainer.innerHTML = '';
+            for (let i = 1; i <= 6; i++) {
+                const box = document.createElement('div');
+                box.className = 'item-box';
+                const itemName = stats[`ITEM ${i}`] ?? stats[`item${i}`] ?? '';
+                const itemSrc = assetPath(itemName, 'itemandspell');
+                if (itemSrc) {
+                    const img = document.createElement('img');
+                    img.src = itemSrc;
+                    img.alt = itemName;
+                    img.onerror = () => { img.style.display = 'none'; box.classList.add('empty'); };
+                    box.appendChild(img);
+                } else {
+                    box.classList.add('empty');
+                }
+                itemsContainer.appendChild(box);
+            }
+
+            fitNickname();
+            requestAnimationFrame(fitNickname);
+            retriggerAnimation(nicknameEl, 'animate-name');
+            retriggerAnimation(playerPhotoImg, 'animate-photo');
+
+            // The item boxes and their images are rebuilt on every MVP update.
+            // Re-apply Display Editor overrides to the freshly created elements.
+            if (window.__displayEditorReapply) {
+                requestAnimationFrame(() => window.__displayEditorReapply());
+            }
+        }
+
+        if (previewMode) {
+            updateMvpDisplay(PLACEHOLDER_MVP);
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'mvp_preview') {
+                    updateMvpDisplay(event.data.data || PLACEHOLDER_MVP);
+                }
+            });
+        } else {
+            mainDisplay.style.display = 'none';
+            let socket;
+            let reconnectTimer;
+
+            function connectSocket() {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                socket = new WebSocket(`${protocol}//${window.location.host}`);
+
+                socket.onopen = () => {
+                    clearTimeout(reconnectTimer);
+                    fetchAndDisplayMvp();
+                };
+
+                socket.onmessage = (event) => {
+                    try {
+                        const msg = JSON.parse(event.data);
+                        if (msg.type === 'mvp_update') {
+                            updateMvpDisplay(msg.data);
+                        } else if (msg.type === 'matchdata_update') {
+                            latestMatchData = msg.data;
+                            const merged = window.MvpLiveSync
+                                ? window.MvpLiveSync.merge(activeMvp, latestMatchData)
+                                : activeMvp;
+                            if (merged && JSON.stringify(merged) !== JSON.stringify(activeMvp)) {
+                                updateMvpDisplay(merged);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('MVP WS message error:', error);
+                    }
+                };
+
+                socket.onclose = () => {
+                    reconnectTimer = setTimeout(connectSocket, 2500);
+                };
+
+                socket.onerror = () => {
+                    try { socket.close(); } catch (error) {}
+                };
+            }
+
+            function fetchAndDisplayMvp() {
+                Promise.all([
+                    fetch('/api/mvp').then(response => response.json()),
+                    fetch('/api/matchdata').then(response => response.json()).catch(() => null)
+                ])
+                    .then(([data, matchData]) => {
+                        latestMatchData = matchData;
+                        const mvp = (data && data.mvp && latestMatchData && window.MvpLiveSync)
+                            ? window.MvpLiveSync.merge(data.mvp, latestMatchData)
+                            : (data ? data.mvp : null);
+                        updateMvpDisplay(mvp);
+                    })
+                    .catch(error => console.error('Failed to load MVP:', error));
+            }
+
+            fetchAndDisplayMvp();
+            connectSocket();
+        }
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(fitNickname);
+        }
+    </script>
+    <script src="script/display-editor-apply.js"></script>
+</body>
+</html>

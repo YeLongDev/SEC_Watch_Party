@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP Display - Prime Reveal</title>
+    <style>
+        @font-face {
+            font-family: 'Renegade';
+            src: url('Assets/Font/Renegade%20Pursuit.otf') format('opentype');
+        }
+
+        :root {
+            --gold: #f5c451;
+            --gold-bright: #ffebae;
+            --accent: #00d9ff;
+            --accent-rgb: 0, 217, 255;
+            --bg-deep: #04060b;
+            --panel: rgba(8, 11, 18, 0.92);
+            --muted: #7f8a9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        body {
+            font-family: 'Renegade', 'Big Noodle Titling', sans-serif;
+            color: #fff;
+            user-select: none;
+        }
+
+        .mvp-stage {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 76% 46%, rgba(var(--accent-rgb), 0.16), transparent 30%),
+                radial-gradient(circle at 12% 86%, rgba(245, 196, 81, 0.08), transparent 28%),
+                linear-gradient(125deg, #05070d 0%, #090d16 44%, #04050a 100%);
+            isolation: isolate;
+        }
+
+        .mvp-stage.blue-side { --accent: #00d9ff; --accent-rgb: 0, 217, 255; }
+        .mvp-stage.red-side  { --accent: #ff3b5c; --accent-rgb: 255, 59, 92; }
+
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: -20%;
+            background:
+                repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 74px),
+                repeating-linear-gradient(25deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 120px);
+            opacity: 0.55;
+            transform: rotate(-4deg);
+        }
+
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.55;
+        }
+
+        .bg-glow.accent {
+            width: 760px;
+            height: 760px;
+            right: 80px;
+            top: 150px;
+            background: rgba(var(--accent-rgb), 0.17);
+            animation: glowPulse 7s ease-in-out infinite;
+        }
+
+        .bg-glow.gold {
+            width: 500px;
+            height: 500px;
+            left: -140px;
+            bottom: -140px;
+            background: rgba(245, 196, 81, 0.09);
+        }
+
+        .watermark {
+            position: absolute;
+            left: 25px;
+            top: 245px;
+            font-size: 650px;
+            line-height: 0.7;
+            letter-spacing: -30px;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.035);
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        .scanline {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.018) 0 1px,
+                transparent 1px 4px
+            );
+            mix-blend-mode: overlay;
+            opacity: 0.5;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding: 72px 82px 62px 92px;
+            gap: 0;
+        }
+
+        /* ================= LEFT INFO PANEL ================= */
+        .info-panel {
+            position: relative;
+            width: 61%;
+            height: 100%;
+            padding: 58px 100px 56px 62px;
+            background:
+                linear-gradient(100deg,
+                    rgba(7, 10, 17, 0.97) 0%,
+                    rgba(8, 12, 20, 0.92) 58%,
+                    rgba(8, 12, 20, 0.34) 88%,
+                    rgba(8, 12, 20, 0) 100%);
+            border-left: 4px solid var(--gold);
+            clip-path: polygon(0 0, 100% 0, 94.5% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), rgba(245,196,81,0.05));
+            opacity: 0.7;
+        }
+
+        .info-panel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 420px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.8), transparent);
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--accent);
+            font-size: 19px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+
+        .eyebrow .line {
+            width: 64px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.8);
+        }
+
+        .eyebrow .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            margin-left: 2px;
+        }
+
+        .identity {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            min-height: 206px;
+        }
+
+        .hero-frame {
+            position: relative;
+            width: 196px;
+            height: 196px;
+            flex: 0 0 196px;
+            border: 2px solid var(--gold);
+            background: #020307;
+            clip-path: polygon(0 0, 100% 0, 100% 79%, 79% 100%, 0 100%);
+            box-shadow: 0 0 34px rgba(245, 196, 81, 0.16);
+            animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .hero-frame::after {
+            content: '';
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            clip-path: inherit;
+            pointer-events: none;
+        }
+
+        .hero-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .level-badge {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 3;
+            padding: 5px 12px 3px;
+            background: var(--gold);
+            color: #080a0f;
+            font-size: 25px;
+            letter-spacing: 2px;
+            line-height: 1;
+            clip-path: polygon(9px 0, 100% 0, 100% 100%, 0 100%, 0 9px);
+            box-shadow: 0 0 18px rgba(245, 196, 81, 0.4);
+        }
+
+        .name-block {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .team-tag {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 7px 15px 5px;
+            color: var(--accent);
+            background: rgba(var(--accent-rgb), 0.12);
+            border-left: 3px solid var(--accent);
+            font-size: 21px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .nickname {
+            display: block;
+            width: 100%;
+            font-size: 108px;
+            line-height: 0.82;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 7px 0 rgba(0, 0, 0, 0.32), 0 0 38px rgba(255, 255, 255, 0.1);
+        }
+
+        .role {
+            margin-top: 13px;
+            color: var(--gold);
+            font-size: 20px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            text-shadow: 0 0 18px rgba(245, 196, 81, 0.3);
+        }
+
+        .divider {
+            position: relative;
+            height: 1px;
+            margin: 32px 0 30px;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.6), rgba(255,255,255,0.12) 48%, transparent 100%);
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 64px;
+            height: 5px;
+            background: var(--accent);
+            box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.8);
+        }
+
+        .stats {
+            display: flex;
+            align-items: flex-end;
+            gap: 76px;
+        }
+
+        .stat .label {
+            display: block;
+            color: var(--muted);
+            font-size: 17px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 1px;
+        }
+
+        .stat strong {
+            display: block;
+            font-weight: normal;
+            font-size: 76px;
+            line-height: 0.95;
+            letter-spacing: 1px;
+            text-shadow: 0 0 24px rgba(255, 255, 255, 0.12);
+        }
+
+        .stat.gold-stat strong { color: var(--gold-bright); }
+        .stat.level-stat strong { color: #d8e3ef; }
+
+        .loadout {
+            display: flex;
+            align-items: stretch;
+            gap: 26px;
+            margin-top: 39px;
+        }
+
+        .spell-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 146px;
+            padding: 13px 14px 12px;
+            background: rgba(2, 5, 10, 0.62);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            clip-path: polygon(0 0, 100% 0, 100% 84%, 84% 100%, 0 100%);
+        }
+
+        .slot-label {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .spell-image {
+            width: 76px;
+            height: 76px;
+            margin: 8px auto 0;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            background: #03060b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.18);
+        }
+
+        .spell-image img { width: 88%; height: 88%; object-fit: contain; }
+        .spell-image .empty { color: #394252; font-size: 24px; letter-spacing: 2px; }
+
+        .items-block {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .items-grid {
+            display: flex;
+            gap: 11px;
+            margin-top: 8px;
+        }
+
+        .item-box {
+            position: relative;
+            width: 82px;
+            height: 82px;
+            flex: 0 0 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(150deg, rgba(21, 27, 39, 0.9), rgba(4, 7, 12, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            clip-path: polygon(0 0, 100% 0, 100% 78%, 78% 100%, 0 100%);
+            overflow: hidden;
+        }
+
+        .item-box::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+            opacity: 0.9;
+        }
+
+        .item-box img { width: 86%; height: 86%; object-fit: contain; }
+        .item-box.empty { border-style: dashed; border-color: rgba(255, 255, 255, 0.1); opacity: 0.38; }
+        .item-box.empty::after { display: none; }
+
+        .footer {
+            position: absolute;
+            left: 62px;
+            right: 116px;
+            bottom: 27px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #465063;
+            font-size: 13px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .footer .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.12), transparent); }
+        .footer .line:last-child { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12)); }
+
+        /* ================= RIGHT PHOTO PANEL ================= */
+        .photo-panel {
+            position: relative;
+            width: 39%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .photo-ring {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            width: 640px;
+            height: 640px;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(var(--accent-rgb), 0.24);
+            border-radius: 50%;
+            animation: ringSpin 34s linear infinite;
+        }
+
+        .photo-ring::before,
+        .photo-ring::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(var(--accent-rgb), 0.15);
+        }
+
+        .photo-ring::before { inset: 32px; border-style: dashed; }
+        .photo-ring::after { inset: 74px; }
+
+        .photo-ring.ring-2 {
+            width: 500px;
+            height: 500px;
+            border-color: rgba(245, 196, 81, 0.18);
+            animation-direction: reverse;
+            animation-duration: 46s;
+        }
+
+        .photo-ring.ring-2::before,
+        .photo-ring.ring-2::after { border-color: rgba(245, 196, 81, 0.1); }
+
+        .photo-glow {
+            position: absolute;
+            left: 50%;
+            bottom: 60px;
+            width: 660px;
+            height: 430px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(var(--accent-rgb), 0.25), transparent 68%);
+            filter: blur(26px);
+            z-index: 0;
+        }
+
+        .photo-floor {
+            position: absolute;
+            left: 50%;
+            bottom: 38px;
+            width: 700px;
+            height: 100px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.9), transparent 70%);
+            z-index: 1;
+        }
+
+        .photo-floor::after {
+            content: '';
+            position: absolute;
+            left: 8%;
+            right: 8%;
+            bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.8), transparent);
+            box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.35);
+        }
+
+        #mvp-player-photo-img {
+            position: relative;
+            z-index: 2;
+            max-width: 96%;
+            height: 92%;
+            object-fit: contain;
+            object-position: bottom center;
+            margin-bottom: 34px;
+            filter: drop-shadow(-18px 24px 28px rgba(0, 0, 0, 0.78));
+            animation: photoIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .photo-tag {
+            position: absolute;
+            right: 18px;
+            top: 100px;
+            z-index: 1;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(245, 196, 81, 0.18);
+            font-size: 118px;
+            letter-spacing: 12px;
+            line-height: 1;
+        }
+
+        .corner {
+            position: absolute;
+            z-index: 4;
+            width: 54px;
+            height: 54px;
+            pointer-events: none;
+        }
+
+        .corner-tl { left: 28px; top: 28px; border-left: 2px solid var(--gold); border-top: 2px solid var(--gold); }
+        .corner-br { right: 28px; bottom: 28px; border-right: 2px solid rgba(var(--accent-rgb), 0.7); border-bottom: 2px solid rgba(var(--accent-rgb), 0.7); }
+
+        .corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+        }
+
+        .corner-tl::after { left: -1px; top: -1px; }
+        .corner-br::after { right: -1px; bottom: -1px; background: var(--accent); }
+
+        /* ================= ANIMATIONS ================= */
+        @keyframes photoIn {
+            from { opacity: 0; transform: translateX(90px) scale(0.97); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes heroIn {
+            from { opacity: 0; transform: translateY(26px) rotate(-3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.55; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes ringSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes namePop {
+            0% { opacity: 0.15; transform: translateY(12px); filter: blur(3px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        .animate-name { animation: namePop 0.55s ease-out; }
+        .animate-photo { animation: photoIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        .preview-mode .watermark { opacity: 0.55; }
+    </style>
+</head>
+<body>
+
+    <div class="mvp-stage" id="main-display">
+
+        <div class="bg-layer">
+            <div class="bg-grid"></div>
+            <div class="bg-glow accent"></div>
+            <div class="bg-glow gold"></div>
+            <div class="watermark">MVP</div>
+            <div class="vignette"></div>
+            <div class="scanline"></div>
+        </div>
+
+        <div class="content">
+
+            <section class="info-panel">
+                <div class="eyebrow">
+                    <span class="line"></span>
+                    <span>MOBILE LEGENDS</span>
+                    <span class="dot"></span>
+                    <span>MATCH MVP</span>
+                </div>
+
+                <div class="identity">
+                    <div class="hero-frame">
+                        <img id="mvp-hero-img" src="Assets/HeroPick/idle.png" alt="Hero">
+                        <div class="level-badge">LV <span id="mvp-lvl-badge">15</span></div>
+                    </div>
+
+                    <div class="name-block">
+                        <div class="team-tag" id="mvp-team">BLUE TEAM</div>
+                        <h1 class="nickname" id="mvp-nickname">PLAYER NAME</h1>
+                        <div class="role" id="mvp-role">MOST VALUABLE PLAYER</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <span class="label">K / D / A</span>
+                        <strong id="mvp-kda">0/0/0</strong>
+                    </div>
+                    <div class="stat gold-stat">
+                        <span class="label">GOLD</span>
+                        <strong id="mvp-gold">0</strong>
+                    </div>
+                    <div class="stat level-stat">
+                        <span class="label">LEVEL</span>
+                        <strong id="mvp-lvl">15</strong>
+                    </div>
+                </div>
+
+                <div class="loadout">
+                    <div class="spell-box">
+                        <div class="slot-label">SPELL</div>
+                        <div class="spell-image" id="mvp-spell-container">
+                            <span class="empty">--</span>
+                        </div>
+                    </div>
+
+                    <div class="items-block">
+                        <div class="slot-label">ITEM BUILD</div>
+                        <div class="items-grid" id="mvp-items-container"></div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <span class="line"></span>
+                    <span>FALSE MLBB OVERLAY</span>
+                    <span class="line"></span>
+                </div>
+            </section>
+
+            <section class="photo-panel">
+                <div class="photo-ring"></div>
+                <div class="photo-ring ring-2"></div>
+                <div class="photo-glow"></div>
+                <div class="photo-floor"></div>
+                <div class="photo-tag">MVP</div>
+                <img id="mvp-player-photo-img" src="Assets/player/playertemp.png" alt="MVP Player">
+            </section>
+
+        </div>
+
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-br"></div>
+    </div>
+
+    <script>
+        const mainDisplay = document.getElementById('main-display');
+        const previewMode = new URLSearchParams(window.location.search).has('preview');
+        if (previewMode) document.documentElement.classList.add('preview-mode');
+
+        const PLACEHOLDER_MVP = {
+            side: 'blue',
+            nickname: 'PLAYER NAME',
+            teamName: 'BLUE TEAM',
+            heroImg: 'Assets/HeroPick/idle.png',
+            playerPhoto: 'Assets/player/playertemp.png',
+            stats: {
+                LVL: '15',
+                KDA: '0/0/0',
+                GOLD: '0',
+                SPELL: 'Inspire',
+                'ITEM 1': 'Azure Blade',
+                'ITEM 2': 'Brute Force Breastplate',
+                'ITEM 3': 'Dreadnaught Armor',
+                'ITEM 4': 'Clock of Destiny',
+                'ITEM 5': 'idle',
+                'ITEM 6': 'idle'
+            }
+        };
+
+        function assetPath(value, folder) {
+            if (!value) return '';
+            const text = String(value).trim();
+            if (!text || text === 'idle') return '';
+            if (/^(https?:|data:|blob:|\/)/i.test(text)) return text;
+            if (text.startsWith('Assets/')) return text;
+            if (text.includes('/')) return text;
+            return `Assets/${folder}/${text}.png`;
+        }
+
+        function fitNickname() {
+            const el = document.getElementById('mvp-nickname');
+            const maxWidth = el.parentElement ? el.parentElement.clientWidth : el.clientWidth;
+            let size = 108;
+            el.style.fontSize = `${size}px`;
+            while (el.scrollWidth > maxWidth && size > 42) {
+                size -= 2;
+                el.style.fontSize = `${size}px`;
+            }
+        }
+
+        function retriggerAnimation(el, className) {
+            el.classList.remove(className);
+            void el.offsetWidth;
+            el.classList.add(className);
+        }
+
+        function updateMvpDisplay(mvpData) {
+            if (!mvpData) {
+                if (!previewMode) {
+                    mainDisplay.style.display = 'none';
+                    return;
+                }
+                mvpData = PLACEHOLDER_MVP;
+            }
+
+            mainDisplay.style.display = 'flex';
+
+            const side = mvpData.side === 'red' ? 'red' : 'blue';
+            mainDisplay.classList.remove('blue-side', 'red-side');
+            mainDisplay.classList.add(`${side}-side`);
+
+            const stats = mvpData.stats || {};
+            const heroImg = document.getElementById('mvp-hero-img');
+            const playerPhotoImg = document.getElementById('mvp-player-photo-img');
+            const nicknameEl = document.getElementById('mvp-nickname');
+            const teamEl = document.getElementById('mvp-team');
+            const roleEl = document.getElementById('mvp-role');
+            const lvlBadgeEl = document.getElementById('mvp-lvl-badge');
+            const lvlEl = document.getElementById('mvp-lvl');
+            const kdaEl = document.getElementById('mvp-kda');
+            const goldEl = document.getElementById('mvp-gold');
+            const spellContainer = document.getElementById('mvp-spell-container');
+            const itemsContainer = document.getElementById('mvp-items-container');
+
+            const level = stats.LVL ?? stats.lvl ?? '15';
+            const kda = stats.KDA ?? stats.kda ?? '0/0/0';
+            const gold = stats.GOLD ?? stats.gold ?? '0';
+            const spell = stats.SPELL ?? stats.spell ?? '';
+            const teamName = mvpData.teamName || mvpData.team || (side === 'blue' ? 'BLUE TEAM' : 'RED TEAM');
+
+            heroImg.onerror = () => { heroImg.src = 'Assets/HeroPick/idle.png'; };
+            heroImg.src = assetPath(mvpData.heroImg, 'HeroPick') || 'Assets/HeroPick/idle.png';
+
+            playerPhotoImg.onerror = () => { playerPhotoImg.src = 'Assets/player/playertemp.png'; };
+            playerPhotoImg.src = assetPath(mvpData.playerPhoto, 'player') || 'Assets/player/playertemp.png';
+
+            nicknameEl.textContent = mvpData.nickname || 'PLAYER';
+            teamEl.textContent = teamName;
+            roleEl.textContent = mvpData.role || 'MOST VALUABLE PLAYER';
+            lvlBadgeEl.textContent = level;
+            lvlEl.textContent = level;
+            kdaEl.textContent = kda;
+            goldEl.textContent = gold;
+
+            spellContainer.innerHTML = '';
+            const spellSrc = assetPath(spell, 'itemandspell');
+            if (spellSrc) {
+                const spellImg = document.createElement('img');
+                spellImg.src = spellSrc;
+                spellImg.alt = spell;
+                spellImg.onerror = () => {
+                    spellContainer.innerHTML = '<span class="empty">--</span>';
+                };
+                spellContainer.appendChild(spellImg);
+            } else {
+                spellContainer.innerHTML = '<span class="empty">--</span>';
+            }
+
+            itemsContainer.innerHTML = '';
+            for (let i = 1; i <= 6; i++) {
+                const box = document.createElement('div');
+                box.className = 'item-box';
+                const itemName = stats[`ITEM ${i}`] ?? stats[`item${i}`] ?? '';
+                const itemSrc = assetPath(itemName, 'itemandspell');
+                if (itemSrc) {
+                    const img = document.createElement('img');
+                    img.src = itemSrc;
+                    img.alt = itemName;
+                    img.onerror = () => { img.style.display = 'none'; box.classList.add('empty'); };
+                    box.appendChild(img);
+                } else {
+                    box.classList.add('empty');
+                }
+                itemsContainer.appendChild(box);
+            }
+
+            fitNickname();
+            requestAnimationFrame(fitNickname);
+            retriggerAnimation(nicknameEl, 'animate-name');
+            retriggerAnimation(playerPhotoImg, 'animate-photo');
+        }
+
+        if (previewMode) {
+            updateMvpDisplay(PLACEHOLDER_MVP);
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'mvp_preview') {
+                    updateMvpDisplay(event.data.data || PLACEHOLDER_MVP);
+                }
+            });
+        } else {
+            mainDisplay.style.display = 'none';
+            let socket;
+            let reconnectTimer;
+
+            function connectSocket() {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                socket = new WebSocket(`${protocol}//${window.location.host}`);
+
+                socket.onopen = () => {
+                    clearTimeout(reconnectTimer);
+                    fetchAndDisplayMvp();
+                };
+
+                socket.onmessage = (event) => {
+                    try {
+                        const msg = JSON.parse(event.data);
+                        if (msg.type === 'mvp_update') updateMvpDisplay(msg.data);
+                    } catch (error) {
+                        console.error('MVP WS message error:', error);
+                    }
+                };
+
+                socket.onclose = () => {
+                    reconnectTimer = setTimeout(connectSocket, 2500);
+                };
+
+                socket.onerror = () => {
+                    try { socket.close(); } catch (error) {}
+                };
+            }
+
+            function fetchAndDisplayMvp() {
+                fetch('/api/mvp')
+                    .then(response => response.json())
+                    .then(data => updateMvpDisplay(data.mvp))
+                    .catch(error => console.error('Failed to load MVP:', error));
+            }
+
+            fetchAndDisplayMvp();
+            connectSocket();
+        }
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(fitNickname);
+        }
+    </script>
+</body>
+</html>

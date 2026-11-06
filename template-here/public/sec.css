@@ -1,0 +1,140 @@
+/* =========================================================
+   SEC SERIES — shared broadcast branding
+   Purple contour-wave background, white/lilac foreground.
+   The SEC logo is intentionally a replaceable placeholder:
+   public/Assets/SEC/sec-logo.png
+   ========================================================= */
+
+@font-face {
+    font-family: 'SEC Display';
+    src: url('Assets/Font/Renegade Pursuit.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SEC Display Condensed';
+    src: url('Assets/Font/big_noodle_titling.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --sec-bg-deep: #170a1e;
+    --sec-bg: #25122f;
+    --sec-bg-soft: #321941;
+    --sec-panel: rgba(26, 12, 34, 0.78);
+    --sec-panel-strong: rgba(18, 8, 25, 0.92);
+    --sec-panel-soft: rgba(57, 27, 74, 0.42);
+    --sec-line: rgba(201, 165, 219, 0.45);
+    --sec-white: #fbf7ff;
+    --sec-muted: #cbb7d8;
+    --sec-soft: #9a82aa;
+    --sec-accent: #d8b4fe;
+    --sec-accent-2: #f0abfc;
+    --sec-blue: #9cc9ff;
+    --sec-red: #ff9fbe;
+    --sec-border: rgba(222, 196, 242, 0.24);
+    --sec-border-strong: rgba(222, 196, 242, 0.44);
+    --sec-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+    --sec-glow: 0 0 30px rgba(192, 132, 252, 0.22);
+}
+
+html,
+body.sec-page {
+    width: 1920px;
+    height: 1080px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body.sec-page {
+    position: relative;
+    isolation: isolate;
+    color: var(--sec-white);
+    font-family: 'SEC Display', 'SEC Display Condensed', 'myfonts', sans-serif;
+    background-color: var(--sec-bg-deep);
+    background-image:
+        linear-gradient(135deg, rgba(12, 5, 17, 0.48), rgba(45, 19, 58, 0.12) 44%, rgba(9, 3, 13, 0.62)),
+        url('Assets/SEC/sec-waves.svg');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+
+body.sec-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 50% 42%, rgba(18, 8, 25, 0.08) 0%, rgba(18, 8, 25, 0.24) 52%, rgba(8, 3, 12, 0.62) 100%),
+        linear-gradient(180deg, rgba(8, 3, 12, 0.2), transparent 24%, transparent 74%, rgba(8, 3, 12, 0.62));
+}
+
+body.sec-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+.sec-brand-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.sec-brand-slot img,
+img.sec-brand-logo {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.sec-brand-slot--top {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 260px;
+    height: 64px;
+    transform: translateX(-50%);
+    z-index: 80;
+}
+
+body.sec-preview .sec-brand-slot--top,
+body.sec-preview .sec-brand-panel {
+    outline: 1px dashed rgba(226, 196, 255, 0.32);
+    outline-offset: 6px;
+}
+
+.sec-brand-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.sec-brand-panel img {
+    max-width: 82%;
+    max-height: 74%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(216, 180, 254, 0.18));
+}
+
+/* Shared glass treatment for SEC pages that need extra panels. */
+.sec-glass {
+    background:
+        linear-gradient(145deg, rgba(75, 39, 97, 0.52), rgba(22, 10, 30, 0.82)),
+        radial-gradient(circle at 20% 0%, rgba(216, 180, 254, 0.1), transparent 55%);
+    border: 1px solid var(--sec-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--sec-shadow);
+    backdrop-filter: blur(12px);
+}
+
+/* `?preview=1` helper for the SEC pages. */
+body.sec-preview .sec-brand-slot img[src$="sec-logo.png"] {
+    opacity: 0.9;
+}

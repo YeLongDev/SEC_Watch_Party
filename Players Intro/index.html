@@ -1,0 +1,4127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIKAT E-Sports – Team A, Team B &amp; VS Intro Studio</title>
+  <style>
+    :root {
+      --brand-purple: #24103a;
+      --royal-violet: #5b21b6;
+      --neon-violet: #9d7bea;
+      --team-b-red: #dc2626;
+      --accent-gold: #f2c94c;
+      --bg-dark: #09040f;
+      --panel-bg: #12081d;
+      --card-bg: #1b0d2b;
+      --border-col: rgba(157, 123, 234, 0.26);
+      --text-main: #f4f0ff;
+      --text-muted: #b29fd4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top Header */
+    header {
+      height: 60px;
+      background: linear-gradient(90deg, #140824, #24103a 45%, #3b0a14 85%, #140824);
+      border-bottom: 1px solid var(--border-col);
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 12px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--neon-violet);
+    }
+
+    .brand-title h1 {
+      font-size: 16.5px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    /* Mode Selector Bar in Header */
+    .mode-selector {
+      display: flex;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-col);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .mode-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .mode-btn.active[data-mode="teamA"] {
+      background: linear-gradient(135deg, #3b1763, #6d28d9);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(109, 40, 217, 0.45);
+    }
+
+    .mode-btn.active[data-mode="teamB"] {
+      background: linear-gradient(135deg, #7f1d1d, #dc2626);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(220, 38, 38, 0.45);
+    }
+
+    .mode-btn.active[data-mode="vs"] {
+      background: linear-gradient(135deg, #5b21b6, #dc2626);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(242, 201, 76, 0.35);
+    }
+
+    .mode-btn.active[data-mode="all"] {
+      background: linear-gradient(135deg, #24103a, #7c3aed, #dc2626);
+      color: #fef08a;
+      border: 1px solid rgba(250, 204, 21, 0.5);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 7px;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--border-col);
+      padding: 7px 12px;
+      font-size: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(157, 123, 234, 0.22);
+      border-color: var(--neon-violet);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #5b21b6, #7c3aed);
+      color: #fff;
+      border: 1px solid #c4b5fd;
+      padding: 8px 15px;
+      font-size: 12.5px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-render {
+      background: linear-gradient(135deg, #f59e0b, #eab308);
+      color: #1a0b2e;
+      border: 1px solid #fef08a;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+      white-space: nowrap;
+    }
+
+    .btn-render:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-render:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Left Sidebar Editor */
+    .sidebar {
+      width: 450px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--border-col);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-col);
+      background: #0d0517;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 6px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      border-radius: 0;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: rgba(157, 123, 234, 0.12);
+      border-bottom-color: var(--neon-violet);
+    }
+
+    .tab-btn[data-tab="tabTeamB"].active {
+      background: rgba(220, 38, 38, 0.15);
+      border-bottom-color: #ef4444;
+    }
+
+    .tab-btn[data-tab="tabVS"].active {
+      background: rgba(242, 201, 76, 0.12);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    .section-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-col);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .section-box h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--neon-violet);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-row.inline {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      background: #0d0517;
+      border: 1px solid rgba(157, 123, 234, 0.32);
+      color: #fff;
+      padding: 7px 9px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input[type="color"] {
+      width: 38px;
+      height: 28px;
+      border: 1px solid var(--border-col);
+      border-radius: 5px;
+      background: #0d0517;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--neon-violet);
+    }
+
+    .preset-swatches {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-btn {
+      font-size: 10.5px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 800;
+    }
+
+    /* Player Card */
+    .player-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-col);
+      border-radius: 10px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .player-card.active-card {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 14px rgba(242, 201, 76, 0.18);
+    }
+
+    .player-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .player-num-badge {
+      background: var(--brand-purple);
+      border: 1px solid var(--neon-violet);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.8px;
+    }
+
+    .player-num-badge.team-b {
+      background: #7f1d1d;
+      border-color: #f87171;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-main);
+      border: 1px solid var(--border-col);
+      padding: 3px 7px;
+      font-size: 11px;
+      border-radius: 5px;
+    }
+
+    .btn-icon:hover {
+      background: rgba(157, 123, 234, 0.25);
+    }
+
+    .btn-icon.danger:hover {
+      background: rgba(220, 38, 38, 0.35);
+      border-color: #f87171;
+    }
+
+    .player-main-grid {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .photo-slot {
+      width: 80px;
+      height: 100px;
+      background: repeating-conic-gradient(#160b24 0% 25%, #211035 0% 50%) 50% / 14px 14px;
+      border: 1.5px dashed var(--neon-violet);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .photo-slot .upload-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 8, 29, 0.8);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .photo-slot:hover .upload-overlay {
+      opacity: 1;
+    }
+
+    .photo-adjust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .photo-adjust-grid label {
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* Right Stage Area */
+    .stage-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #06020a;
+      padding: 14px 20px;
+      min-width: 0;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stage-top-helper {
+      width: 100%;
+      max-width: 1220px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(27, 13, 43, 0.75);
+      border: 1px solid var(--border-col);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    .drag-hint {
+      color: var(--accent-gold);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 1220px;
+      aspect-ratio: 16 / 9;
+      max-height: calc(100vh - 235px);
+      background: #000;
+      border: 2px solid var(--royal-violet);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.9), 0 0 30px rgba(91, 33, 182, 0.3);
+      cursor: grab;
+    }
+
+    .canvas-container:active {
+      cursor: grabbing;
+    }
+
+    #stageCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .render-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 4, 15, 0.88);
+      backdrop-filter: blur(4px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 20;
+    }
+
+    .render-overlay.active {
+      display: flex;
+    }
+
+    .progress-bar-wrap {
+      width: 360px;
+      height: 12px;
+      background: #1d0e30;
+      border: 1px solid var(--neon-violet);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7c3aed, #ef4444, #f2c94c);
+      transition: width 0.08s linear;
+    }
+
+    /* Transport Bar */
+    .transport-bar {
+      width: 100%;
+      max-width: 1220px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-col);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timecode {
+      font-family: 'Consolas', monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      min-width: 112px;
+    }
+
+    .segment-pills {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      align-items: center;
+      max-height: 58px;
+      overflow-y: auto;
+    }
+
+    .seg-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-col);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 5px;
+    }
+
+    .seg-pill.team-b-pill {
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .seg-pill.vs-pill {
+      border-color: rgba(242, 201, 76, 0.4);
+    }
+
+    .seg-pill.active {
+      background: var(--royal-violet);
+      color: #fff;
+      border-color: var(--accent-gold);
+    }
+
+    body.stage-only header,
+    body.stage-only .sidebar,
+    body.stage-only .stage-top-helper,
+    body.stage-only .transport-bar {
+      display: none !important;
+    }
+    body.stage-only .stage-area {
+      padding: 0;
+    }
+    body.stage-only .canvas-container {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      border-radius: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">
+      <img id="headerLogo" alt="Logo">
+      <h1>SIKAT • Players &amp; VS Intro Studio</h1>
+    </div>
+
+    <!-- 4-Way Render / Playback Mode Selector -->
+    <div class="mode-selector" id="modeSelector">
+      <button class="mode-btn active" data-mode="teamA">🟣 Team A Only</button>
+      <button class="mode-btn" data-mode="teamB">🔴 Team B Only</button>
+      <button class="mode-btn" data-mode="vs">⚔️ VS Only (1v1)</button>
+      <button class="mode-btn" data-mode="all">🎬 All 3 Combined (A + B + VS)</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-secondary" id="btnExportConfig" title="Export all positions, sizes, and settings to a JSON file">💾 Save Project</button>
+      <button class="btn-secondary" id="btnImportConfig" title="Load a saved JSON project">📂 Load Project</button>
+      <input type="file" id="importConfigFileInput" accept=".json" style="display: none;">
+      <button class="btn-secondary" id="btnResetDefaults" title="Reset all settings to defaults">↺ Reset</button>
+      <button class="btn-secondary" id="btnFullscreen" title="Fullscreen Stage (ESC to exit)">⛶ Stage</button>
+      <select id="exportResSelect" style="width: auto;">
+        <option value="1080">1080p (1920×1080)</option>
+        <option value="720">720p (1280×720)</option>
+      </select>
+      <button class="btn-render" id="btnRenderVideo">🎬 RENDER CURRENT MODE</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tabTeamA">🟣 Team A</button>
+        <button class="tab-btn" data-tab="tabTeamB">🔴 Team B</button>
+        <button class="tab-btn" data-tab="tabVS">⚔️ VS &amp; Audio</button>
+      </div>
+
+      <!-- TEAM PRESETS / FOLDER SELECTOR BAR -->
+      <div class="section-box" style="margin-bottom: 8px; padding: 10px; background: rgba(36, 16, 58, 0.45); border: 1px solid rgba(157, 123, 234, 0.35);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 800; color: #f2c94c; letter-spacing: 0.5px;">📁 PRESET TEAMS (From "teams" Folder)</span>
+          <button class="btn-secondary" id="btnRescanTeamsFolder" style="padding: 2px 7px; font-size: 10px;" title="Reload from teams folder">↺ Rescan Folder</button>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted); line-height: 1.35; margin-bottom: 8px;">
+          Quickly load transparent player cutouts &amp; department presets:
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <label style="font-size: 10px; font-weight: 800; color: var(--neon-violet);">🟣 LOAD FOR TEAM A</label>
+            <select id="presetTeamASelect" style="padding: 5px 6px; font-size: 11px; font-weight: 700; background: #120722; color: #fff; border: 1px solid #5b21b6; border-radius: 6px; cursor: pointer;">
+              <option value="">-- Select Team Preset --</option>
+            </select>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <label style="font-size: 10px; font-weight: 800; color: #f87171;">🔴 LOAD FOR TEAM B</label>
+            <select id="presetTeamBSelect" style="padding: 5px 6px; font-size: 11px; font-weight: 700; background: #1f060a; color: #fff; border: 1px solid #dc2626; border-radius: 6px; cursor: pointer;">
+              <option value="">-- Select Team Preset --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 1: TEAM A (DEFAULT PURPLE #24103a) -->
+      <div class="tab-content active" id="tabTeamA"></div>
+
+      <!-- TAB 2: TEAM B (DEFAULT RED #5c0a14 / #dc2626) -->
+      <div class="tab-content" id="tabTeamB"></div>
+
+      <!-- TAB 3: VS MATCHUPS & AUDIO SETTINGS -->
+      <div class="tab-content" id="tabVS">
+        <div class="section-box">
+          <h3>
+            <span>⚔️ VS Clash &amp; Branding</span>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn-secondary" id="btnPreviewVSIntro" style="padding: 3px 8px; font-size: 10.5px;">⚡ Intro Clash</button>
+              <button class="btn-secondary" id="btnPreviewVS" style="padding: 3px 8px; font-size: 10.5px;">⚔️ 1v1 Pairs</button>
+            </div>
+          </h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10.5px; font-weight: 800; color: var(--neon-violet);">🟣 TEAM A (LEFT)</span>
+                <select id="vsPresetSelectA" style="font-size: 10px; padding: 2px 4px; background: #120722; color: #fff; border: 1px solid #5b21b6; border-radius: 4px; cursor: pointer;">
+                  <option value="">📂 Choose Preset...</option>
+                </select>
+              </div>
+              <input type="text" id="vsTeamANameInput" placeholder="Team A Name">
+              <input type="text" id="vsTeamASubInput" placeholder="VS Label (e.g. TEAM A)">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10.5px; font-weight: 800; color: #f87171;">🔴 TEAM B (RIGHT)</span>
+                <select id="vsPresetSelectB" style="font-size: 10px; padding: 2px 4px; background: #1f060a; color: #fff; border: 1px solid #dc2626; border-radius: 4px; cursor: pointer;">
+                  <option value="">📂 Choose Preset...</option>
+                </select>
+              </div>
+              <input type="text" id="vsTeamBNameInput" placeholder="Team B Name">
+              <input type="text" id="vsTeamBSubInput" placeholder="VS Label (e.g. TEAM B)">
+            </div>
+          </div>
+          <div class="field-row">
+            <label>VS Background Style</label>
+            <select id="vsBgStyleSelect">
+              <option value="split">Split Team A / Team B Adaptive Carbon &amp; Ghosts</option>
+              <option value="studio">Dark Studio Backdrop + Team Rim Glow (Reference Style)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label>VS Center Design</label>
+            <select id="vsCenterStyleSelect">
+              <option value="crest">⚡ Pro Esports Winged Crest + Slash V/S (New)</option>
+              <option value="lightning">🔥 High-Voltage Lightning Clash + Chrome VS</option>
+              <option value="minimal">👑 Clean Studio (No Center Emblem)</option>
+            </select>
+          </div>
+          <div class="field-row inline">
+            <label>VS Intro Clash Duration (sec)</label>
+            <input type="number" id="vsIntroDurInput" min="1.5" max="6.0" step="0.1" value="2.5" style="width: 85px;">
+          </div>
+          <div class="field-row inline">
+            <label>Per 1v1 Matchup Duration (sec)</label>
+            <input type="number" id="vsPairDurInput" min="2.0" max="8.0" step="0.1" value="3.5" style="width: 85px;">
+          </div>
+          <div class="field-row inline">
+            <label>VS Center Badge Text</label>
+            <input type="text" id="vsBadgeTextInput" value="VS" style="width: 110px;">
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+            <div class="photo-slot" id="vsLogoUploadSlot" style="width: 58px; height: 58px; flex-shrink: 0;" title="Click to upload custom VS Center Logo">
+              <img id="vsLogoPreviewImg" alt="VS">
+              <div class="upload-overlay">UPLOAD<br>VS LOGO</div>
+              <input type="file" id="vsLogoFileInput" accept="image/*" style="display: none;">
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 5px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; font-weight: 800; color: var(--neon-violet);">📏 VS Logos &amp; Text Sizes (or drag/scroll on canvas!)</span>
+                <button class="btn-secondary" id="btnResetVSLogo" style="padding: 2px 7px; font-size: 10px;">↺ Reset VS</button>
+              </div>
+              <div class="photo-adjust-grid" style="padding-top: 2px; border-top: none;">
+                <label>VS Logo: <span id="vsLogoScaleLbl">100%</span>
+                  <input type="range" id="vsLogoScaleRange" min="0.2" max="2.5" step="0.05" value="1">
+                </label>
+                <label>Team Logos: <span id="vsTeamLogoScaleLbl">100%</span>
+                  <input type="range" id="vsTeamLogoScaleRange" min="0.3" max="2.5" step="0.05" value="1">
+                </label>
+                <label>VS Text: <span id="vsTextScaleLbl">100%</span>
+                  <input type="range" id="vsTextScaleRange" min="0.4" max="2.2" step="0.05" value="1">
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1v1 Player Matchup Roster Cards (Editable just like Team A & B!) -->
+        <div id="vsMatchupCardsContainer" style="display: flex; flex-direction: column; gap: 10px;"></div>
+
+        <div class="section-box">
+          <h3>🎵 Background Music &amp; Audio</h3>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-secondary" id="btnUploadAudio" style="flex: 1;">📁 Upload Music (.mp3/.wav)</button>
+            <button class="btn-secondary" id="btnResetAudio">Default Audio</button>
+          </div>
+          <input type="file" id="audioFileInput" accept="audio/*" style="display: none;">
+          <div id="audioStatusLabel" style="font-size: 11.5px; color: var(--accent-gold); font-weight: 700;">
+            Active: Reference Esports Intro BGM
+          </div>
+        </div>
+
+        <div class="section-box">
+          <h3>🎬 Render Options</h3>
+          <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.45;">
+            Use the mode bar at the top to render:
+            <br>• <strong>🟣 Team A Only</strong> (Logo → Group Photo → Roster → Outro)
+            <br>• <strong>🔴 Team B Only</strong> (Logo → Group Photo → Roster → Outro)
+            <br>• <strong>⚔️ VS Only</strong> (Squad Clash → P1 vs P1, P2 vs P2...)
+            <br>• <strong>🎬 All 3 Combined</strong> (Team A + Team B + VS in one video)
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Stage Preview -->
+    <main class="stage-area">
+      <div class="stage-top-helper">
+        <div class="drag-hint" id="canvasHelperText">
+          ✋ Tip: Click &amp; drag any player directly on the video canvas to reposition! Scroll wheel over a player to resize.
+        </div>
+        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+          <label style="display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; color: #f2c94c; background: rgba(242, 201, 76, 0.12); border: 1px solid rgba(242, 201, 76, 0.35); padding: 4px 10px; border-radius: 6px; cursor: pointer;" title="When enabled, any size, drag, or layout edit on Team A automatically applies to Team B (and vice versa)">
+            <input type="checkbox" id="chkSyncLayout" checked style="accent-color: #f2c94c; cursor: pointer;">
+            🔗 Sync Team A ↔ B Layout &amp; Sizes
+          </label>
+          <button class="btn-secondary" id="btnJumpGroupA" style="padding: 4px 10px; font-size: 11px;">📸 Edit Team A Group Photo</button>
+          <button class="btn-secondary" id="btnJumpGroupB" style="padding: 4px 10px; font-size: 11px;">📸 Edit Team B Group Photo</button>
+          <button class="btn-secondary" id="btnResetFormation" style="padding: 4px 10px; font-size: 11px;">✨ Auto V-Formation</button>
+        </div>
+      </div>
+
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="stageCanvas" width="1920" height="1080"></canvas>
+        <div class="render-overlay" id="renderOverlay">
+          <div style="font-size: 20px; font-weight: 900; letter-spacing: 1.5px; color: #fff;" id="renderTitle">
+            🎬 RENDERING VIDEO...
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="renderProgressBar"></div>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); font-weight: 700;" id="renderStatusText">
+            Preparing encoder...
+          </div>
+          <button class="btn-secondary" id="btnCancelRender">Cancel Render</button>
+        </div>
+      </div>
+
+      <div class="transport-bar">
+        <div class="timeline-row">
+          <button class="btn-primary" id="btnPlayPause" style="min-width: 92px;">▶ PLAY</button>
+          <button class="btn-secondary" id="btnRestart">⏮</button>
+          <input type="range" id="timelineScrubber" min="0" max="25" step="0.01" value="0">
+          <div class="timecode" id="timecodeDisplay">00.00s / 00.00s</div>
+        </div>
+        <div class="segment-pills" id="segmentPills"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets.js"></script>
+  <script src="teams_data.js"></script>
+  <script>
+    // =========================================================================
+    // Default Group V-Formation Coordinates (Offsets from canvas center)
+    // =========================================================================
+    const DEFAULT_GROUP_SLOTS = [
+      { gx: -80,  gy: 35,  gScale: 1.02, z: 6 },
+      { gx: 85,   gy: 35,  gScale: 1.02, z: 5 },
+      { gx: -245, gy: 15,  gScale: 0.93, z: 4 },
+      { gx: 250,  gy: 15,  gScale: 0.93, z: 3 },
+      { gx: -395, gy: -8,  gScale: 0.85, z: 2 },
+      { gx: 400,  gy: -8,  gScale: 0.85, z: 1 }
+    ];
+
+    function ensurePlayerProps(p, idx) {
+      const slot = DEFAULT_GROUP_SLOTS[idx % DEFAULT_GROUP_SLOTS.length];
+      if (typeof p.scale !== 'number') p.scale = 1.0;
+      if (typeof p.offsetX !== 'number') p.offsetX = 0;
+      if (typeof p.offsetY !== 'number') p.offsetY = 0;
+      if (typeof p.textScale !== 'number') p.textScale = 1.0;
+      if (typeof p.textX !== 'number') p.textX = 0;
+      if (typeof p.textY !== 'number') p.textY = 0;
+      if (typeof p.groupX !== 'number') p.groupX = slot.gx;
+      if (typeof p.groupY !== 'number') p.groupY = slot.gy;
+      if (typeof p.groupScale !== 'number') p.groupScale = slot.gScale;
+      if (typeof p.groupZ !== 'number') p.groupZ = slot.z;
+      if (typeof p.groupNameScale !== 'number') p.groupNameScale = 1.0;
+      if (typeof p.groupNameX !== 'number') p.groupNameX = 0;
+      if (typeof p.groupNameY !== 'number') p.groupNameY = 0;
+      if (typeof p.showGroupName !== 'boolean') p.showGroupName = true;
+      if (typeof p.vsX !== 'number') p.vsX = 0;
+      if (typeof p.vsY !== 'number') p.vsY = 0;
+      if (typeof p.vsScale !== 'number') p.vsScale = 1.0;
+      if (typeof p.duration !== 'number') p.duration = 3.0;
+      if (typeof p.removeBg !== 'boolean') p.removeBg = false;
+      return p;
+    }
+
+    function ensureTeamProps(t) {
+      if (typeof t.logoScale !== 'number') t.logoScale = 1.0;
+      if (typeof t.logoX !== 'number') t.logoX = 0;
+      if (typeof t.logoY !== 'number') t.logoY = 0;
+      if (typeof t.introTextScale !== 'number') t.introTextScale = 1.0;
+      if (typeof t.introTextX !== 'number') t.introTextX = 0;
+      if (typeof t.introTextY !== 'number') t.introTextY = 0;
+      if (typeof t.headerLogoScale !== 'number') t.headerLogoScale = 1.0;
+      if (typeof t.headerTextScale !== 'number') t.headerTextScale = 1.0;
+      if (typeof t.headerX !== 'number') t.headerX = 0;
+      if (typeof t.headerY !== 'number') t.headerY = 0;
+      if (typeof t.groupLogoScale !== 'number') t.groupLogoScale = 1.0;
+      if (typeof t.groupLogoX !== 'number') t.groupLogoX = 0;
+      if (typeof t.groupLogoY !== 'number') t.groupLogoY = 0;
+      if (typeof t.playerTextScale !== 'number') t.playerTextScale = 1.0;
+      if (typeof t.groupNameScale !== 'number') t.groupNameScale = 1.0;
+      return t;
+    }
+
+    // =========================================================================
+    // Application State & Migration from V1
+    // =========================================================================
+    const STORAGE_KEY_V2 = 'SIKAT_PLAYERS_INTRO_STATE_V2';
+    const STORAGE_KEY_V1 = 'SIKAT_PLAYERS_INTRO_STATE_V1';
+
+    function getDefaultState() {
+      const A = window.SIKAT_INTRO_ASSETS || {};
+      const teamAPlayers = JSON.parse(JSON.stringify(A.teamAPlayers || A.defaultPlayers || [])).map(ensurePlayerProps);
+      const teamBPlayers = JSON.parse(JSON.stringify(A.teamBPlayers || A.defaultPlayers || [])).map(ensurePlayerProps);
+
+      return {
+        renderMode: 'teamA', // 'teamA' | 'teamB' | 'vs' | 'all'
+        syncLayout: true,
+        bgmDataUrl: A.bgmDataUrl || '',
+        bgmName: 'Reference Esports Intro BGM',
+        vsBgStyle: 'split',
+        vsCenterStyle: 'crest',
+        vsIntroDur: 2.5,
+        vsPairDur: 3.5,
+        vsBadgeText: 'VS',
+        vsLogoDataUrl: A.vsLogoDataUrl || '',
+        vsLogoScale: 1.0,
+        vsLogoX: 0,
+        vsLogoY: 0,
+        vsTeamLogoScale: 1.0,
+        vsTeamLogoX: 0,
+        vsTeamLogoY: 0,
+        vsTextScale: 1.0,
+        vsTextX: 0,
+        vsTextY: 0,
+        teamA: ensureTeamProps({
+          key: 'teamA',
+          teamName: 'SIKAT ESPORTS CLUB',
+          introTitle: 'TEAM A PLAYERS INTRO',
+          introSub: 'CAVITE STATE UNIVERSITY • CCAT CAMPUS',
+          groupSub: 'OFFICIAL SQUAD LINEUP',
+          vsSub: 'TEAM A',
+          logoDataUrl: A.logoDataUrl || '',
+          logoScale: 1.0,
+          introTextScale: 1.0,
+          headerLogoScale: 1.0,
+          headerTextScale: 1.0,
+          groupLogoScale: 1.0,
+          playerTextScale: 1.0,
+          groupNameScale: 1.0,
+          logoIntroDur: 2.0,
+          groupPhotoDur: 2.8,
+          showGroupPhoto: true,
+          outroDur: 2.6,
+          colPrimary: '#24103a',
+          colSecondary: '#5b21b6',
+          colAccent: '#9d7bea',
+          colBg: '#090410',
+          players: teamAPlayers
+        }),
+        teamB: ensureTeamProps({
+          key: 'teamB',
+          teamName: 'TEAM B CHALLENGERS',
+          introTitle: 'TEAM B PLAYERS INTRO',
+          introSub: 'OFFICIAL ROSTER SHOWCASE',
+          groupSub: 'OFFICIAL SQUAD LINEUP',
+          vsSub: 'TEAM B',
+          logoDataUrl: A.logoDataUrl || '',
+          logoScale: 1.0,
+          introTextScale: 1.0,
+          headerLogoScale: 1.0,
+          headerTextScale: 1.0,
+          groupLogoScale: 1.0,
+          playerTextScale: 1.0,
+          groupNameScale: 1.0,
+          logoIntroDur: 2.0,
+          groupPhotoDur: 2.8,
+          showGroupPhoto: true,
+          outroDur: 2.6,
+          colPrimary: '#5c0a14',
+          colSecondary: '#dc2626',
+          colAccent: '#f87171',
+          colBg: '#120406',
+          players: teamBPlayers
+        })
+      };
+    }
+
+    let state = getDefaultState();
+    try {
+      const savedV2 = localStorage.getItem(STORAGE_KEY_V2);
+      if (savedV2) {
+        const parsed = JSON.parse(savedV2);
+        if (parsed && parsed.teamA && parsed.teamB) {
+          const def = getDefaultState();
+          state = Object.assign(def, parsed);
+          state.teamA = ensureTeamProps(Object.assign(def.teamA, parsed.teamA));
+          state.teamB = ensureTeamProps(Object.assign(def.teamB, parsed.teamB));
+          state.teamA.players.forEach(ensurePlayerProps);
+          state.teamB.players.forEach(ensurePlayerProps);
+        }
+      } else {
+        // Migrate any photos uploaded in V1 into Team A!
+        const savedV1 = localStorage.getItem(STORAGE_KEY_V1);
+        if (savedV1) {
+          const p1 = JSON.parse(savedV1);
+          if (p1 && Array.isArray(p1.players) && p1.players.length > 0) {
+            state.teamA.players = p1.players.map(ensurePlayerProps);
+            if (p1.teamName) state.teamA.teamName = p1.teamName;
+            if (p1.logoDataUrl) state.teamA.logoDataUrl = p1.logoDataUrl;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('State load fallback:', e);
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // Team A <-> Team B & All-Players Layout, Size & Drag Synchronization
+    // =========================================================================
+    const TEAM_SYNC_KEYS = [
+      'logoScale', 'logoX', 'logoY',
+      'introTextScale', 'introTextX', 'introTextY',
+      'headerLogoScale', 'headerTextScale', 'headerX', 'headerY',
+      'groupLogoScale', 'groupLogoX', 'groupLogoY',
+      'playerTextScale', 'groupNameScale',
+      'showGroupPhoto', 'groupPhotoDur', 'logoIntroDur', 'outroDur'
+    ];
+
+    // Individual slide & VS properties sync across ALL players on BOTH Team A & Team B
+    const PLAYER_ALL_SYNC_KEYS = [
+      'scale', 'offsetX', 'offsetY',
+      'textScale', 'textX', 'textY',
+      'groupNameScale', 'duration',
+      'vsScale', 'vsY'
+    ];
+
+    // Group formation slot properties sync between matching slot index (Player i of Team A <-> Player i of Team B)
+    const PLAYER_SLOT_SYNC_KEYS = [
+      'groupX', 'groupY', 'groupScale', 'groupZ',
+      'groupNameX', 'groupNameY', 'showGroupName'
+    ];
+
+    function syncTeamLayoutProps(srcTeam) {
+      if (state.syncLayout === false || !srcTeam) return;
+      const dstTeam = srcTeam.key === 'teamA' ? state.teamB : state.teamA;
+      if (!dstTeam) return;
+      TEAM_SYNC_KEYS.forEach(k => {
+        if (typeof srcTeam[k] !== 'undefined') dstTeam[k] = srcTeam[k];
+      });
+    }
+
+    function syncPlayerLayoutProps(srcTeamOrKey, playerIdx, srcPlayer, isVS = false) {
+      if (state.syncLayout === false || !srcPlayer) return;
+      const srcKey = typeof srcTeamOrKey === 'string' ? srcTeamOrKey : (srcTeamOrKey && srcTeamOrKey.key);
+      const sameTeam = srcKey === 'teamB' ? state.teamB : state.teamA;
+      const otherTeam = srcKey === 'teamB' ? state.teamA : state.teamB;
+
+      // 1. Sync individual player slide & VS properties to ALL players in BOTH Team A and Team B
+      [sameTeam, otherTeam].forEach(tObj => {
+        if (!tObj || !Array.isArray(tObj.players)) return;
+        const isOther = tObj !== sameTeam;
+        tObj.players.forEach(dstP => {
+          if (dstP === srcPlayer) return;
+          PLAYER_ALL_SYNC_KEYS.forEach(k => {
+            if (typeof srcPlayer[k] !== 'undefined') dstP[k] = srcPlayer[k];
+          });
+          if (typeof srcPlayer.vsX === 'number') {
+            dstP.vsX = (isVS && isOther) ? -srcPlayer.vsX : srcPlayer.vsX;
+          }
+        });
+      });
+
+      // 2. Sync group photo formation slot properties to the matching player slot on the other team
+      if (typeof playerIdx === 'number' && otherTeam && otherTeam.players && otherTeam.players[playerIdx]) {
+        const slotDst = otherTeam.players[playerIdx];
+        PLAYER_SLOT_SYNC_KEYS.forEach(k => {
+          if (typeof srcPlayer[k] !== 'undefined') slotDst[k] = srcPlayer[k];
+        });
+      }
+    }
+
+    function syncAllLayoutFromTeamA() {
+      if (state.syncLayout === false) return;
+      syncTeamLayoutProps(state.teamA);
+      if (state.teamA.players.length > 0) {
+        syncPlayerLayoutProps(state.teamA, 0, state.teamA.players[0], false);
+      }
+      state.teamA.players.forEach((p, idx) => {
+        if (state.teamB.players[idx]) {
+          PLAYER_SLOT_SYNC_KEYS.forEach(k => {
+            if (typeof p[k] !== 'undefined') state.teamB.players[idx][k] = p[k];
+          });
+        }
+      });
+    }
+    syncAllLayoutFromTeamA();
+
+    // =========================================================================
+    // Color & Adaptive Background Helpers
+    // =========================================================================
+    function hexToRgb(hex) {
+      const h = (hex || '#24103a').replace('#', '');
+      return {
+        r: parseInt(h.substring(0, 2), 16) || 36,
+        g: parseInt(h.substring(2, 4), 16) || 16,
+        b: parseInt(h.substring(4, 6), 16) || 58
+      };
+    }
+
+    function rgbaStr(hex, alpha) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+    function easeOutCubic(t) { t = clamp01(t); return 1 - Math.pow(1 - t, 3); }
+    function easeInCubic(t) { t = clamp01(t); return t * t * t; }
+    function easeOutBack(t, s = 1.35) { t = clamp01(t) - 1; return t * t * ((s + 1) * t + s) + 1; }
+
+    // Cache of adaptive hexagonal carbon patterns per color
+    const hexPatternCache = new Map();
+    function getAdaptiveHexPattern(ctx, bgHex, accentHex) {
+      const key = bgHex + '|' + accentHex;
+      if (hexPatternCache.has(key)) return hexPatternCache.get(key);
+
+      const hc = document.createElement('canvas');
+      hc.width = 56;
+      hc.height = 32;
+      const pctx = hc.getContext('2d');
+      pctx.fillStyle = bgHex;
+      pctx.fillRect(0, 0, 56, 32);
+      pctx.strokeStyle = rgbaStr(accentHex, 0.16);
+      pctx.lineWidth = 1.4;
+      const r = 10;
+      [[14, 8], [42, 8], [0, 24], [28, 24], [56, 24]].forEach(([cx, cy]) => {
+        pctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const ang = (Math.PI / 3) * i;
+          const x = cx + r * Math.cos(ang);
+          const y = cy + r * Math.sin(ang);
+          if (i === 0) pctx.moveTo(x, y);
+          else pctx.lineTo(x, y);
+        }
+        pctx.closePath();
+        pctx.stroke();
+      });
+      const pat = ctx.createPattern(hc, 'repeat');
+      hexPatternCache.set(key, pat);
+      return pat;
+    }
+
+    // =========================================================================
+    // Image Cache: Cutout, Team-Tinted Ghost Silhouette & Darkened VS Silhouette
+    // =========================================================================
+    const imageCache = new Map();
+    const logoCache = new Map();
+
+    function getLogoImg(dataUrl) {
+      if (!dataUrl) return null;
+      if (logoCache.has(dataUrl)) return logoCache.get(dataUrl);
+      const im = new Image();
+      im.src = dataUrl;
+      logoCache.set(dataUrl, im);
+      return im;
+    }
+
+    function processPlayerImage(player, teamObj) {
+      const key = [
+        player.photo,
+        player.removeBg ? '1' : '0',
+        teamObj.colPrimary,
+        teamObj.colSecondary,
+        teamObj.colAccent
+      ].join('|');
+
+      if (imageCache.has(key)) return imageCache.get(key);
+
+      const entry = { ready: false, cutoutCanvas: null, ghostCanvas: null, darkCanvas: null };
+      imageCache.set(key, entry);
+
+      const img = new Image();
+      img.onload = () => {
+        const w = img.naturalWidth || 700;
+        const h = img.naturalHeight || 900;
+
+        // 1. Opaque Cutout Canvas
+        const cCanvas = document.createElement('canvas');
+        cCanvas.width = w;
+        cCanvas.height = h;
+        const cCtx = cCanvas.getContext('2d');
+        cCtx.drawImage(img, 0, 0);
+
+        if (player.removeBg) {
+          const imgData = cCtx.getImageData(0, 0, w, h);
+          const d = imgData.data;
+          const r0 = d[0], g0 = d[1], b0 = d[2];
+          const thresh = 52, feather = 28;
+          for (let i = 0; i < d.length; i += 4) {
+            const dr = d[i] - r0, dg = d[i + 1] - g0, db = d[i + 2] - b0;
+            const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+            if (dist < thresh) d[i + 3] = 0;
+            else if (dist < thresh + feather) d[i + 3] = Math.round(d[i + 3] * ((dist - thresh) / feather));
+          }
+          cCtx.putImageData(imgData, 0, 0);
+        }
+
+        // 2. Team-Tinted Ghost Silhouette Canvas
+        const gCanvas = document.createElement('canvas');
+        gCanvas.width = w;
+        gCanvas.height = h;
+        const gCtx = gCanvas.getContext('2d');
+        gCtx.drawImage(cCanvas, 0, 0);
+        const gData = gCtx.getImageData(0, 0, w, h);
+        const gd = gData.data;
+        const pRgb = hexToRgb(teamObj.colPrimary);
+        const sRgb = hexToRgb(teamObj.colSecondary);
+        const aRgb = hexToRgb(teamObj.colAccent);
+
+        for (let i = 0; i < gd.length; i += 4) {
+          const a = gd[i + 3];
+          if (a === 0) continue;
+          const luma = (0.299 * gd[i] + 0.587 * gd[i + 1] + 0.114 * gd[i + 2]) / 255;
+          const t = Math.pow(luma, 0.85);
+          gd[i]     = Math.min(255, Math.round(pRgb.r * (1 - t) + sRgb.r * t + aRgb.r * Math.max(0, t - 0.55) * 0.7));
+          gd[i + 1] = Math.min(255, Math.round(pRgb.g * (1 - t) + sRgb.g * t + aRgb.g * Math.max(0, t - 0.55) * 0.7));
+          gd[i + 2] = Math.min(255, Math.round(pRgb.b * (1 - t) + sRgb.b * t + aRgb.b * Math.max(0, t - 0.55) * 0.7));
+          gd[i + 3] = Math.round(a * 0.50);
+        }
+        gCtx.putImageData(gData, 0, 0);
+
+        // 3. Darkened Silhouette Canvas (for the VS silhouette-to-lit effect!)
+        const dCanvas = document.createElement('canvas');
+        dCanvas.width = w;
+        dCanvas.height = h;
+        const dCtx = dCanvas.getContext('2d');
+        dCtx.drawImage(cCanvas, 0, 0);
+        const dData = dCtx.getImageData(0, 0, w, h);
+        const dd = dData.data;
+        for (let i = 0; i < dd.length; i += 4) {
+          if (dd[i + 3] === 0) continue;
+          dd[i]     = Math.round(dd[i] * 0.16 + pRgb.r * 0.12);
+          dd[i + 1] = Math.round(dd[i + 1] * 0.16 + pRgb.g * 0.12);
+          dd[i + 2] = Math.round(dd[i + 2] * 0.16 + pRgb.b * 0.12);
+        }
+        dCtx.putImageData(dData, 0, 0);
+
+        entry.cutoutCanvas = cCanvas;
+        entry.ghostCanvas = gCanvas;
+        entry.darkCanvas = dCanvas;
+        entry.ready = true;
+      };
+      img.src = player.photo;
+      return entry;
+    }
+
+    // =========================================================================
+    // Dynamic Timeline Builder (Supports Team A Only, Team B Only, VS Only, All 3)
+    // =========================================================================
+    function buildTeamSegments(teamObj, prefixLabel, startT) {
+      const segs = [];
+      let t = startT;
+
+      const logoDur = Math.max(1.2, parseFloat(teamObj.logoIntroDur) || 2.0);
+      segs.push({
+        type: 'team_intro',
+        team: teamObj,
+        label: `${prefixLabel} INTRO`,
+        start: t,
+        end: t + logoDur,
+        dur: logoDur
+      });
+      t += logoDur;
+
+      if (teamObj.showGroupPhoto !== false) {
+        const grpDur = Math.max(1.5, parseFloat(teamObj.groupPhotoDur) || 2.8);
+        segs.push({
+          type: 'group_photo',
+          team: teamObj,
+          label: `${prefixLabel} GROUP`,
+          start: t,
+          end: t + grpDur,
+          dur: grpDur
+        });
+        t += grpDur;
+      }
+
+      teamObj.players.forEach((p, idx) => {
+        const d = Math.max(1.5, parseFloat(p.duration) || 3.0);
+        segs.push({
+          type: 'player',
+          team: teamObj,
+          index: idx,
+          player: p,
+          label: `${prefixLabel} P${idx + 1}`,
+          start: t,
+          end: t + d,
+          dur: d
+        });
+        t += d;
+      });
+
+      const outroDur = Math.max(1.2, parseFloat(teamObj.outroDur) || 2.6);
+      segs.push({
+        type: 'team_outro',
+        team: teamObj,
+        label: `${prefixLabel} OUTRO`,
+        start: t,
+        end: t + outroDur,
+        dur: outroDur
+      });
+      t += outroDur;
+
+      return { segs, nextT: t };
+    }
+
+    function buildVSSegments(startT) {
+      const segs = [];
+      let t = startT;
+
+      const vsIntroDur = Math.max(1.5, parseFloat(state.vsIntroDur) || 2.5);
+      segs.push({
+        type: 'vs_intro',
+        label: 'VS CLASH',
+        start: t,
+        end: t + vsIntroDur,
+        dur: vsIntroDur
+      });
+      t += vsIntroDur;
+
+      const count = Math.max(state.teamA.players.length, state.teamB.players.length);
+      const pairDur = Math.max(2.0, parseFloat(state.vsPairDur) || 3.5);
+      for (let i = 0; i < count; i++) {
+        const pA = state.teamA.players[i % state.teamA.players.length];
+        const pB = state.teamB.players[i % state.teamB.players.length];
+        segs.push({
+          type: 'vs_pair',
+          index: i,
+          isLast: i === count - 1,
+          playerA: pA,
+          playerB: pB,
+          label: `VS ${i + 1}`,
+          start: t,
+          end: t + pairDur,
+          dur: pairDur
+        });
+        t += pairDur;
+      }
+
+      return { segs, nextT: t };
+    }
+
+    function getTimelineSegments() {
+      let allSegs = [];
+      let t = 0;
+      const mode = state.renderMode || 'teamA';
+
+      if (mode === 'teamA') {
+        const r = buildTeamSegments(state.teamA, 'A', t);
+        allSegs = r.segs;
+        t = r.nextT;
+      } else if (mode === 'teamB') {
+        const r = buildTeamSegments(state.teamB, 'B', t);
+        allSegs = r.segs;
+        t = r.nextT;
+      } else if (mode === 'vs') {
+        const r = buildVSSegments(t);
+        allSegs = r.segs;
+        t = r.nextT;
+      } else {
+        // 'all': Team A -> Team B -> VS
+        const rA = buildTeamSegments(state.teamA, 'A', t);
+        allSegs.push(...rA.segs);
+        t = rA.nextT;
+
+        const rB = buildTeamSegments(state.teamB, 'B', t);
+        allSegs.push(...rB.segs);
+        t = rB.nextT;
+
+        const rVS = buildVSSegments(t);
+        allSegs.push(...rVS.segs);
+        t = rVS.nextT;
+      }
+
+      return { segments: allSegs, totalDuration: Math.max(0.1, t) };
+    }
+
+    // =========================================================================
+    // Canvas Drawing Primitives & Hit-Boxes for Interactive Mouse Dragging
+    // =========================================================================
+    const canvas = document.getElementById('stageCanvas');
+    const ctx = canvas.getContext('2d');
+    let interactiveHitBoxes = []; // Populated each frame for click-and-drag on canvas
+
+    function drawRotatedDiamond(ctx, cx, cy, size, fillStyle, strokeStyle = null, lineWidth = 2) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = fillStyle;
+      ctx.fillRect(-size / 2, -size / 2, size, size);
+      if (strokeStyle) {
+        ctx.strokeStyle = strokeStyle;
+        ctx.lineWidth = lineWidth;
+        ctx.strokeRect(-size / 2, -size / 2, size, size);
+      }
+      ctx.restore();
+    }
+
+    function draw3DCube(ctx, cx, cy, size, colTop, colSide1, colSide2) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(Math.PI / 4);
+      const s = size / 2;
+      ctx.fillStyle = colTop;
+      ctx.fillRect(-s, -s, size, size);
+      const bv = size * 0.18;
+      ctx.fillStyle = colSide1;
+      ctx.beginPath();
+      ctx.moveTo(-s, s); ctx.lineTo(s, s); ctx.lineTo(s + bv, s + bv); ctx.lineTo(-s + bv, s + bv);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = colSide2;
+      ctx.beginPath();
+      ctx.moveTo(s, -s); ctx.lineTo(s, s); ctx.lineTo(s + bv, s + bv); ctx.lineTo(s + bv, -s + bv);
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAdaptiveBackground(ctx, W, H, teamObj) {
+      const bgCol = teamObj.colBg || '#090410';
+      ctx.fillStyle = bgCol;
+      ctx.fillRect(0, 0, W, H);
+
+      const pat = getAdaptiveHexPattern(ctx, bgCol, teamObj.colAccent);
+      if (pat) {
+        ctx.fillStyle = pat;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      const grad = ctx.createRadialGradient(W * 0.5, H * 0.5, 40, W * 0.5, H * 0.5, W * 0.62);
+      grad.addColorStop(0, rgbaStr(teamObj.colSecondary, 0.30));
+      grad.addColorStop(0.55, rgbaStr(teamObj.colPrimary, 0.22));
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.60)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawGeometricFrame(ctx, W, H, t, teamObj) {
+      const drift = Math.sin(t * 1.4) * 12;
+
+      // Subtle background accent lines ONLY in the outer left/right wings (never crossing the player's face!)
+      ctx.save();
+      ctx.strokeStyle = rgbaStr(teamObj.colAccent, 0.32);
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.04, -20);
+      ctx.lineTo(W * 0.28, H + 20);
+      ctx.moveTo(W * 0.78, -20);
+      ctx.lineTo(W * 1.02, H + 20);
+      ctx.stroke();
+      ctx.restore();
+
+      // Left geometric chevron blocks
+      drawRotatedDiamond(ctx, -60 + drift, H * 0.52, 680, teamObj.colPrimary, rgbaStr(teamObj.colAccent, 0.38), 3);
+      drawRotatedDiamond(ctx, -120 - drift * 0.6, H * 0.48, 520, teamObj.colSecondary);
+
+      // Right geometric chevron blocks
+      drawRotatedDiamond(ctx, W + 40 - drift, H * 0.45, 760, teamObj.colPrimary, rgbaStr(teamObj.colAccent, 0.4), 3);
+      drawRotatedDiamond(ctx, W + 110 + drift * 0.5, H * 0.62, 560, teamObj.colSecondary);
+
+      // Top & bottom wedges
+      drawRotatedDiamond(ctx, W * 0.42 + drift * 0.5, -255, 550, teamObj.colPrimary);
+      drawRotatedDiamond(ctx, W * 0.62 - drift * 0.5, -275, 510, teamObj.colSecondary);
+      drawRotatedDiamond(ctx, W * 0.14, H + 210, 440, teamObj.colPrimary);
+      drawRotatedDiamond(ctx, W * 0.85, H + 230, 460, teamObj.colPrimary);
+
+      // Floating 3D diamond cubes
+      const c1y = H * 0.28 + Math.sin(t * 2.1) * 14;
+      const c2y = H * 0.62 + Math.cos(t * 1.8) * 16;
+      const c3y = H * 0.22 + Math.sin(t * 2.4 + 1.2) * 12;
+      draw3DCube(ctx, W * 0.15, c1y, 88, teamObj.colSecondary, teamObj.colPrimary, teamObj.colBg);
+      draw3DCube(ctx, W * 0.82, c2y, 102, teamObj.colSecondary, teamObj.colPrimary, teamObj.colBg);
+      draw3DCube(ctx, W * 0.88, c3y, 68, teamObj.colAccent, teamObj.colSecondary, teamObj.colPrimary);
+    }
+
+    function drawCleanShutterWipe(ctx, W, H, p, teamObj) {
+      // Solid, gapless diagonal panel wipe at slide boundaries (no stray white lines over faces!)
+      if (p <= 0 || p >= 1) return;
+      ctx.save();
+      ctx.translate(W / 2, H / 2);
+      ctx.rotate(-Math.PI / 4);
+
+      const span = W + H + 500;
+      const pos = (p - 0.5) * span * 2.1;
+
+      ctx.fillStyle = teamObj.colAccent;
+      ctx.fillRect(pos - 460, -1400, 920, 2800);
+
+      ctx.fillStyle = teamObj.colSecondary;
+      ctx.fillRect(pos - 400, -1400, 800, 2800);
+
+      ctx.fillStyle = teamObj.colPrimary;
+      ctx.fillRect(pos - 310, -1400, 620, 2800);
+      ctx.restore();
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. Team Logo Intro Segment (Shared helper for Intro & Outro)
+    // -------------------------------------------------------------------------
+    function drawTeamIntroOrOutroCard(ctx, W, H, seg, localT, isOutro = false) {
+      const teamObj = seg.team;
+      const dur = seg.dur;
+      const scaleRatio = W / 1920;
+      drawAdaptiveBackground(ctx, W, H, teamObj);
+
+      // Atmospheric smoke clouds in team colors
+      const expand = easeOutCubic(Math.min(1, localT / 1.1));
+      for (let i = 0; i < 16; i++) {
+        const ang = (i / 16) * Math.PI * 2 + localT * 0.28 * (i % 2 === 0 ? 1 : -1);
+        const rad = (250 + (i % 3) * 110) * (0.45 + 0.75 * expand) * scaleRatio;
+        const px = W * 0.5 + Math.cos(ang) * rad * 1.35;
+        const py = H * 0.5 + Math.sin(ang) * rad * 0.85;
+        const pr = (250 + (i % 4) * 60) * scaleRatio;
+        const g = ctx.createRadialGradient(px, py, 10 * scaleRatio, px, py, pr);
+        const col = i % 2 === 0 ? teamObj.colSecondary : teamObj.colAccent;
+        const alpha = (0.32 - 0.1 * (localT / dur)) * expand;
+        g.addColorStop(0, rgbaStr(col, Math.max(0, alpha)));
+        g.addColorStop(0.55, rgbaStr(teamObj.colPrimary, Math.max(0, alpha * 0.6)));
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const logoIm = getLogoImg(teamObj.logoDataUrl);
+      const pop = easeOutBack(Math.min(1, (localT - 0.08) / 0.6), 1.35);
+      const uLogoScale = parseFloat(teamObj.logoScale) || 1.0;
+      const scale = pop * (0.96 + 0.06 * (localT / dur)) * uLogoScale * scaleRatio;
+      const lx = W * 0.5 + (parseFloat(teamObj.logoX) || 0) * scaleRatio;
+      const ly = H * 0.42 + (parseFloat(teamObj.logoY) || 0) * scaleRatio;
+
+      ctx.save();
+      ctx.translate(lx, ly);
+      ctx.scale(scale, scale);
+      const rg = ctx.createRadialGradient(0, 0, 70, 0, 0, 200);
+      rg.addColorStop(0, rgbaStr(teamObj.colAccent, 0.55));
+      rg.addColorStop(0.6, rgbaStr(teamObj.colSecondary, 0.25));
+      rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.arc(0, 0, 200, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+        ctx.shadowBlur = 28;
+        ctx.drawImage(logoIm, -135, -135, 270, 270);
+      }
+      ctx.restore();
+
+      const logoBoxSize = Math.max(80 * scaleRatio, 270 * uLogoScale * scaleRatio);
+      interactiveHitBoxes.push({
+        mode: 'intro_logo',
+        teamObj: teamObj,
+        x: lx - logoBoxSize * 0.5,
+        y: ly - logoBoxSize * 0.5,
+        w: logoBoxSize,
+        h: logoBoxSize,
+        label: `🖼️ ${teamObj.teamName} Logo (Drag to move • Scroll wheel to resize: ${Math.round(uLogoScale * 100)}%)`
+      });
+
+      const ta = easeOutCubic(clamp01((localT - 0.2) / 0.45));
+      const uTextScale = parseFloat(teamObj.introTextScale) || 1.0;
+      const tScale = uTextScale * scaleRatio;
+      const tx = W * 0.5 + (parseFloat(teamObj.introTextX) || 0) * scaleRatio;
+      const tyBase = H * 0.74 + (parseFloat(teamObj.introTextY) || 0) * scaleRatio;
+
+      if (ta > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = ta;
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0,0,0,0.85)';
+        ctx.shadowBlur = 18 * scaleRatio;
+
+        ctx.font = `italic 900 ${Math.round(56 * tScale)}px "Segoe UI", Impact, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText((teamObj.teamName ?? '').toUpperCase(), tx, tyBase);
+
+        ctx.font = `italic 800 ${Math.round(30 * tScale)}px "Segoe UI", sans-serif`;
+        ctx.fillStyle = teamObj.colAccent;
+        ctx.letterSpacing = `${Math.round(7 * tScale)}px`;
+        ctx.fillText((teamObj.introTitle ?? '').toUpperCase(), tx, tyBase + 70 * tScale);
+
+        ctx.font = `700 ${Math.round(18 * tScale)}px "Segoe UI", sans-serif`;
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.letterSpacing = `${Math.round(4 * tScale)}px`;
+        ctx.fillText((teamObj.introSub ?? '').toUpperCase(), tx, tyBase + 128 * tScale);
+        ctx.restore();
+      }
+
+      const textBoxW = 920 * tScale;
+      const textBoxH = 195 * tScale;
+      interactiveHitBoxes.push({
+        mode: 'intro_text',
+        teamObj: teamObj,
+        x: tx - textBoxW * 0.5,
+        y: tyBase - 54 * tScale,
+        w: textBoxW,
+        h: textBoxH,
+        label: `🔤 Intro/Outro Text (Drag to move • Scroll wheel to resize: ${Math.round(uTextScale * 100)}%)`
+      });
+
+      if (!isOutro) {
+        if (localT > dur - 0.22) {
+          drawCleanShutterWipe(ctx, W, H, ((localT - (dur - 0.22)) / 0.22) * 0.5, teamObj);
+        }
+      } else {
+        // Complete incoming shutter wipe from the final player slide
+        if (localT < 0.22) {
+          drawCleanShutterWipe(ctx, W, H, 0.5 + (localT / 0.22) * 0.5, teamObj);
+        }
+        // Smooth fade-out to black at the end of the outro
+        const fadeDur = Math.min(0.8, dur * 0.35);
+        if (localT > dur - fadeDur) {
+          const fadeAlpha = easeInCubic(clamp01((localT - (dur - fadeDur)) / fadeDur));
+          ctx.save();
+          ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
+          ctx.fillRect(0, 0, W, H);
+          ctx.restore();
+        }
+      }
+    }
+
+    function drawTeamIntroSegment(ctx, W, H, seg, localT) {
+      drawTeamIntroOrOutroCard(ctx, W, H, seg, localT, false);
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. Group Team Photo Segment (All Players Combined + Drag on Canvas!)
+    // -------------------------------------------------------------------------
+    function drawGroupPhotoSegment(ctx, W, H, seg, localT) {
+      const teamObj = seg.team;
+      const dur = seg.dur;
+      const scaleRatio = W / 1920;
+
+      drawAdaptiveBackground(ctx, W, H, teamObj);
+      drawGeometricFrame(ctx, W, H, seg.start + localT, teamObj);
+
+      // Large watermark Team Logo & glowing aura behind the squad (controlled independently via groupLogoScale!)
+      const logoIm = getLogoImg(teamObj.logoDataUrl);
+      const uGroupLogoScale = parseFloat(teamObj.groupLogoScale) || 1.0;
+      const gLogoXOff = (parseFloat(teamObj.groupLogoX) || 0) * scaleRatio;
+      const gLogoYOff = (parseFloat(teamObj.groupLogoY) || 0) * scaleRatio;
+      const wmSize = H * 0.62 * uGroupLogoScale;
+      const wmX = W * 0.5 - wmSize / 2 + gLogoXOff;
+      const wmY = H * 0.36 - wmSize / 2 + gLogoYOff;
+      if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
+        ctx.save();
+        ctx.globalAlpha = 0.22;
+        ctx.drawImage(logoIm, wmX, wmY, wmSize, wmSize);
+        ctx.restore();
+      }
+      interactiveHitBoxes.push({
+        mode: 'group_logo',
+        teamObj: teamObj,
+        x: wmX,
+        y: wmY,
+        w: wmSize,
+        h: wmSize,
+        label: `🖼️ Group Photo Logo (Drag to move • Scroll wheel to resize: ${Math.round(uGroupLogoScale * 100)}%)`
+      });
+
+      // Top Header Banner
+      const uHeaderTextScale = parseFloat(teamObj.headerTextScale) || 1.0;
+      const hScale = uHeaderTextScale * scaleRatio;
+      const hx = W * 0.5 + (parseFloat(teamObj.headerX) || 0) * scaleRatio;
+      const hy = H * 0.085 + (parseFloat(teamObj.headerY) || 0) * scaleRatio;
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0,0,0,0.9)';
+      ctx.shadowBlur = 16 * scaleRatio;
+      ctx.font = `italic 900 ${Math.round(44 * hScale)}px "Segoe UI", Impact, sans-serif`;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText((teamObj.teamName ?? '').toUpperCase(), hx, hy);
+
+      ctx.font = `800 ${Math.round(20 * hScale)}px "Segoe UI", sans-serif`;
+      ctx.fillStyle = teamObj.colAccent;
+      ctx.letterSpacing = `${Math.round(5 * hScale)}px`;
+      ctx.fillText((teamObj.groupSub ?? 'OFFICIAL SQUAD LINEUP').toUpperCase(), hx, hy + 42 * hScale);
+      ctx.restore();
+
+      // Sort players by groupZ (back-to-front) so center captain stands in front
+      const indexedPlayers = teamObj.players.map((p, idx) => ({ p, idx }));
+      indexedPlayers.sort((a, b) => (a.p.groupZ || 1) - (b.p.groupZ || 1));
+
+      const nameplateDrawList = [];
+
+      // Pass 1: Draw all player cutouts & register player body hitboxes
+      indexedPlayers.forEach(({ p, idx }, drawOrder) => {
+        const proc = processPlayerImage(p, teamObj);
+        if (!proc || !proc.ready || !proc.cutoutCanvas) return;
+
+        const cc = proc.cutoutCanvas;
+        const enter = easeOutBack(clamp01((localT - 0.04 * drawOrder) / 0.5), 1.18);
+        const gScale = (parseFloat(p.groupScale) || 0.95) * (0.98 + 0.03 * (localT / dur));
+        const mh = H * 0.76 * gScale;
+        const mw = cc.width * (mh / cc.height);
+
+        const gx = (parseFloat(p.groupX) || 0) * scaleRatio;
+        const gy = (parseFloat(p.groupY) || 0) * scaleRatio;
+
+        const mx = W * 0.5 + gx - mw * 0.5;
+        const my = H - mh + 35 * scaleRatio + gy + (1 - enter) * 90 * scaleRatio;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 30 * scaleRatio;
+        ctx.shadowOffsetY = 8 * scaleRatio;
+        // 100% opaque player cutout!
+        ctx.drawImage(cc, mx, my, mw, mh);
+        ctx.restore();
+
+        // Register hit-box for interactive dragging of the player photo on canvas
+        interactiveHitBoxes.push({
+          mode: 'group',
+          teamKey: teamObj.key,
+          playerIndex: idx,
+          player: p,
+          x: mx,
+          y: my,
+          w: mw,
+          h: mh,
+          label: `${p.name || 'Player ' + (idx + 1)} (Photo — Drag to move • Scroll wheel to resize: ${Math.round((p.groupScale || 1) * 100)}%)`
+        });
+
+        // Queue nameplate for Pass 2 so nameplates sit cleanly in front of overlapping shoulders
+        if (p.showGroupName !== false && (p.name || '').trim() !== '') {
+          const baseTagX = mx + mw * 0.5;
+          const baseTagY = Math.min(H - 42 * scaleRatio, my + mh - 55 * scaleRatio);
+          nameplateDrawList.push({
+            p,
+            idx,
+            tagX: baseTagX + (parseFloat(p.groupNameX) || 0) * scaleRatio,
+            tagY: baseTagY + (parseFloat(p.groupNameY) || 0) * scaleRatio
+          });
+        }
+      });
+
+      // Register Top Header Hitbox above player bodies so user can drag/resize the Group Header text
+      const grpHdrW = 760 * hScale;
+      const grpHdrH = 95 * hScale;
+      interactiveHitBoxes.push({
+        mode: 'header_text',
+        teamObj: teamObj,
+        x: hx - grpHdrW * 0.5,
+        y: hy - 40 * hScale,
+        w: grpHdrW,
+        h: grpHdrH,
+        label: `🔤 Group Header Text (Drag to move • Scroll wheel to resize: ${Math.round(uHeaderTextScale * 100)}%)`
+      });
+
+      // Pass 2: Draw movable/deletable/resizable player nameplates in Group Photo
+      const teamGrpNameScale = parseFloat(teamObj.groupNameScale) || 1.0;
+      nameplateDrawList.forEach(({ p, idx, tagX, tagY }) => {
+        const pTagScale = parseFloat(p.groupNameScale) || 1.0;
+        const tagScale = teamGrpNameScale * pTagScale * scaleRatio;
+
+        ctx.save();
+        ctx.font = `italic 900 ${Math.round(22 * tagScale)}px "Segoe UI", sans-serif`;
+        const nameW = ctx.measureText(p.name || '').width;
+        const pillW = Math.max(134 * tagScale, nameW + 36 * tagScale);
+        const pillH = 36 * tagScale;
+        const px = tagX - pillW / 2;
+        const py = tagY - pillH / 2;
+
+        // Angled esports nameplate pill
+        const slant = 8 * tagScale;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 12 * scaleRatio;
+        ctx.fillStyle = rgbaStr(teamObj.colPrimary, 0.94);
+        ctx.strokeStyle = teamObj.colAccent;
+        ctx.lineWidth = 2.2 * tagScale;
+
+        ctx.beginPath();
+        ctx.moveTo(px + slant, py);
+        ctx.lineTo(px + pillW + slant, py);
+        ctx.lineTo(px + pillW - slant, py + pillH);
+        ctx.lineTo(px - slant, py + pillH);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Left accent bar on pill
+        ctx.fillStyle = teamObj.colAccent;
+        ctx.beginPath();
+        ctx.moveTo(px + slant, py);
+        ctx.lineTo(px + slant + 6 * tagScale, py);
+        ctx.lineTo(px - slant + 6 * tagScale, py + pillH);
+        ctx.lineTo(px - slant, py + pillH);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowBlur = 0;
+        ctx.fillText(p.name, tagX, tagY + 1 * tagScale);
+        ctx.restore();
+
+        // Register higher-priority hit-box for dragging or wheel-resizing this individual player's name!
+        interactiveHitBoxes.push({
+          mode: 'group_name',
+          teamKey: teamObj.key,
+          teamObj: teamObj,
+          playerIndex: idx,
+          player: p,
+          x: px - slant,
+          y: py,
+          w: pillW + slant * 2,
+          h: pillH,
+          delX: px + pillW - 10 * scaleRatio,
+          delY: py - 10 * scaleRatio,
+          delR: 13 * scaleRatio,
+          label: `🏷️ "${p.name}" Name Tag (Drag to move • Scroll wheel to resize: ${Math.round(pTagScale * 100)}% • Click ✕ to hide)`
+        });
+      });
+
+      if (localT < 0.22) {
+        drawCleanShutterWipe(ctx, W, H, 0.5 + (localT / 0.22) * 0.5, teamObj);
+      } else if (localT > dur - 0.22) {
+        drawCleanShutterWipe(ctx, W, H, ((localT - (dur - 0.22)) / 0.22) * 0.5, teamObj);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. Individual Player Showcase Segment (White-line bug 100% fixed!)
+    // -------------------------------------------------------------------------
+    function drawPlayerSegment(ctx, W, H, seg, localT) {
+      const dur = seg.dur;
+      const player = seg.player;
+      const teamObj = seg.team;
+      const slideProg = localT / dur;
+      const scaleRatio = W / 1920;
+
+      drawAdaptiveBackground(ctx, W, H, teamObj);
+
+      const processed = processPlayerImage(player, teamObj);
+      const userScale = parseFloat(player.scale) || 1.0;
+      const userOffX = (parseFloat(player.offsetX) || 0) * scaleRatio;
+      const userOffY = (parseFloat(player.offsetY) || 0) * scaleRatio;
+
+      // 1. Left Background Ghost Silhouette (drawn behind geometric frame & behind main cutout)
+      if (processed && processed.ready && processed.ghostCanvas) {
+        const gc = processed.ghostCanvas;
+        const enterGhost = easeOutCubic(clamp01(localT / 0.55));
+        const ghostScale = (H * 1.15 / gc.height) * userScale * (1.0 + 0.05 * slideProg);
+        const gw = gc.width * ghostScale;
+        const gh = gc.height * ghostScale;
+        const gx = W * 0.24 - gw * 0.5 - 42 * slideProg * scaleRatio + (1 - enterGhost) * (-110 * scaleRatio);
+        const gy = H * 0.02 + userOffY * 0.4;
+
+        ctx.save();
+        ctx.globalAlpha = 0.82;
+        ctx.drawImage(gc, gx, gy, gw, gh);
+        ctx.restore();
+      }
+
+      // 2. Geometric Frame Blocks & 3D Cubes (no white line crossing the center face zone!)
+      drawGeometricFrame(ctx, W, H, seg.start + localT, teamObj);
+
+      // 3. Main Full-Color Player Cutout Portrait — ALWAYS 100% OPAQUE (globalAlpha = 1.0)
+      //    so background elements can NEVER bleed through the player's face!
+      if (processed && processed.ready && processed.cutoutCanvas) {
+        const cc = processed.cutoutCanvas;
+        const enterMain = easeOutCubic(clamp01(localT / 0.45));
+        const mainScale = (H * 0.92 / cc.height) * userScale * (1.0 + 0.04 * slideProg);
+        const mw = cc.width * mainScale;
+        const mh = cc.height * mainScale;
+        const mx = W * 0.56 - mw * 0.5 + userOffX + (1 - enterMain) * (240 * scaleRatio) + 16 * slideProg * scaleRatio;
+        const my = H - mh + 20 * scaleRatio + userOffY;
+
+        ctx.save();
+        ctx.globalAlpha = 1.0; // Strictly opaque!
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 36 * scaleRatio;
+        ctx.shadowOffsetX = -14 * scaleRatio;
+        ctx.shadowOffsetY = 10 * scaleRatio;
+        ctx.drawImage(cc, mx, my, mw, mh);
+        ctx.restore();
+
+        interactiveHitBoxes.push({
+          mode: 'single',
+          teamKey: teamObj.key,
+          playerIndex: seg.index,
+          player: player,
+          x: mx,
+          y: my,
+          w: mw,
+          h: mh,
+          label: `${player.name} (Photo — Drag to move • Scroll wheel to resize: ${Math.round(userScale * 100)}%)`
+        });
+      }
+
+      // 4. Top Header: Team Logo & Team Name
+      const headerEnter = easeOutCubic(clamp01((localT - 0.12) / 0.4));
+      const uHeaderLogoScale = parseFloat(teamObj.headerLogoScale) || 1.0;
+      const uHeaderTextScale = parseFloat(teamObj.headerTextScale) || 1.0;
+      const hLogoSize = 38 * uHeaderLogoScale * scaleRatio;
+      const hFontPx = Math.round(30 * uHeaderTextScale * scaleRatio);
+      const hxOff = (parseFloat(teamObj.headerX) || 0) * scaleRatio;
+      const hyOff = (parseFloat(teamObj.headerY) || 0) * scaleRatio;
+
+      ctx.save();
+      ctx.globalAlpha = headerEnter;
+
+      const teamText = (teamObj.teamName ?? '').toUpperCase();
+      ctx.font = `italic 900 ${hFontPx}px "Segoe UI", sans-serif`;
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 10 * scaleRatio;
+      const tw = ctx.measureText(teamText).width;
+      const tx = W * 0.52 + hxOff + (1 - headerEnter) * 80 * scaleRatio;
+      const ty = 52 * scaleRatio + hyOff;
+      const logoX = tx - tw / 2 - hLogoSize - 12 * scaleRatio;
+      const logoY = ty - hFontPx * 0.42 - hLogoSize * 0.5;
+      const logoIm = getLogoImg(teamObj.logoDataUrl);
+      if (logoIm && logoIm.complete && logoIm.naturalWidth > 0) {
+        ctx.drawImage(logoIm, logoX, logoY, hLogoSize, hLogoSize);
+      }
+      ctx.textAlign = 'center';
+      ctx.fillText(teamText, tx, ty);
+      ctx.restore();
+
+      interactiveHitBoxes.push({
+        mode: 'header_logo',
+        teamObj: teamObj,
+        x: logoX - 6 * scaleRatio,
+        y: logoY - 6 * scaleRatio,
+        w: hLogoSize + 12 * scaleRatio,
+        h: hLogoSize + 12 * scaleRatio,
+        label: `🖼️ Header Logo (Drag to move • Scroll wheel to resize: ${Math.round(uHeaderLogoScale * 100)}%)`
+      });
+      interactiveHitBoxes.push({
+        mode: 'header_text',
+        teamObj: teamObj,
+        x: tx - tw * 0.5 - 10 * scaleRatio,
+        y: ty - hFontPx,
+        w: Math.max(120 * scaleRatio, tw + 20 * scaleRatio),
+        h: hFontPx * 1.35,
+        label: `🔤 Header Team Name (Drag to move • Scroll wheel to resize: ${Math.round(uHeaderTextScale * 100)}%)`
+      });
+
+      // 5. Bottom-Left Player Name & Title
+      const nameEnter = easeOutCubic(clamp01((localT - 0.14) / 0.42));
+      const titleEnter = easeOutCubic(clamp01((localT - 0.24) / 0.42));
+      const uPlayerTextScale = (parseFloat(teamObj.playerTextScale) || 1.0) * (parseFloat(player.textScale) || 1.0);
+      const pTxtScale = uPlayerTextScale * scaleRatio;
+      const pTxOff = (parseFloat(player.textX) || 0) * scaleRatio;
+      const pTyOff = (parseFloat(player.textY) || 0) * scaleRatio;
+
+      ctx.save();
+      ctx.textAlign = 'left';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.92)';
+      ctx.shadowBlur = 16 * scaleRatio;
+
+      const baseX = 92 * scaleRatio + pTxOff;
+      const ny = H - 115 * scaleRatio + pTyOff + (1 - nameEnter) * 36 * scaleRatio;
+      const tyRole = ny + 54 * pTxtScale + (1 - titleEnter) * 20 * scaleRatio;
+
+      if (nameEnter > 0.01 && (player.name ?? '').trim() !== '') {
+        ctx.save();
+        ctx.globalAlpha = nameEnter;
+        ctx.font = `italic 900 ${Math.round(72 * pTxtScale)}px "Segoe UI", Impact, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(player.name, baseX, ny);
+        ctx.restore();
+      }
+
+      if (titleEnter > 0.01 && (player.title ?? '').trim() !== '') {
+        ctx.save();
+        ctx.globalAlpha = titleEnter;
+        ctx.font = `italic 800 ${Math.round(38 * pTxtScale)}px "Segoe UI", sans-serif`;
+        ctx.fillStyle = '#f3effb';
+        ctx.fillText(player.title, baseX + 18 * pTxtScale, tyRole);
+
+        ctx.fillStyle = teamObj.colAccent;
+        ctx.fillRect(baseX + 18 * pTxtScale, tyRole + 14 * pTxtScale, 145 * pTxtScale * titleEnter, 5 * pTxtScale);
+        ctx.restore();
+      }
+      ctx.restore();
+
+      interactiveHitBoxes.push({
+        mode: 'player_text',
+        teamKey: teamObj.key,
+        teamObj: teamObj,
+        playerIndex: seg.index,
+        player: player,
+        x: baseX - 10 * scaleRatio,
+        y: ny - 76 * pTxtScale,
+        w: 560 * pTxtScale,
+        h: 165 * pTxtScale,
+        label: `🔤 "${player.name}" Name & Role Text (Drag to move • Scroll wheel to resize: ${Math.round((player.textScale || 1) * 100)}%)`
+      });
+
+      // Clean solid diagonal shutter wipe only at the very edges of the segment
+      if (localT < 0.22) {
+        drawCleanShutterWipe(ctx, W, H, 0.5 + (localT / 0.22) * 0.5, teamObj);
+      } else if (localT > dur - 0.22) {
+        drawCleanShutterWipe(ctx, W, H, ((localT - (dur - 0.22)) / 0.22) * 0.5, teamObj);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Team Outro Card (Same design as Intro, with smooth fade-out at the end)
+    // -------------------------------------------------------------------------
+    function drawTeamOutroSegment(ctx, W, H, seg, localT) {
+      drawTeamIntroOrOutroCard(ctx, W, H, seg, localT, true);
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. VS Intro Clash Card (Team A Squad vs Team B Squad — NO Shutter Wipe!)
+    // -------------------------------------------------------------------------
+    function drawVSIntroSegment(ctx, W, H, seg, localT) {
+      const dur = seg.dur;
+      const scaleRatio = W / 1920;
+      const tA = state.teamA;
+      const tB = state.teamB;
+      const introFadeOut = localT > dur - 0.38 ? 1 - easeInCubic((localT - (dur - 0.38)) / 0.38) : 1.0;
+
+      // Left Half = Team A Adaptive Background
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(W * 0.53, 0);
+      ctx.lineTo(W * 0.47, H);
+      ctx.lineTo(0, H);
+      ctx.closePath();
+      ctx.clip();
+      drawAdaptiveBackground(ctx, W, H, tA);
+      ctx.restore();
+
+      // Right Half = Team B Adaptive Background
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(W * 0.53, 0);
+      ctx.lineTo(W, 0);
+      ctx.lineTo(W, H);
+      ctx.lineTo(W * 0.47, H);
+      ctx.closePath();
+      ctx.clip();
+      drawAdaptiveBackground(ctx, W, H, tB);
+      ctx.restore();
+
+      // Team A Logo & Name (Left)
+      const slideIn = easeOutBack(clamp01(localT / 0.55), 1.25);
+      const logoA = getLogoImg(tA.logoDataUrl);
+      const logoB = getLogoImg(tB.logoDataUrl);
+      const uVsTeamLogoScale = parseFloat(state.vsTeamLogoScale) || 1.0;
+      const uVsTextScale = parseFloat(state.vsTextScale) || 1.0;
+      const vsTScale = uVsTextScale * scaleRatio;
+      const vsTxOff = (parseFloat(state.vsTextX) || 0) * scaleRatio;
+      const vsTyOff = (parseFloat(state.vsTextY) || 0) * scaleRatio;
+      const vsTlXOff = (parseFloat(state.vsTeamLogoX) || 0) * scaleRatio;
+      const vsTlYOff = (parseFloat(state.vsTeamLogoY) || 0) * scaleRatio;
+
+      ctx.save();
+      ctx.globalAlpha = introFadeOut;
+      const axBase = W * 0.25 - (1 - slideIn) * 240 * scaleRatio;
+      const axLogo = axBase + vsTlXOff;
+      const ayLogo = H * 0.44 + vsTlYOff;
+      const axText = axBase + vsTxOff;
+      const lSizeA = 230 * uVsTeamLogoScale * scaleRatio;
+      if (logoA && logoA.complete && logoA.naturalWidth > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,0.85)';
+        ctx.shadowBlur = 26 * scaleRatio;
+        ctx.drawImage(logoA, axLogo - lSizeA * 0.5, ayLogo - lSizeA * 0.5, lSizeA, lSizeA);
+      }
+      ctx.textAlign = 'center';
+      ctx.font = `italic 900 ${Math.round(42 * vsTScale)}px "Segoe UI", Impact, sans-serif`;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText((tA.teamName ?? '').toUpperCase(), axText, H * 0.72 + vsTyOff);
+      ctx.fillStyle = tA.colAccent;
+      ctx.font = `800 ${Math.round(20 * vsTScale)}px "Segoe UI", sans-serif`;
+      ctx.fillText((tA.vsSub ?? 'TEAM A').toUpperCase(), axText, H * 0.72 + vsTyOff + 50 * vsTScale);
+      ctx.restore();
+
+      interactiveHitBoxes.push({
+        mode: 'vs_team_logo',
+        side: 'A',
+        x: axLogo - lSizeA * 0.5,
+        y: ayLogo - lSizeA * 0.5,
+        w: lSizeA,
+        h: lSizeA,
+        label: `🖼️ VS Team A Logo (Drag to move • Scroll wheel to resize: ${Math.round(uVsTeamLogoScale * 100)}%)`
+      });
+      interactiveHitBoxes.push({
+        mode: 'vs_text',
+        side: 'A',
+        x: axText - 320 * vsTScale,
+        y: H * 0.72 + vsTyOff - 44 * vsTScale,
+        w: 640 * vsTScale,
+        h: 115 * vsTScale,
+        label: `🔤 VS Team Text (Drag to move • Scroll wheel to resize: ${Math.round(uVsTextScale * 100)}%)`
+      });
+
+      // Team B Logo & Name (Right)
+      ctx.save();
+      ctx.globalAlpha = introFadeOut;
+      const bxBase = W * 0.75 + (1 - slideIn) * 240 * scaleRatio;
+      const bxLogo = bxBase - vsTlXOff;
+      const byLogo = H * 0.44 + vsTlYOff;
+      const bxText = bxBase - vsTxOff;
+      const lSizeB = 230 * uVsTeamLogoScale * scaleRatio;
+      if (logoB && logoB.complete && logoB.naturalWidth > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,0.85)';
+        ctx.shadowBlur = 26 * scaleRatio;
+        ctx.drawImage(logoB, bxLogo - lSizeB * 0.5, byLogo - lSizeB * 0.5, lSizeB, lSizeB);
+      }
+      ctx.textAlign = 'center';
+      ctx.font = `italic 900 ${Math.round(42 * vsTScale)}px "Segoe UI", Impact, sans-serif`;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText((tB.teamName ?? '').toUpperCase(), bxText, H * 0.72 + vsTyOff);
+      ctx.fillStyle = tB.colAccent;
+      ctx.font = `800 ${Math.round(20 * vsTScale)}px "Segoe UI", sans-serif`;
+      ctx.fillText((tB.vsSub ?? 'TEAM B').toUpperCase(), bxText, H * 0.72 + vsTyOff + 50 * vsTScale);
+      ctx.restore();
+
+      interactiveHitBoxes.push({
+        mode: 'vs_team_logo',
+        side: 'B',
+        x: bxLogo - lSizeB * 0.5,
+        y: byLogo - lSizeB * 0.5,
+        w: lSizeB,
+        h: lSizeB,
+        label: `🖼️ VS Team B Logo (Drag to move • Scroll wheel to resize: ${Math.round(uVsTeamLogoScale * 100)}%)`
+      });
+      interactiveHitBoxes.push({
+        mode: 'vs_text',
+        side: 'B',
+        x: bxText - 320 * vsTScale,
+        y: H * 0.72 + vsTyOff - 44 * vsTScale,
+        w: 640 * vsTScale,
+        h: 115 * vsTScale,
+        label: `🔤 VS Team Text (Drag to move • Scroll wheel to resize: ${Math.round(uVsTextScale * 100)}%)`
+      });
+
+      // Pro Esports Broadcast Centerpiece (No diagonal shutter wipe transition!)
+      drawCenterVSEmblem(ctx, W, H, localT, scaleRatio * 1.08, introFadeOut, true);
+    }
+
+    function drawOctagonPath(ctx, cx, cy, rx, ry) {
+      const k = 0.42;
+      ctx.beginPath();
+      ctx.moveTo(cx - rx * k, cy - ry);
+      ctx.lineTo(cx + rx * k, cy - ry);
+      ctx.lineTo(cx + rx, cy - ry * k);
+      ctx.lineTo(cx + rx, cy + ry * k);
+      ctx.lineTo(cx + rx * k, cy + ry);
+      ctx.lineTo(cx - rx * k, cy + ry);
+      ctx.lineTo(cx - rx, cy + ry * k);
+      ctx.lineTo(cx - rx, cy - ry * k);
+      ctx.closePath();
+    }
+
+    function drawCenterVSEmblem(ctx, W, H, localT, scaleRatio, alphaMult = 1.0, isIntro = false) {
+      const style = state.vsCenterStyle || 'crest';
+      if (style === 'minimal') return;
+
+      const tA = state.teamA;
+      const tB = state.teamB;
+      const uVsLogoScale = parseFloat(state.vsLogoScale) || 1.0;
+      const cx = W * 0.5 + (parseFloat(state.vsLogoX) || 0) * (W / 1920);
+      const cy = H * 0.50 + (parseFloat(state.vsLogoY) || 0) * (W / 1920);
+
+      ctx.save();
+      ctx.globalAlpha = alphaMult;
+
+      const pop = easeOutBack(clamp01((localT - 0.05) / 0.42), 1.28) * uVsLogoScale;
+      ctx.translate(cx, cy);
+      ctx.scale(pop, pop);
+
+      // Subtle atmospheric dual-team glow behind the VS lightning mark
+      const radGlow = ctx.createRadialGradient(0, 0, 10 * scaleRatio, 0, 0, 180 * scaleRatio);
+      radGlow.addColorStop(0, rgbaStr(tA.colAccent, 0.35));
+      radGlow.addColorStop(0.5, rgbaStr(tB.colSecondary, 0.22));
+      radGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radGlow;
+      ctx.beginPath();
+      ctx.arc(0, 0, 185 * scaleRatio, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw custom or default Lightning-Slash VS Logo (vsLogoDataUrl)
+      const vsUrl = state.vsLogoDataUrl || (window.SIKAT_INTRO_ASSETS && window.SIKAT_INTRO_ASSETS.vsLogoDataUrl) || '';
+      const vsImg = vsUrl ? getLogoImg(vsUrl) : null;
+      const targetH = (isIntro ? 320 : 250) * scaleRatio;
+      let targetW = targetH;
+      if (vsImg && vsImg.complete && vsImg.naturalWidth > 0) {
+        targetW = vsImg.naturalWidth * (targetH / vsImg.naturalHeight);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.92)';
+        ctx.shadowBlur = 28 * scaleRatio;
+        ctx.shadowOffsetY = 6 * scaleRatio;
+        ctx.drawImage(vsImg, -targetW * 0.5, -targetH * 0.5, targetW, targetH);
+      }
+
+      ctx.restore();
+
+      const hitW = targetW * uVsLogoScale;
+      const hitH = targetH * uVsLogoScale;
+      interactiveHitBoxes.push({
+        mode: 'vs_logo',
+        x: cx - hitW * 0.5,
+        y: cy - hitH * 0.5,
+        w: hitW,
+        h: hitH,
+        label: `⚡ VS Center Logo (Drag to move • Scroll wheel to resize: ${Math.round(uVsLogoScale * 100)}%)`
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. 1v1 Player Matchup Segment (Matches Screen Recording 2026-11-02 221407.mp4!)
+    // -------------------------------------------------------------------------
+    function drawVSPairSegment(ctx, W, H, seg, localT) {
+      const dur = seg.dur;
+      const scaleRatio = W / 1920;
+      const tA = state.teamA;
+      const tB = state.teamB;
+      const pA = seg.playerA;
+      const pB = seg.playerB;
+      const slideProg = localT / dur;
+
+      // Background: either Split Adaptive Team A/B or Clean Dark Studio Backdrop (like reference clip)
+      if (state.vsBgStyle === 'studio') {
+        ctx.fillStyle = '#25242b';
+        ctx.fillRect(0, 0, W, H);
+        // Subtle left Team A & right Team B studio rim lights
+        const gL = ctx.createRadialGradient(W * 0.28, H * 0.55, 20, W * 0.28, H * 0.55, W * 0.42);
+        gL.addColorStop(0, rgbaStr(tA.colSecondary, 0.32));
+        gL.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gL;
+        ctx.fillRect(0, 0, W, H);
+
+        const gR = ctx.createRadialGradient(W * 0.72, H * 0.55, 20, W * 0.72, H * 0.55, W * 0.42);
+        gR.addColorStop(0, rgbaStr(tB.colSecondary, 0.32));
+        gR.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gR;
+        ctx.fillRect(0, 0, W, H);
+      } else {
+        // Split Team A (Left, Purple) vs Team B (Right, Red) adaptive background
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(0, 0); ctx.lineTo(W * 0.53, 0); ctx.lineTo(W * 0.47, H); ctx.lineTo(0, H);
+        ctx.closePath(); ctx.clip();
+        drawAdaptiveBackground(ctx, W, H, tA);
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(W * 0.53, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H); ctx.lineTo(W * 0.47, H);
+        ctx.closePath(); ctx.clip();
+        drawAdaptiveBackground(ctx, W, H, tB);
+        ctx.restore();
+      }
+
+      const procA = processPlayerImage(pA, tA);
+      const procB = processPlayerImage(pB, tB);
+
+      // Background Ghost Silhouettes in Split Mode
+      if (state.vsBgStyle !== 'studio') {
+        if (procA && procA.ready && procA.ghostCanvas) {
+          const gc = procA.ghostCanvas;
+          const gh = H * 1.08;
+          const gw = gc.width * (gh / gc.height);
+          ctx.save();
+          ctx.globalAlpha = 0.45;
+          ctx.drawImage(gc, W * 0.14 - gw * 0.5 - 25 * slideProg, H * 0.04, gw, gh);
+          ctx.restore();
+        }
+        if (procB && procB.ready && procB.ghostCanvas) {
+          const gc = procB.ghostCanvas;
+          const gh = H * 1.08;
+          const gw = gc.width * (gh / gc.height);
+          ctx.save();
+          ctx.globalAlpha = 0.45;
+          ctx.drawImage(gc, W * 0.86 - gw * 0.5 + 25 * slideProg, H * 0.04, gw, gh);
+          ctx.restore();
+        }
+      }
+
+      // Dramatic Silhouette-to-Lit Reveal Curve (matches Screen Recording 2026-11-02 221407.mp4!)
+      const lightUp = easeOutCubic(clamp01((localT - 0.12) / 1.15));
+      const fadeOutEnd = localT > dur - 0.42 ? 1 - easeInCubic((localT - (dur - 0.42)) / 0.42) : 1.0;
+      const enterSlide = easeOutCubic(clamp01(localT / 0.65));
+
+      // Draw Player A (Left)
+      if (procA && procA.ready && procA.cutoutCanvas) {
+        const cc = procA.cutoutCanvas;
+        const dc = procA.darkCanvas;
+        const sA = (parseFloat(pA.vsScale) || 1.0) * (0.98 + 0.04 * slideProg);
+        const mh = H * 0.82 * sA;
+        const mw = cc.width * (mh / cc.height);
+        const mx = W * 0.30 - mw * 0.5 + (parseFloat(pA.vsX) || 0) * scaleRatio - (1 - enterSlide) * 70 * scaleRatio;
+        const my = H - mh - 55 * scaleRatio + (parseFloat(pA.vsY) || 0) * scaleRatio;
+
+        ctx.save();
+        ctx.globalAlpha = fadeOutEnd;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 32 * scaleRatio;
+        if (dc) ctx.drawImage(dc, mx, my, mw, mh);
+        ctx.globalAlpha = fadeOutEnd * lightUp;
+        ctx.drawImage(cc, mx, my, mw, mh);
+        ctx.restore();
+
+        interactiveHitBoxes.push({
+          mode: 'vs',
+          teamKey: 'teamA',
+          playerIndex: seg.index,
+          player: pA,
+          x: mx,
+          y: my,
+          w: mw,
+          h: mh,
+          label: `${pA.name} (Team A VS Photo — Drag to move • Scroll wheel to resize: ${Math.round((pA.vsScale || 1) * 100)}%)`
+        });
+      }
+
+      // Draw Player B (Right)
+      if (procB && procB.ready && procB.cutoutCanvas) {
+        const cc = procB.cutoutCanvas;
+        const dc = procB.darkCanvas;
+        const sB = (parseFloat(pB.vsScale) || 1.0) * (0.98 + 0.04 * slideProg);
+        const mh = H * 0.82 * sB;
+        const mw = cc.width * (mh / cc.height);
+        const mx = W * 0.70 - mw * 0.5 + (parseFloat(pB.vsX) || 0) * scaleRatio + (1 - enterSlide) * 70 * scaleRatio;
+        const my = H - mh - 55 * scaleRatio + (parseFloat(pB.vsY) || 0) * scaleRatio;
+
+        ctx.save();
+        ctx.globalAlpha = fadeOutEnd;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 32 * scaleRatio;
+        if (dc) ctx.drawImage(dc, mx, my, mw, mh);
+        ctx.globalAlpha = fadeOutEnd * lightUp;
+        ctx.drawImage(cc, mx, my, mw, mh);
+        ctx.restore();
+
+        interactiveHitBoxes.push({
+          mode: 'vs',
+          teamKey: 'teamB',
+          playerIndex: seg.index,
+          player: pB,
+          x: mx,
+          y: my,
+          w: mw,
+          h: mh,
+          label: `${pB.name} (Team B VS Photo — Drag to move • Scroll wheel to resize: ${Math.round((pB.vsScale || 1) * 100)}%)`
+        });
+      }
+
+      // Center VS Emblem
+      if (state.vsBgStyle !== 'studio') {
+        drawCenterVSEmblem(ctx, W, H, localT, scaleRatio * 0.84, fadeOutEnd, false);
+      }
+
+      // Bottom Nameplates
+      const labelAlpha = easeOutCubic(clamp01((localT - 0.35) / 0.45)) * fadeOutEnd;
+      const uVsTextScale = parseFloat(state.vsTextScale) || 1.0;
+      const pATScale = uVsTextScale * (parseFloat(pA.textScale) || 1.0) * scaleRatio;
+      const pBTScale = uVsTextScale * (parseFloat(pB.textScale) || 1.0) * scaleRatio;
+      const vsTxOff = (parseFloat(state.vsTextX) || 0) * scaleRatio;
+      const vsTyOff = (parseFloat(state.vsTextY) || 0) * scaleRatio;
+      const lx = W * 0.31 + vsTxOff;
+      const rx = W * 0.69 - vsTxOff;
+      const nameYA = H - 62 * scaleRatio + vsTyOff;
+      const nameYB = H - 62 * scaleRatio + vsTyOff;
+
+      if (labelAlpha > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = labelAlpha;
+        ctx.textAlign = 'center';
+
+        // Dark bottom gradient bar for crisp legibility
+        const botGrad = ctx.createLinearGradient(0, H - 140 * scaleRatio, 0, H);
+        botGrad.addColorStop(0, 'rgba(0,0,0,0)');
+        botGrad.addColorStop(1, 'rgba(6, 2, 12, 0.92)');
+        ctx.fillStyle = botGrad;
+        ctx.fillRect(0, H - 140 * scaleRatio, W, 140 * scaleRatio);
+
+        // Player A Name & Role
+        ctx.font = `italic 900 ${Math.round(42 * pATScale)}px "Segoe UI", Impact, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0,0,0,0.9)';
+        ctx.shadowBlur = 12 * scaleRatio;
+        ctx.fillText(pA.name ?? '', lx, nameYA);
+
+        ctx.font = `800 ${Math.round(20 * pATScale)}px "Segoe UI", sans-serif`;
+        ctx.fillStyle = tA.colAccent;
+        const subA = [pA.title, tA.teamName].filter(s => (s ?? '').trim() !== '').join(' • ');
+        ctx.fillText(subA, lx, nameYA + 34 * pATScale);
+
+        // Player B Name & Role
+        ctx.font = `italic 900 ${Math.round(42 * pBTScale)}px "Segoe UI", Impact, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(pB.name ?? '', rx, nameYB);
+
+        ctx.font = `800 ${Math.round(20 * pBTScale)}px "Segoe UI", sans-serif`;
+        ctx.fillStyle = tB.colAccent;
+        const subB = [pB.title, tB.teamName].filter(s => (s ?? '').trim() !== '').join(' • ');
+        ctx.fillText(subB, rx, nameYB + 34 * pBTScale);
+
+        ctx.restore();
+      }
+
+      interactiveHitBoxes.push({
+        mode: 'vs_text',
+        side: 'A',
+        x: lx - 290 * pATScale,
+        y: nameYA - 48 * pATScale,
+        w: 580 * pATScale,
+        h: 105 * pATScale,
+        label: `🔤 ${pA.name} VS Nameplate (Drag to move • Scroll wheel to resize: ${Math.round(uVsTextScale * (pA.textScale || 1) * 100)}%)`
+      });
+      interactiveHitBoxes.push({
+        mode: 'vs_text',
+        side: 'B',
+        x: rx - 290 * pBTScale,
+        y: nameYB - 48 * pBTScale,
+        w: 580 * pBTScale,
+        h: 105 * pBTScale,
+        label: `🔤 ${pB.name} VS Nameplate (Drag to move • Scroll wheel to resize: ${Math.round(uVsTextScale * (pB.textScale || 1) * 100)}%)`
+      });
+
+      // Smooth fade-out to black at the end of the final VS pair matchup
+      const isLastVSPair = !!seg.isLast;
+      const vsFadeDur = Math.min(0.8, dur * 0.35);
+      if (isLastVSPair && localT > dur - vsFadeDur) {
+        const fadeAlpha = easeInCubic(clamp01((localT - (dur - vsFadeDur)) / vsFadeDur));
+        ctx.save();
+        ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Master Frame Dispatcher
+    // -------------------------------------------------------------------------
+    let hoveredHitBox = null;
+
+    function renderAtTime(t, isExporting = false) {
+      const W = canvas.width;
+      const H = canvas.height;
+      interactiveHitBoxes = [];
+
+      const { segments, totalDuration } = getTimelineSegments();
+      const clampedT = Math.max(0, Math.min(totalDuration - 0.001, t));
+
+      let activeSeg = segments[0];
+      for (const s of segments) {
+        if (clampedT >= s.start && clampedT <= s.end) {
+          activeSeg = s;
+          break;
+        }
+      }
+
+      const localT = clampedT - activeSeg.start;
+      if (activeSeg.type === 'team_intro') {
+        drawTeamIntroSegment(ctx, W, H, activeSeg, localT);
+      } else if (activeSeg.type === 'group_photo') {
+        drawGroupPhotoSegment(ctx, W, H, activeSeg, localT);
+      } else if (activeSeg.type === 'player') {
+        drawPlayerSegment(ctx, W, H, activeSeg, localT);
+      } else if (activeSeg.type === 'team_outro') {
+        drawTeamOutroSegment(ctx, W, H, activeSeg, localT);
+      } else if (activeSeg.type === 'vs_intro') {
+        drawVSIntroSegment(ctx, W, H, activeSeg, localT);
+      } else if (activeSeg.type === 'vs_pair') {
+        drawVSPairSegment(ctx, W, H, activeSeg, localT);
+      }
+
+      // Draw subtle interactive selection outline when hovering/dragging on canvas (hidden during export/playback)
+      if (!isExporting && !isPlaying && hoveredHitBox) {
+        ctx.save();
+        const isTextOrLogo = ['group_name', 'group_logo', 'intro_logo', 'intro_text', 'header_logo', 'header_text', 'player_text', 'vs_logo', 'vs_team_logo', 'vs_text'].includes(hoveredHitBox.mode);
+        ctx.strokeStyle = isTextOrLogo ? '#38bdf8' : '#f2c94c';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([10, 6]);
+        ctx.strokeRect(hoveredHitBox.x, hoveredHitBox.y, hoveredHitBox.w, hoveredHitBox.h);
+        ctx.setLineDash([]);
+
+        // If hovering a Group Photo nameplate, draw a clickable red "✕" delete button in the top-right corner!
+        if (hoveredHitBox.mode === 'group_name' && typeof hoveredHitBox.delX === 'number') {
+          ctx.fillStyle = '#ef4444';
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(hoveredHitBox.delX, hoveredHitBox.delY, hoveredHitBox.delR, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = `900 ${Math.round(hoveredHitBox.delR * 1.15)}px "Segoe UI", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('✕', hoveredHitBox.delX, hoveredHitBox.delY + 1);
+        }
+        ctx.restore();
+      }
+
+      return { activeSeg, totalDuration };
+    }
+
+    // =========================================================================
+    // Interactive Direct Canvas Dragging, Name Moving/Deleting & Wheel Scaling
+    // =========================================================================
+    let dragTarget = null;
+    let dragStartMouse = { x: 0, y: 0 };
+    let dragStartVal = { x: 0, y: 0 };
+
+    function getCanvasMouseCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: ((e.clientX - rect.left) / rect.width) * canvas.width,
+        y: ((e.clientY - rect.top) / rect.height) * canvas.height,
+        normScale: 1920 / canvas.width
+      };
+    }
+
+    function isPointInDeleteBadge(b, mx, my) {
+      if (b.mode !== 'group_name' || typeof b.delX !== 'number') return false;
+      const dx = mx - b.delX;
+      const dy = my - b.delY;
+      return (dx * dx + dy * dy) <= (b.delR + 5) * (b.delR + 5);
+    }
+
+    function findHitBoxAt(mx, my) {
+      // Search top-most drawn element first (Logos & Text are registered after Player bodies!)
+      for (let i = interactiveHitBoxes.length - 1; i >= 0; i--) {
+        const b = interactiveHitBoxes[i];
+        if (isPointInDeleteBadge(b, mx, my)) {
+          return b;
+        }
+        if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
+          return b;
+        }
+      }
+      return null;
+    }
+
+    canvas.addEventListener('mousedown', e => {
+      const m = getCanvasMouseCoords(e);
+      const hit = findHitBoxAt(m.x, m.y);
+      if (!hit) return;
+      pausePlayback();
+
+      // Check if user clicked the red "✕" delete button on a Group Photo nameplate
+      if (isPointInDeleteBadge(hit, m.x, m.y)) {
+        hit.player.showGroupName = false;
+        syncPlayerLayoutProps(hit.teamKey || hit.teamObj, hit.playerIndex, hit.player);
+        hoveredHitBox = null;
+        saveState();
+        rebuildAllTeamEditors();
+        return;
+      }
+
+      dragTarget = hit;
+      dragStartMouse = { x: m.x, y: m.y };
+      if (hit.mode === 'group_name') {
+        dragStartVal = { x: hit.player.groupNameX || 0, y: hit.player.groupNameY || 0 };
+      } else if (hit.mode === 'group') {
+        dragStartVal = { x: hit.player.groupX || 0, y: hit.player.groupY || 0 };
+      } else if (hit.mode === 'single') {
+        dragStartVal = { x: hit.player.offsetX || 0, y: hit.player.offsetY || 0 };
+      } else if (hit.mode === 'player_text') {
+        dragStartVal = { x: hit.player.textX || 0, y: hit.player.textY || 0 };
+      } else if (hit.mode === 'intro_logo') {
+        dragStartVal = { x: hit.teamObj.logoX || 0, y: hit.teamObj.logoY || 0 };
+      } else if (hit.mode === 'intro_text') {
+        dragStartVal = { x: hit.teamObj.introTextX || 0, y: hit.teamObj.introTextY || 0 };
+      } else if (hit.mode === 'header_logo' || hit.mode === 'header_text') {
+        dragStartVal = { x: hit.teamObj.headerX || 0, y: hit.teamObj.headerY || 0 };
+      } else if (hit.mode === 'group_logo') {
+        dragStartVal = { x: hit.teamObj.groupLogoX || 0, y: hit.teamObj.groupLogoY || 0 };
+      } else if (hit.mode === 'vs_logo') {
+        dragStartVal = { x: state.vsLogoX || 0, y: state.vsLogoY || 0 };
+      } else if (hit.mode === 'vs_team_logo') {
+        dragStartVal = { x: state.vsTeamLogoX || 0, y: state.vsTeamLogoY || 0 };
+      } else if (hit.mode === 'vs_text') {
+        dragStartVal = { x: state.vsTextX || 0, y: state.vsTextY || 0 };
+      } else if (hit.mode === 'vs') {
+        dragStartVal = { x: hit.player.vsX || 0, y: hit.player.vsY || 0 };
+      }
+    });
+
+    window.addEventListener('mousemove', e => {
+      const m = getCanvasMouseCoords(e);
+      if (dragTarget) {
+        const dx = Math.round((m.x - dragStartMouse.x) * m.normScale);
+        const dy = Math.round((m.y - dragStartMouse.y) * m.normScale);
+        if (dragTarget.mode === 'group_name') {
+          dragTarget.player.groupNameX = dragStartVal.x + dx;
+          dragTarget.player.groupNameY = dragStartVal.y + dy;
+          syncPlayerLayoutProps(dragTarget.teamKey || dragTarget.teamObj, dragTarget.playerIndex, dragTarget.player);
+        } else if (dragTarget.mode === 'group') {
+          dragTarget.player.groupX = dragStartVal.x + dx;
+          dragTarget.player.groupY = dragStartVal.y + dy;
+          syncPlayerLayoutProps(dragTarget.teamKey || dragTarget.teamObj, dragTarget.playerIndex, dragTarget.player);
+        } else if (dragTarget.mode === 'single') {
+          dragTarget.player.offsetX = dragStartVal.x + dx;
+          dragTarget.player.offsetY = dragStartVal.y + dy;
+          syncPlayerLayoutProps(dragTarget.teamKey || dragTarget.teamObj, dragTarget.playerIndex, dragTarget.player);
+        } else if (dragTarget.mode === 'player_text') {
+          dragTarget.player.textX = dragStartVal.x + dx;
+          dragTarget.player.textY = dragStartVal.y + dy;
+          syncPlayerLayoutProps(dragTarget.teamKey || dragTarget.teamObj, dragTarget.playerIndex, dragTarget.player);
+        } else if (dragTarget.mode === 'intro_logo') {
+          dragTarget.teamObj.logoX = dragStartVal.x + dx;
+          dragTarget.teamObj.logoY = dragStartVal.y + dy;
+          syncTeamLayoutProps(dragTarget.teamObj);
+        } else if (dragTarget.mode === 'intro_text') {
+          dragTarget.teamObj.introTextX = dragStartVal.x + dx;
+          dragTarget.teamObj.introTextY = dragStartVal.y + dy;
+          syncTeamLayoutProps(dragTarget.teamObj);
+        } else if (dragTarget.mode === 'header_logo' || dragTarget.mode === 'header_text') {
+          dragTarget.teamObj.headerX = dragStartVal.x + dx;
+          dragTarget.teamObj.headerY = dragStartVal.y + dy;
+          syncTeamLayoutProps(dragTarget.teamObj);
+        } else if (dragTarget.mode === 'group_logo') {
+          dragTarget.teamObj.groupLogoX = dragStartVal.x + dx;
+          dragTarget.teamObj.groupLogoY = dragStartVal.y + dy;
+          syncTeamLayoutProps(dragTarget.teamObj);
+        } else if (dragTarget.mode === 'vs_logo') {
+          state.vsLogoX = dragStartVal.x + dx;
+          state.vsLogoY = dragStartVal.y + dy;
+        } else if (dragTarget.mode === 'vs_team_logo') {
+          const sign = dragTarget.side === 'B' ? -1 : 1;
+          state.vsTeamLogoX = dragStartVal.x + dx * sign;
+          state.vsTeamLogoY = dragStartVal.y + dy;
+        } else if (dragTarget.mode === 'vs_text') {
+          const sign = dragTarget.side === 'B' ? -1 : 1;
+          state.vsTextX = dragStartVal.x + dx * sign;
+          state.vsTextY = dragStartVal.y + dy;
+        } else if (dragTarget.mode === 'vs') {
+          dragTarget.player.vsX = dragStartVal.x + dx;
+          dragTarget.player.vsY = dragStartVal.y + dy;
+          syncPlayerLayoutProps(dragTarget.teamKey, dragTarget.playerIndex, dragTarget.player, true);
+        }
+        saveState();
+      } else {
+        const hit = findHitBoxAt(m.x, m.y);
+        hoveredHitBox = hit;
+        const helper = document.getElementById('canvasHelperText');
+        if (hit) {
+          helper.textContent = `✋ ${hit.label}`;
+        } else {
+          helper.textContent = '✋ Tip: Hover any Player, Logo, or Text on the canvas — Drag to move, or Scroll wheel to resize!';
+        }
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (dragTarget) {
+        dragTarget = null;
+        rebuildAllTeamEditors();
+        syncVSTabUI();
+      }
+    });
+
+    canvas.addEventListener('wheel', e => {
+      const m = getCanvasMouseCoords(e);
+      const hit = findHitBoxAt(m.x, m.y);
+      if (!hit) return;
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.04 : -0.04;
+      if (hit.mode === 'group') {
+        hit.player.groupScale = Math.max(0.3, Math.min(2.2, (hit.player.groupScale || 1.0) + delta));
+        syncPlayerLayoutProps(hit.teamKey || hit.teamObj, hit.playerIndex, hit.player);
+      } else if (hit.mode === 'group_name') {
+        hit.player.groupNameScale = Math.max(0.4, Math.min(2.5, (hit.player.groupNameScale || 1.0) + delta));
+        syncPlayerLayoutProps(hit.teamKey || hit.teamObj, hit.playerIndex, hit.player);
+      } else if (hit.mode === 'single') {
+        hit.player.scale = Math.max(0.3, Math.min(2.2, (hit.player.scale || 1.0) + delta));
+        syncPlayerLayoutProps(hit.teamKey || hit.teamObj, hit.playerIndex, hit.player);
+      } else if (hit.mode === 'player_text') {
+        hit.player.textScale = Math.max(0.3, Math.min(2.5, (hit.player.textScale || 1.0) + delta));
+        syncPlayerLayoutProps(hit.teamKey || hit.teamObj, hit.playerIndex, hit.player);
+      } else if (hit.mode === 'intro_logo') {
+        hit.teamObj.logoScale = Math.max(0.2, Math.min(2.8, (hit.teamObj.logoScale || 1.0) + delta));
+        syncTeamLayoutProps(hit.teamObj);
+      } else if (hit.mode === 'intro_text') {
+        hit.teamObj.introTextScale = Math.max(0.3, Math.min(2.5, (hit.teamObj.introTextScale || 1.0) + delta));
+        syncTeamLayoutProps(hit.teamObj);
+      } else if (hit.mode === 'header_logo') {
+        hit.teamObj.headerLogoScale = Math.max(0.2, Math.min(2.8, (hit.teamObj.headerLogoScale || 1.0) + delta));
+        syncTeamLayoutProps(hit.teamObj);
+      } else if (hit.mode === 'group_logo') {
+        hit.teamObj.groupLogoScale = Math.max(0.2, Math.min(2.8, (hit.teamObj.groupLogoScale || 1.0) + delta));
+        syncTeamLayoutProps(hit.teamObj);
+      } else if (hit.mode === 'header_text') {
+        hit.teamObj.headerTextScale = Math.max(0.3, Math.min(2.5, (hit.teamObj.headerTextScale || 1.0) + delta));
+        syncTeamLayoutProps(hit.teamObj);
+      } else if (hit.mode === 'vs_logo') {
+        state.vsLogoScale = Math.max(0.2, Math.min(2.8, (state.vsLogoScale || 1.0) + delta));
+      } else if (hit.mode === 'vs_team_logo') {
+        state.vsTeamLogoScale = Math.max(0.2, Math.min(2.8, (state.vsTeamLogoScale || 1.0) + delta));
+      } else if (hit.mode === 'vs_text') {
+        state.vsTextScale = Math.max(0.3, Math.min(2.5, (state.vsTextScale || 1.0) + delta));
+      } else if (hit.mode === 'vs') {
+        hit.player.vsScale = Math.max(0.3, Math.min(2.2, (hit.player.vsScale || 1.0) + delta));
+        syncPlayerLayoutProps(hit.teamKey, hit.playerIndex, hit.player, true);
+      }
+      saveState();
+      rebuildAllTeamEditors();
+      syncVSTabUI();
+    }, { passive: false });
+
+    // =========================================================================
+    // Playback & Transport Loop
+    // =========================================================================
+    let isPlaying = false;
+    let currentTime = 0;
+    let lastRafTime = 0;
+    const bgmAudio = new Audio();
+    bgmAudio.preload = 'auto';
+
+    function loadBgmAudio() {
+      if (state.bgmDataUrl) bgmAudio.src = state.bgmDataUrl;
+      document.getElementById('audioStatusLabel').textContent = 'Active: ' + (state.bgmName || 'Reference Esports Intro BGM');
+      document.getElementById('headerLogo').src = state.teamA.logoDataUrl || '';
+    }
+
+    function updateTransportUI(activeSeg, totalDuration) {
+      const scrubber = document.getElementById('timelineScrubber');
+      scrubber.max = totalDuration.toFixed(2);
+      scrubber.value = currentTime.toFixed(2);
+      document.getElementById('timecodeDisplay').textContent =
+        `${currentTime.toFixed(2).padStart(5, '0')}s / ${totalDuration.toFixed(2)}s`;
+
+      document.querySelectorAll('.seg-pill').forEach(el => {
+        el.classList.toggle('active', el.dataset.label === activeSeg.label);
+      });
+    }
+
+    function tick(now) {
+      if (isPlaying) {
+        const dt = Math.min(0.1, (now - lastRafTime) / 1000);
+        currentTime += dt;
+        const { totalDuration } = getTimelineSegments();
+        if (currentTime >= totalDuration) {
+          currentTime = 0;
+          pausePlayback();
+        }
+      }
+      lastRafTime = now;
+      const { activeSeg, totalDuration } = renderAtTime(currentTime, false);
+      updateTransportUI(activeSeg, totalDuration);
+      requestAnimationFrame(tick);
+    }
+
+    function startPlayback() {
+      const { totalDuration } = getTimelineSegments();
+      if (currentTime >= totalDuration - 0.05) currentTime = 0;
+      isPlaying = true;
+      lastRafTime = performance.now();
+      document.getElementById('btnPlayPause').textContent = '⏸ PAUSE';
+      if (bgmAudio.src) {
+        bgmAudio.currentTime = currentTime % (bgmAudio.duration || 25.33);
+        bgmAudio.play().catch(() => {});
+      }
+    }
+
+    function pausePlayback() {
+      isPlaying = false;
+      document.getElementById('btnPlayPause').textContent = '▶ PLAY';
+      bgmAudio.pause();
+    }
+
+    function rebuildSegmentPills() {
+      const wrap = document.getElementById('segmentPills');
+      wrap.innerHTML = '';
+      const { segments } = getTimelineSegments();
+      segments.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'seg-pill';
+        if (s.team && s.team.key === 'teamB') btn.classList.add('team-b-pill');
+        if (s.type === 'vs_intro' || s.type === 'vs_pair') btn.classList.add('vs-pill');
+        btn.dataset.label = s.label;
+        if (s.type === 'player') {
+          btn.textContent = `${s.label}: ${s.player.name}`;
+        } else if (s.type === 'vs_pair') {
+          btn.textContent = `${s.label}: ${s.playerA.name} vs ${s.playerB.name}`;
+        } else {
+          btn.textContent = s.label;
+        }
+        btn.onclick = () => {
+          currentTime = s.start + Math.min(0.55, s.dur * 0.3);
+          if (isPlaying && bgmAudio.src) {
+            bgmAudio.currentTime = currentTime % (bgmAudio.duration || 25.33);
+          }
+        };
+        wrap.appendChild(btn);
+      });
+    }
+
+    // =========================================================================
+    // Sidebar Team Editor Builder (Builds both Team A & Team B Tabs)
+    // =========================================================================
+    const COLOR_PRESETS = [
+      { name: 'SIKAT Purple', p: '#24103a', s: '#5b21b6', a: '#9d7bea', bg: '#090410' },
+      { name: 'Crimson Red',  p: '#5c0a14', s: '#dc2626', a: '#f87171', bg: '#120406' },
+      { name: 'Cyber Blue',   p: '#0c2d48', s: '#0284c7', a: '#38bdf8', bg: '#040d17' },
+      { name: 'Gold & Black', p: '#422006', s: '#d97706', a: '#facc15', bg: '#0f0904' },
+      { name: 'Emerald',      p: '#064e3b', s: '#059669', a: '#34d399', bg: '#03120e' }
+    ];
+
+    function buildTeamTabUI(containerId, teamObj, badgeLabel) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      // 1. Team Branding, Colors & Group Photo Box
+      const brandBox = document.createElement('div');
+      brandBox.className = 'section-box';
+      brandBox.innerHTML = `
+        <h3>
+          <span>${badgeLabel} Branding &amp; Colors</span>
+          <button class="btn-secondary" data-act="jumpGroup" style="padding: 3px 8px; font-size: 10.5px;">📸 Preview Group Photo</button>
+        </h3>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="photo-slot" data-act="uploadLogo" style="width: 68px; height: 68px; border-radius: 50%; flex-shrink: 0;">
+            <img src="${teamObj.logoDataUrl}" alt="Team Logo">
+            <div class="upload-overlay">UPLOAD<br>LOGO</div>
+            <input type="file" accept="image/*" style="display: none;">
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <input type="text" data-tfield="teamName" value="${(teamObj.teamName ?? '').replace(/"/g, '&quot;')}" placeholder="Team Name (e.g. SIKAT ESPORTS CLUB)">
+            <input type="text" data-tfield="introTitle" value="${(teamObj.introTitle ?? '').replace(/"/g, '&quot;')}" placeholder="Intro Title (e.g. TEAM A PLAYERS INTRO)">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 2px;">
+          <label>Intro Subtitle (under Intro Title — clear to hide)
+            <input type="text" data-tfield="introSub" value="${(teamObj.introSub ?? '').replace(/"/g, '&quot;')}" placeholder="e.g. CAVITE STATE UNIVERSITY • CCAT CAMPUS">
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+            <label>Group Photo Subtitle
+              <input type="text" data-tfield="groupSub" value="${(teamObj.groupSub ?? 'OFFICIAL SQUAD LINEUP').replace(/"/g, '&quot;')}" placeholder="e.g. OFFICIAL SQUAD LINEUP">
+            </label>
+            <label>VS Clash Label (under Team Name)
+              <input type="text" data-tfield="vsSub" value="${(teamObj.vsSub ?? badgeLabel).replace(/"/g, '&quot;')}" placeholder="e.g. ${badgeLabel}">
+            </label>
+          </div>
+        </div>
+        <div class="preset-swatches">
+          ${COLOR_PRESETS.map((pr, idx) => `
+            <button class="swatch-btn" data-preset="${idx}" style="background: linear-gradient(135deg, ${pr.p}, ${pr.s});">${pr.name}</button>
+          `).join('')}
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center;">
+          <label>Primary<br><input type="color" data-tcol="colPrimary" value="${teamObj.colPrimary}"></label>
+          <label>Secondary<br><input type="color" data-tcol="colSecondary" value="${teamObj.colSecondary}"></label>
+          <label>Accent<br><input type="color" data-tcol="colAccent" value="${teamObj.colAccent}"></label>
+          <label>BG Base<br><input type="color" data-tcol="colBg" value="${teamObj.colBg || '#090410'}"></label>
+        </div>
+        <div style="padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11px; font-weight: 800; color: var(--neon-violet);">📏 Logo &amp; Text Sizes (or scroll on canvas!)</span>
+            <button class="btn-secondary" data-act="resetTeamSizes" style="padding: 2px 7px; font-size: 10px;">↺ Reset Sizes</button>
+          </div>
+          <div class="photo-adjust-grid" style="border-top: none; padding-top: 2px;">
+            <label>Intro Logo: <span data-tlbl="logoScale">${Math.round((teamObj.logoScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="logoScale" min="0.2" max="2.5" step="0.05" value="${teamObj.logoScale || 1}">
+            </label>
+            <label>Header Logo: <span data-tlbl="headerLogoScale">${Math.round((teamObj.headerLogoScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="headerLogoScale" min="0.2" max="2.5" step="0.05" value="${teamObj.headerLogoScale || 1}">
+            </label>
+            <label>Group Logo: <span data-tlbl="groupLogoScale">${Math.round((teamObj.groupLogoScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="groupLogoScale" min="0.2" max="2.5" step="0.05" value="${teamObj.groupLogoScale || 1}">
+            </label>
+          </div>
+          <div class="photo-adjust-grid" style="border-top: none; padding-top: 0;">
+            <label>Intro Text: <span data-tlbl="introTextScale">${Math.round((teamObj.introTextScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="introTextScale" min="0.4" max="2.2" step="0.05" value="${teamObj.introTextScale || 1}">
+            </label>
+            <label>Header Text: <span data-tlbl="headerTextScale">${Math.round((teamObj.headerTextScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="headerTextScale" min="0.4" max="2.2" step="0.05" value="${teamObj.headerTextScale || 1}">
+            </label>
+            <label>Player Text: <span data-tlbl="playerTextScale">${Math.round((teamObj.playerTextScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="playerTextScale" min="0.4" max="2.2" step="0.05" value="${teamObj.playerTextScale || 1}">
+            </label>
+          </div>
+          <div class="photo-adjust-grid" style="border-top: none; padding-top: 0; grid-template-columns: 1fr;">
+            <label>Group Nameplate Tags Size: <span data-tlbl="groupNameScale">${Math.round((teamObj.groupNameScale || 1) * 100)}%</span>
+              <input type="range" data-tscale="groupNameScale" min="0.4" max="2.2" step="0.05" value="${teamObj.groupNameScale || 1}">
+            </label>
+          </div>
+        </div>
+        <div class="field-row inline" style="padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.06);">
+          <label style="display: flex; align-items: center; gap: 6px; color: #fff; cursor: pointer;">
+            <input type="checkbox" data-tfield="showGroupPhoto" ${teamObj.showGroupPhoto !== false ? 'checked' : ''}>
+            Show Combined Group Team Photo at Start
+          </label>
+          <input type="number" data-tfield="groupPhotoDur" min="1.5" max="7.0" step="0.1" value="${teamObj.groupPhotoDur || 2.8}" style="width: 64px;" title="Group Photo Duration (s)">
+        </div>
+        <div style="display: flex; gap: 6px; padding-top: 2px;">
+          <button class="btn-secondary" data-act="showAllGroupNames" style="flex: 1; padding: 4px 6px; font-size: 10.5px;">🏷️ Show All Group Names</button>
+          <button class="btn-secondary" data-act="hideAllGroupNames" style="flex: 1; padding: 4px 6px; font-size: 10.5px;">🗑️ Hide All Group Names</button>
+        </div>
+      `;
+
+      // Bind Logo Upload
+      const logoSlot = brandBox.querySelector('[data-act="uploadLogo"]');
+      const logoInp = logoSlot.querySelector('input[type="file"]');
+      logoSlot.onclick = () => logoInp.click();
+      logoInp.onchange = e => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = ev => {
+          teamObj.logoDataUrl = ev.target.result;
+          logoSlot.querySelector('img').src = teamObj.logoDataUrl;
+          if (teamKey === 'teamA') {
+            const hLogo = document.getElementById('headerLogo');
+            if (hLogo) hLogo.src = teamObj.logoDataUrl;
+          }
+          saveState();
+        };
+        r.readAsDataURL(f);
+      };
+
+      // Bind Team Logo & Text Size Sliders
+      brandBox.querySelectorAll('[data-tscale]').forEach(inp => {
+        inp.oninput = () => {
+          const k = inp.dataset.tscale;
+          teamObj[k] = parseFloat(inp.value) || 1.0;
+          const lbl = brandBox.querySelector(`[data-tlbl="${k}"]`);
+          if (lbl) lbl.textContent = `${Math.round(teamObj[k] * 100)}%`;
+          syncTeamLayoutProps(teamObj);
+          rebuildOtherTeamEditor(teamObj);
+          saveState();
+        };
+      });
+
+      brandBox.querySelector('[data-act="resetTeamSizes"]').onclick = () => {
+        teamObj.logoScale = 1.0;
+        teamObj.logoX = 0;
+        teamObj.logoY = 0;
+        teamObj.introTextScale = 1.0;
+        teamObj.introTextX = 0;
+        teamObj.introTextY = 0;
+        teamObj.headerLogoScale = 1.0;
+        teamObj.headerTextScale = 1.0;
+        teamObj.headerX = 0;
+        teamObj.headerY = 0;
+        teamObj.groupLogoScale = 1.0;
+        teamObj.groupLogoX = 0;
+        teamObj.groupLogoY = 0;
+        teamObj.playerTextScale = 1.0;
+        teamObj.groupNameScale = 1.0;
+        teamObj.players.forEach((p, idx) => {
+          p.textScale = 1.0;
+          p.textX = 0;
+          p.textY = 0;
+          p.groupNameScale = 1.0;
+          syncPlayerLayoutProps(teamObj, idx, p);
+        });
+        syncTeamLayoutProps(teamObj);
+        saveState();
+        rebuildAllTeamEditors();
+      };
+
+      // Bind Preset Swatches
+      brandBox.querySelectorAll('[data-preset]').forEach(btn => {
+        btn.onclick = () => {
+          const pr = COLOR_PRESETS[parseInt(btn.dataset.preset, 10)];
+          teamObj.colPrimary = pr.p;
+          teamObj.colSecondary = pr.s;
+          teamObj.colAccent = pr.a;
+          teamObj.colBg = pr.bg;
+          teamObj.players.forEach(p => processPlayerImage(p, teamObj));
+          saveState();
+          buildTeamTabUI(containerId, teamObj, badgeLabel);
+        };
+      });
+
+      // Bind Color Pickers
+      brandBox.querySelectorAll('[data-tcol]').forEach(inp => {
+        inp.oninput = () => {
+          teamObj[inp.dataset.tcol] = inp.value;
+          // Auto-adapt dark carbon background base if primary color changed
+          if (inp.dataset.tcol === 'colPrimary') {
+            const rgb = hexToRgb(inp.value);
+            const darkHex = '#' + [rgb.r, rgb.g, rgb.b].map(v => Math.max(3, Math.round(v * 0.22)).toString(16).padStart(2, '0')).join('');
+            teamObj.colBg = darkHex;
+            const bgPicker = brandBox.querySelector('[data-tcol="colBg"]');
+            if (bgPicker) bgPicker.value = darkHex;
+          }
+          teamObj.players.forEach(p => processPlayerImage(p, teamObj));
+          saveState();
+        };
+      });
+
+      // Bind Text & Group Photo Toggles
+      brandBox.querySelectorAll('[data-tfield]').forEach(inp => {
+        inp.oninput = () => {
+          const f = inp.dataset.tfield;
+          if (f === 'showGroupPhoto') {
+            teamObj.showGroupPhoto = inp.checked;
+            syncTeamLayoutProps(teamObj);
+            rebuildOtherTeamEditor(teamObj);
+          } else if (f === 'groupPhotoDur') {
+            teamObj.groupPhotoDur = parseFloat(inp.value) || 2.8;
+            syncTeamLayoutProps(teamObj);
+            rebuildOtherTeamEditor(teamObj);
+          } else {
+            teamObj[f] = inp.value;
+          }
+          rebuildSegmentPills();
+          saveState();
+        };
+      });
+
+      brandBox.querySelector('[data-act="jumpGroup"]').onclick = () => {
+        jumpToTeamSegment(teamObj.key, 'group_photo');
+      };
+      brandBox.querySelector('[data-act="showAllGroupNames"]').onclick = () => {
+        teamObj.players.forEach((p, idx) => {
+          p.showGroupName = true;
+          p.groupNameX = 0;
+          p.groupNameY = 0;
+          syncPlayerLayoutProps(teamObj, idx, p);
+        });
+        saveState();
+        rebuildAllTeamEditors();
+        jumpToTeamSegment(teamObj.key, 'group_photo');
+      };
+      brandBox.querySelector('[data-act="hideAllGroupNames"]').onclick = () => {
+        teamObj.players.forEach((p, idx) => {
+          p.showGroupName = false;
+          syncPlayerLayoutProps(teamObj, idx, p);
+        });
+        saveState();
+        rebuildAllTeamEditors();
+        jumpToTeamSegment(teamObj.key, 'group_photo');
+      };
+
+      container.appendChild(brandBox);
+
+      // 2. Roster Header + Add Player Button
+      const rosterHdr = document.createElement('div');
+      rosterHdr.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-top: 2px;';
+      rosterHdr.innerHTML = `
+        <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 800;">${badgeLabel} PLAYERS (${teamObj.players.length})</span>
+        <button class="btn-primary" data-act="addPlayer" style="padding: 5px 11px; font-size: 11.5px;">+ Add Player</button>
+      `;
+      rosterHdr.querySelector('[data-act="addPlayer"]').onclick = () => {
+        const idx = teamObj.players.length;
+        const fallbackPhoto = teamObj.players[0]?.photo || state.teamA.logoDataUrl;
+        teamObj.players.push(ensurePlayerProps({
+          name: `PLAYER ${idx + 1}`,
+          title: 'ROSTER MEMBER',
+          photo: fallbackPhoto,
+          duration: 3.0
+        }, idx));
+        saveState();
+        buildTeamTabUI(containerId, teamObj, badgeLabel);
+        rebuildSegmentPills();
+      };
+      container.appendChild(rosterHdr);
+
+      // 3. Player Cards
+      teamObj.players.forEach((p, idx) => {
+        processPlayerImage(p, teamObj);
+        const card = document.createElement('div');
+        card.className = 'player-card';
+        const isTeamB = teamObj.key === 'teamB';
+
+        card.innerHTML = `
+          <div class="player-card-header">
+            <span class="player-num-badge ${isTeamB ? 'team-b' : ''}">${badgeLabel} • PLAYER ${idx + 1}</span>
+            <div class="card-actions">
+              <button class="btn-icon" data-act="previewSlide" title="Preview Slide">👁 Slide</button>
+              <button class="btn-icon" data-act="previewVS" title="Preview 1v1 VS">⚔️ VS</button>
+              <button class="btn-icon" data-act="front" title="Bring Forward in Group Photo">▲ Layer</button>
+              <button class="btn-icon" data-act="up" ${idx === 0 ? 'disabled' : ''}>↑</button>
+              <button class="btn-icon" data-act="down" ${idx === teamObj.players.length - 1 ? 'disabled' : ''}>↓</button>
+              <button class="btn-icon danger" data-act="del" ${teamObj.players.length <= 1 ? 'disabled' : ''}>✕</button>
+            </div>
+          </div>
+          <div class="player-main-grid">
+            <div class="photo-slot" data-act="upload">
+              <img src="${p.photo}" alt="P${idx + 1}">
+              <div class="upload-overlay">UPLOAD<br>PHOTO</div>
+              <input type="file" accept="image/*" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <input type="text" data-field="name" value="${(p.name || '').replace(/"/g, '&quot;')}" placeholder="Player Name / IGN">
+              <input type="text" data-field="title" value="${(p.title || '').replace(/"/g, '&quot;')}" placeholder="Title / Role">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                <label style="display: flex; align-items: center; gap: 4px; color: #e2dcf0; cursor: pointer;">
+                  <input type="checkbox" data-field="removeBg" ${p.removeBg ? 'checked' : ''}>
+                  Auto-Remove BG
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px;">
+                  Dur:
+                  <input type="number" data-field="duration" min="1.5" max="8.0" step="0.1" value="${p.duration || 3.0}" style="width: 56px; padding: 3px 5px;">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="photo-adjust-grid">
+            <label>Slide Zoom: <span data-lbl="scale">${Math.round((p.scale || 1) * 100)}%</span>
+              <input type="range" data-field="scale" min="0.5" max="1.8" step="0.02" value="${p.scale || 1}">
+            </label>
+            <label>Text Size: <span data-lbl="textScale">${Math.round((p.textScale || 1) * 100)}%</span>
+              <input type="range" data-field="textScale" min="0.4" max="2.2" step="0.05" value="${p.textScale || 1}">
+            </label>
+            <label>Slide X: <span data-lbl="offsetX">${p.offsetX || 0}</span>
+              <input type="range" data-field="offsetX" min="-350" max="350" step="5" value="${p.offsetX || 0}">
+            </label>
+          </div>
+          <div class="photo-adjust-grid" style="margin-top: 2px;">
+            <label>Group Size: <span data-lbl="groupScale">${Math.round((p.groupScale || 1) * 100)}%</span>
+              <input type="range" data-field="groupScale" min="0.3" max="2.0" step="0.02" value="${p.groupScale || 1}">
+            </label>
+            <label>Tag Size: <span data-lbl="groupNameScale">${Math.round((p.groupNameScale || 1) * 100)}%</span>
+              <input type="range" data-field="groupNameScale" min="0.4" max="2.2" step="0.05" value="${p.groupNameScale || 1}">
+            </label>
+            <label>Group X: <span data-lbl="groupX">${p.groupX || 0}</span>
+              <input type="range" data-field="groupX" min="-700" max="700" step="5" value="${p.groupX || 0}">
+            </label>
+          </div>
+          <div style="margin-top: 3px; display: flex; align-items: center; justify-content: flex-end;">
+            <label style="display: flex; flex-direction: row; align-items: center; gap: 5px; color: #fff; cursor: pointer; font-size: 11px;">
+              <input type="checkbox" data-field="showGroupName" ${p.showGroupName !== false ? 'checked' : ''}>
+              <span>🏷️ Show Group Tag</span>
+            </label>
+          </div>
+        `;
+
+        // Photo Upload
+        const slot = card.querySelector('[data-act="upload"]');
+        const fInp = slot.querySelector('input[type="file"]');
+        slot.onclick = () => fInp.click();
+        slot.ondragover = e => { e.preventDefault(); slot.style.borderColor = '#f2c94c'; };
+        slot.ondragleave = () => { slot.style.borderColor = ''; };
+        slot.ondrop = e => {
+          e.preventDefault();
+          slot.style.borderColor = '';
+          const file = e.dataTransfer.files && e.dataTransfer.files[0];
+          if (file) readPlayerPhoto(file, p, teamObj, slot.querySelector('img'), idx);
+        };
+        fInp.onchange = e => {
+          const file = e.target.files && e.target.files[0];
+          if (file) readPlayerPhoto(file, p, teamObj, slot.querySelector('img'), idx);
+        };
+
+        card.querySelectorAll('input[data-field]').forEach(inp => {
+          const f = inp.dataset.field;
+          inp.oninput = () => {
+            if (f === 'removeBg') {
+              p.removeBg = inp.checked;
+              processPlayerImage(p, teamObj);
+            } else if (f === 'showGroupName') {
+              p.showGroupName = inp.checked;
+              syncPlayerLayoutProps(teamObj, idx, p);
+              rebuildOtherTeamEditor(teamObj);
+              jumpToTeamSegment(teamObj.key, 'group_photo');
+            } else if (['scale', 'textScale', 'groupScale', 'groupNameScale', 'offsetX', 'groupX', 'groupNameX', 'groupNameY', 'duration'].includes(f)) {
+              p[f] = parseFloat(inp.value) || 0;
+              const lbl = card.querySelector(`[data-lbl="${f}"]`);
+              if (lbl) lbl.textContent = ['scale', 'textScale', 'groupScale', 'groupNameScale'].includes(f) ? `${Math.round(p[f] * 100)}%` : `${p[f]}`;
+              syncPlayerLayoutProps(teamObj, idx, p);
+              updateSiblingPlayerCardsInDOM(container, teamObj, idx);
+              rebuildOtherTeamEditor(teamObj);
+              if (f === 'duration') rebuildSegmentPills();
+              if (f === 'groupScale' || f === 'groupX' || f === 'groupNameX' || f === 'groupNameY' || f === 'groupNameScale') jumpToTeamSegment(teamObj.key, 'group_photo');
+              if (f === 'textScale') jumpToPlayerSlide(teamObj.key, idx);
+            } else {
+              p[f] = inp.value;
+              rebuildSegmentPills();
+            }
+            saveState();
+          };
+        });
+
+        card.querySelector('[data-act="previewSlide"]').onclick = () => jumpToPlayerSlide(teamObj.key, idx);
+        card.querySelector('[data-act="previewVS"]').onclick = () => jumpToVSPair(idx);
+        card.querySelector('[data-act="front"]').onclick = () => {
+          const maxZ = Math.max(...teamObj.players.map(pl => pl.groupZ || 1));
+          p.groupZ = maxZ + 1;
+          syncPlayerLayoutProps(teamObj, idx, p);
+          rebuildOtherTeamEditor(teamObj);
+          saveState();
+          jumpToTeamSegment(teamObj.key, 'group_photo');
+        };
+        card.querySelector('[data-act="up"]').onclick = () => {
+          if (idx > 0) {
+            [teamObj.players[idx - 1], teamObj.players[idx]] = [teamObj.players[idx], teamObj.players[idx - 1]];
+            saveState();
+            buildTeamTabUI(containerId, teamObj, badgeLabel);
+            rebuildSegmentPills();
+          }
+        };
+        card.querySelector('[data-act="down"]').onclick = () => {
+          if (idx < teamObj.players.length - 1) {
+            [teamObj.players[idx + 1], teamObj.players[idx]] = [teamObj.players[idx], teamObj.players[idx + 1]];
+            saveState();
+            buildTeamTabUI(containerId, teamObj, badgeLabel);
+            rebuildSegmentPills();
+          }
+        };
+        card.querySelector('[data-act="del"]').onclick = () => {
+          if (teamObj.players.length > 1) {
+            teamObj.players.splice(idx, 1);
+            saveState();
+            buildTeamTabUI(containerId, teamObj, badgeLabel);
+            rebuildSegmentPills();
+          }
+        };
+
+        container.appendChild(card);
+      });
+    }
+
+    function readPlayerPhoto(file, player, teamObj, imgEl, idx) {
+      const r = new FileReader();
+      r.onload = ev => {
+        player.photo = ev.target.result;
+        imgEl.src = player.photo;
+        processPlayerImage(player, teamObj);
+        saveState();
+        jumpToPlayerSlide(teamObj.key, idx);
+      };
+      r.readAsDataURL(file);
+    }
+
+    function rebuildAllTeamEditors() {
+      buildTeamTabUI('tabTeamA', state.teamA, 'TEAM A');
+      buildTeamTabUI('tabTeamB', state.teamB, 'TEAM B');
+    }
+
+    function rebuildOtherTeamEditor(srcTeam) {
+      if (state.syncLayout === false || !srcTeam) return;
+      if (srcTeam.key === 'teamA') {
+        buildTeamTabUI('tabTeamB', state.teamB, 'TEAM B');
+      } else {
+        buildTeamTabUI('tabTeamA', state.teamA, 'TEAM A');
+      }
+    }
+
+    function updateSiblingPlayerCardsInDOM(container, teamObj, activeIdx) {
+      if (state.syncLayout === false || !container) return;
+      const cards = container.querySelectorAll('.player-card');
+      cards.forEach((c, cIdx) => {
+        if (cIdx === activeIdx || !teamObj.players[cIdx]) return;
+        const pl = teamObj.players[cIdx];
+        ['scale', 'textScale', 'groupNameScale', 'offsetX', 'duration'].forEach(f => {
+          const inp = c.querySelector(`input[data-field="${f}"]`);
+          if (inp) inp.value = pl[f];
+          const lbl = c.querySelector(`[data-lbl="${f}"]`);
+          if (lbl) lbl.textContent = ['scale', 'textScale', 'groupNameScale'].includes(f) ? `${Math.round((pl[f] || 1) * 100)}%` : `${pl[f] || 0}`;
+        });
+      });
+    }
+
+    // Navigation Helpers
+    function setModeAndSync(mode) {
+      state.renderMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+      });
+      const modeNames = {
+        teamA: '🎬 RENDER TEAM A VIDEO',
+        teamB: '🎬 RENDER TEAM B VIDEO',
+        vs: '🎬 RENDER VS VIDEO',
+        all: '🎬 RENDER ALL 3 AS ONE VIDEO'
+      };
+      document.getElementById('btnRenderVideo').textContent = modeNames[mode] || '🎬 RENDER VIDEO';
+      rebuildSegmentPills();
+      saveState();
+    }
+
+    function jumpToTeamSegment(teamKey, segType) {
+      if (state.renderMode !== teamKey && state.renderMode !== 'all') {
+        setModeAndSync(teamKey);
+      }
+      const { segments } = getTimelineSegments();
+      const s = segments.find(x => x.type === segType && x.team && x.team.key === teamKey);
+      if (s) currentTime = s.start + 0.6;
+    }
+
+    function jumpToPlayerSlide(teamKey, idx) {
+      if (state.renderMode !== teamKey && state.renderMode !== 'all') {
+        setModeAndSync(teamKey);
+      }
+      const { segments } = getTimelineSegments();
+      const s = segments.find(x => x.type === 'player' && x.team && x.team.key === teamKey && x.index === idx);
+      if (s) currentTime = s.start + 0.6;
+    }
+
+    function jumpToVSPair(idx) {
+      if (state.renderMode !== 'vs' && state.renderMode !== 'all') {
+        setModeAndSync('vs');
+      }
+      const { segments } = getTimelineSegments();
+      const s = segments.find(x => x.type === 'vs_pair' && x.index === idx) || segments.find(x => x.type === 'vs_pair');
+      if (s) currentTime = s.start + 1.25;
+    }
+
+    // =========================================================================
+    // One-Click Video Renderer (Supports Team A, Team B, VS, or All 3 Combined!)
+    // =========================================================================
+    let activeRecorder = null;
+    let renderCanceled = false;
+
+    async function renderAndDownloadVideo() {
+      pausePlayback();
+      renderCanceled = false;
+
+      const resMode = document.getElementById('exportResSelect').value;
+      const targetW = resMode === '720' ? 1280 : 1920;
+      const targetH = resMode === '720' ? 720 : 1080;
+      canvas.width = targetW;
+      canvas.height = targetH;
+
+      const overlay = document.getElementById('renderOverlay');
+      const progBar = document.getElementById('renderProgressBar');
+      const statusText = document.getElementById('renderStatusText');
+      const btnRender = document.getElementById('btnRenderVideo');
+
+      overlay.classList.add('active');
+      btnRender.disabled = true;
+      progBar.style.width = '0%';
+      statusText.textContent = 'Initializing 60 FPS video & audio encoder...';
+
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const dest = audioCtx.createMediaStreamDestination();
+
+      if (state.bgmDataUrl) {
+        try {
+          const resp = await fetch(state.bgmDataUrl);
+          const arrBuf = await resp.arrayBuffer();
+          const audioBuf = await audioCtx.decodeAudioData(arrBuf);
+          const srcNode = audioCtx.createBufferSource();
+          srcNode.buffer = audioBuf;
+          srcNode.loop = true;
+          srcNode.connect(dest);
+          srcNode.connect(audioCtx.destination);
+          srcNode.start(0);
+        } catch (e) {}
+      }
+
+      const canvasStream = canvas.captureStream(60);
+      const mixedStream = new MediaStream([
+        ...canvasStream.getVideoTracks(),
+        ...dest.stream.getAudioTracks()
+      ]);
+
+      const mimeCandidates = [
+        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+        'video/mp4',
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
+        'video/webm'
+      ];
+      let chosenMime = 'video/webm';
+      for (const m of mimeCandidates) {
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) {
+          chosenMime = m;
+          break;
+        }
+      }
+      const ext = chosenMime.includes('mp4') ? 'mp4' : 'webm';
+
+      const chunks = [];
+      const recorder = new MediaRecorder(mixedStream, {
+        mimeType: chosenMime,
+        videoBitsPerSecond: targetW === 1920 ? 12000000 : 7500000
+      });
+      activeRecorder = recorder;
+
+      recorder.ondataavailable = e => {
+        if (e.data && e.data.size > 0) chunks.push(e.data);
+      };
+
+      const { totalDuration } = getTimelineSegments();
+
+      recorder.onstop = () => {
+        audioCtx.close().catch(() => {});
+        canvas.width = 1920;
+        canvas.height = 1080;
+        overlay.classList.remove('active');
+        btnRender.disabled = false;
+        activeRecorder = null;
+
+        if (renderCanceled || chunks.length === 0) return;
+
+        const blob = new Blob(chunks, { type: chosenMime });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+
+        // Custom filename generation based on mode and team names
+        const sanitize = s => (s || '').trim().replace(/[\\/:*?"<>|]+/g, '_').replace(/\s+/g, '_');
+        const teamAName = sanitize(state.teamA.teamName) || 'Team_A';
+        const teamBName = sanitize(state.teamB.teamName) || 'Team_B';
+        let fileName = '';
+
+        if (state.renderMode === 'teamA') {
+          fileName = `${teamAName}_intro.${ext}`;
+        } else if (state.renderMode === 'teamB') {
+          fileName = `${teamBName}_intro.${ext}`;
+        } else if (state.renderMode === 'vs') {
+          fileName = `${teamAName}_vs_${teamBName}_intro.${ext}`;
+        } else {
+          // 'all' mode
+          fileName = `${teamAName}_vs_${teamBName}_all_combined.${ext}`;
+        }
+
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 2000);
+      };
+
+      recorder.start(100);
+      const startWall = performance.now();
+
+      function stepRender(now) {
+        if (renderCanceled) {
+          if (recorder.state !== 'inactive') recorder.stop();
+          return;
+        }
+        const elapsed = (now - startWall) / 1000;
+        currentTime = Math.min(totalDuration, elapsed);
+        renderAtTime(currentTime, true);
+
+        const pct = Math.min(100, Math.round((currentTime / totalDuration) * 100));
+        progBar.style.width = `${pct}%`;
+        statusText.textContent = `Rendering [${state.renderMode.toUpperCase()}] ${targetW}×${targetH} @ 60fps: ${pct}% (${currentTime.toFixed(1)}s / ${totalDuration.toFixed(1)}s)`;
+
+        if (elapsed < totalDuration) {
+          requestAnimationFrame(stepRender);
+        } else {
+          if (recorder.state !== 'inactive') recorder.stop();
+        }
+      }
+
+      requestAnimationFrame(stepRender);
+    }
+
+    // =========================================================================
+    // Boot & Bind Global Controls
+    // =========================================================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+
+        // Automatically switch stage preview mode to match the selected sidebar tab
+        const tabToMode = { tabTeamA: 'teamA', tabTeamB: 'teamB', tabVS: 'vs' };
+        const targetMode = tabToMode[btn.dataset.tab];
+        if (targetMode && state.renderMode !== targetMode) {
+          setModeAndSync(targetMode);
+          currentTime = 0.55;
+        }
+        if (btn.dataset.tab === 'tabVS') {
+          syncVSTabUI();
+        }
+      };
+    });
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.onclick = () => {
+        setModeAndSync(btn.dataset.mode);
+        currentTime = 0;
+        const modeToTab = { teamA: 'tabTeamA', teamB: 'tabTeamB', vs: 'tabVS' };
+        const targetTab = modeToTab[btn.dataset.mode];
+        if (targetTab) {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === targetTab));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === targetTab));
+          if (targetTab === 'tabVS') syncVSTabUI();
+        }
+      };
+    });
+
+    document.getElementById('vsBgStyleSelect').value = state.vsBgStyle || 'split';
+    document.getElementById('vsBgStyleSelect').onchange = e => {
+      state.vsBgStyle = e.target.value;
+      saveState();
+    };
+    document.getElementById('vsCenterStyleSelect').value = state.vsCenterStyle || 'crest';
+    document.getElementById('vsCenterStyleSelect').onchange = e => {
+      state.vsCenterStyle = e.target.value;
+      saveState();
+    };
+    document.getElementById('vsIntroDurInput').value = state.vsIntroDur || 2.5;
+    document.getElementById('vsIntroDurInput').oninput = e => {
+      state.vsIntroDur = parseFloat(e.target.value) || 2.5;
+      rebuildSegmentPills();
+      saveState();
+    };
+    document.getElementById('vsPairDurInput').value = state.vsPairDur || 3.5;
+    document.getElementById('vsPairDurInput').oninput = e => {
+      state.vsPairDur = parseFloat(e.target.value) || 3.5;
+      rebuildSegmentPills();
+      saveState();
+    };
+    document.getElementById('vsBadgeTextInput').value = state.vsBadgeText || 'VS';
+    document.getElementById('vsBadgeTextInput').oninput = e => {
+      state.vsBadgeText = e.target.value;
+      saveState();
+    };
+
+    document.getElementById('vsTeamANameInput').oninput = e => {
+      state.teamA.teamName = e.target.value;
+      rebuildAllTeamEditors();
+      saveState();
+    };
+    document.getElementById('vsTeamASubInput').oninput = e => {
+      state.teamA.vsSub = e.target.value;
+      rebuildAllTeamEditors();
+      saveState();
+    };
+    document.getElementById('vsTeamBNameInput').oninput = e => {
+      state.teamB.teamName = e.target.value;
+      rebuildAllTeamEditors();
+      saveState();
+    };
+    document.getElementById('vsTeamBSubInput').oninput = e => {
+      state.teamB.vsSub = e.target.value;
+      rebuildAllTeamEditors();
+      saveState();
+    };
+
+    function buildVSMatchupCardsUI() {
+      const container = document.getElementById('vsMatchupCardsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const pairCount = Math.min(state.teamA.players.length, state.teamB.players.length);
+      const hdr = document.createElement('div');
+      hdr.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-top: 2px;';
+      hdr.innerHTML = `
+        <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 800;">⚔️ 1v1 PLAYER MATCHUPS (${pairCount} PAIRS)</span>
+      `;
+      container.appendChild(hdr);
+
+      for (let idx = 0; idx < pairCount; idx++) {
+        const pA = state.teamA.players[idx];
+        const pB = state.teamB.players[idx];
+        processPlayerImage(pA, state.teamA);
+        processPlayerImage(pB, state.teamB);
+
+        const card = document.createElement('div');
+        card.className = 'player-card';
+        card.innerHTML = `
+          <div class="player-card-header">
+            <span class="player-num-badge" style="background: linear-gradient(90deg, #5b21b6, #dc2626);">⚔️ PAIR ${idx + 1} • 1v1 MATCHUP</span>
+            <div class="card-actions">
+              <button class="btn-icon" data-vsact="previewPair" title="Preview this 1v1 Matchup">👁 Preview 1v1</button>
+              <button class="btn-icon" data-vsact="resetPair" title="Reset Pair Positions &amp; Zoom">↺ Reset</button>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="display: flex; gap: 6px; align-items: center; background: rgba(91,33,182,0.12); padding: 6px; border-radius: 6px; border: 1px solid rgba(157,123,234,0.2);">
+              <div class="photo-slot" data-vsact="uploadA" style="width: 48px; height: 56px; flex-shrink: 0;">
+                <img src="${pA.photo}" alt="A${idx + 1}">
+                <div class="upload-overlay">PHOTO</div>
+                <input type="file" accept="image/*" style="display: none;">
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+                <input type="text" data-vsfield="nameA" value="${(pA.name || '').replace(/"/g, '&quot;')}" placeholder="Team A Player">
+                <input type="text" data-vsfield="titleA" value="${(pA.title || '').replace(/"/g, '&quot;')}" placeholder="Role">
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center; background: rgba(220,38,38,0.12); padding: 6px; border-radius: 6px; border: 1px solid rgba(248,113,113,0.2);">
+              <div class="photo-slot" data-vsact="uploadB" style="width: 48px; height: 56px; flex-shrink: 0;">
+                <img src="${pB.photo}" alt="B${idx + 1}">
+                <div class="upload-overlay">PHOTO</div>
+                <input type="file" accept="image/*" style="display: none;">
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+                <input type="text" data-vsfield="nameB" value="${(pB.name || '').replace(/"/g, '&quot;')}" placeholder="Team B Player">
+                <input type="text" data-vsfield="titleB" value="${(pB.title || '').replace(/"/g, '&quot;')}" placeholder="Role">
+              </div>
+            </div>
+          </div>
+          <div class="photo-adjust-grid">
+            <label>VS Zoom: <span data-vslbl="vsScale">${Math.round((pA.vsScale || 1) * 100)}%</span>
+              <input type="range" data-vsadj="vsScale" min="0.5" max="1.8" step="0.02" value="${pA.vsScale || 1}">
+            </label>
+            <label>Text Size: <span data-vslbl="textScale">${Math.round((pA.textScale || 1) * 100)}%</span>
+              <input type="range" data-vsadj="textScale" min="0.4" max="2.2" step="0.05" value="${pA.textScale || 1}">
+            </label>
+            <label>VS X Offset: <span data-vslbl="vsX">${pA.vsX || 0}</span>
+              <input type="range" data-vsadj="vsX" min="-350" max="350" step="5" value="${pA.vsX || 0}">
+            </label>
+          </div>
+        `;
+
+        // Photo uploads in VS card
+        const slotA = card.querySelector('[data-vsact="uploadA"]');
+        const inpA = slotA.querySelector('input[type="file"]');
+        slotA.onclick = () => inpA.click();
+        inpA.onchange = e => {
+          const f = e.target.files && e.target.files[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = ev => {
+            pA.photo = ev.target.result;
+            slotA.querySelector('img').src = pA.photo;
+            processPlayerImage(pA, state.teamA);
+            rebuildAllTeamEditors();
+            saveState();
+            jumpToVSPair(idx);
+          };
+          r.readAsDataURL(f);
+        };
+
+        const slotB = card.querySelector('[data-vsact="uploadB"]');
+        const inpB = slotB.querySelector('input[type="file"]');
+        slotB.onclick = () => inpB.click();
+        inpB.onchange = e => {
+          const f = e.target.files && e.target.files[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = ev => {
+            pB.photo = ev.target.result;
+            slotB.querySelector('img').src = pB.photo;
+            processPlayerImage(pB, state.teamB);
+            rebuildAllTeamEditors();
+            saveState();
+            jumpToVSPair(idx);
+          };
+          r.readAsDataURL(f);
+        };
+
+        // Name / Role inputs in VS card
+        card.querySelectorAll('input[data-vsfield]').forEach(inp => {
+          inp.oninput = () => {
+            const k = inp.dataset.vsfield;
+            if (k === 'nameA') pA.name = inp.value;
+            else if (k === 'titleA') pA.title = inp.value;
+            else if (k === 'nameB') pB.name = inp.value;
+            else if (k === 'titleB') pB.title = inp.value;
+            rebuildAllTeamEditors();
+            rebuildSegmentPills();
+            saveState();
+          };
+        });
+
+        // VS Zoom / Text Size / X Offset sliders in VS card
+        card.querySelectorAll('input[data-vsadj]').forEach(inp => {
+          inp.oninput = () => {
+            const f = inp.dataset.vsadj;
+            const val = parseFloat(inp.value) || 0;
+            pA[f] = val;
+            if (state.syncLayout !== false) {
+              pB[f] = f === 'vsX' ? -val : val;
+              syncPlayerLayoutProps('teamA', idx, pA, true);
+              // Update sibling VS cards in DOM without losing focus on active slider
+              const allVsCards = container.querySelectorAll('.player-card');
+              allVsCards.forEach((vc, vIdx) => {
+                if (vIdx === idx) return;
+                const sInp = vc.querySelector(`input[data-vsadj="${f}"]`);
+                if (sInp) sInp.value = val;
+                const sLbl = vc.querySelector(`[data-vslbl="${f}"]`);
+                if (sLbl) sLbl.textContent = (f === 'vsScale' || f === 'textScale') ? `${Math.round(val * 100)}%` : `${val}`;
+              });
+            }
+            const lbl = card.querySelector(`[data-vslbl="${f}"]`);
+            if (lbl) lbl.textContent = (f === 'vsScale' || f === 'textScale') ? `${Math.round(val * 100)}%` : `${val}`;
+            rebuildAllTeamEditors();
+            saveState();
+            jumpToVSPair(idx);
+          };
+        });
+
+        card.querySelector('[data-vsact="previewPair"]').onclick = () => jumpToVSPair(idx);
+        card.querySelector('[data-vsact="resetPair"]').onclick = () => {
+          pA.vsScale = 1.0; pA.vsX = 0; pA.vsY = 0; pA.textScale = 1.0;
+          pB.vsScale = 1.0; pB.vsX = 0; pB.vsY = 0; pB.textScale = 1.0;
+          saveState();
+          rebuildAllTeamEditors();
+          buildVSMatchupCardsUI();
+          jumpToVSPair(idx);
+        };
+
+        container.appendChild(card);
+      }
+    }
+
+    function syncVSTabUI() {
+      const defVsLogo = (window.SIKAT_INTRO_ASSETS && window.SIKAT_INTRO_ASSETS.vsLogoDataUrl) || '';
+      document.getElementById('vsLogoPreviewImg').src = state.vsLogoDataUrl || defVsLogo;
+      document.getElementById('vsTeamANameInput').value = state.teamA.teamName || '';
+      document.getElementById('vsTeamASubInput').value = state.teamA.vsSub || 'TEAM A';
+      document.getElementById('vsTeamBNameInput').value = state.teamB.teamName || '';
+      document.getElementById('vsTeamBSubInput').value = state.teamB.vsSub || 'TEAM B';
+      const lScale = parseFloat(state.vsLogoScale) || 1.0;
+      const tlScale = parseFloat(state.vsTeamLogoScale) || 1.0;
+      const txScale = parseFloat(state.vsTextScale) || 1.0;
+      document.getElementById('vsLogoScaleRange').value = lScale;
+      document.getElementById('vsLogoScaleLbl').textContent = `${Math.round(lScale * 100)}%`;
+      document.getElementById('vsTeamLogoScaleRange').value = tlScale;
+      document.getElementById('vsTeamLogoScaleLbl').textContent = `${Math.round(tlScale * 100)}%`;
+      document.getElementById('vsTextScaleRange').value = txScale;
+      document.getElementById('vsTextScaleLbl').textContent = `${Math.round(txScale * 100)}%`;
+      buildVSMatchupCardsUI();
+    }
+
+    document.getElementById('vsLogoUploadSlot').onclick = () => document.getElementById('vsLogoFileInput').click();
+    document.getElementById('vsLogoFileInput').onchange = e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        state.vsLogoDataUrl = ev.target.result;
+        syncVSTabUI();
+        saveState();
+      };
+      r.readAsDataURL(f);
+    };
+    document.getElementById('vsLogoScaleRange').oninput = e => {
+      state.vsLogoScale = parseFloat(e.target.value) || 1.0;
+      document.getElementById('vsLogoScaleLbl').textContent = `${Math.round(state.vsLogoScale * 100)}%`;
+      saveState();
+    };
+    document.getElementById('vsTeamLogoScaleRange').oninput = e => {
+      state.vsTeamLogoScale = parseFloat(e.target.value) || 1.0;
+      document.getElementById('vsTeamLogoScaleLbl').textContent = `${Math.round(state.vsTeamLogoScale * 100)}%`;
+      saveState();
+    };
+    document.getElementById('vsTextScaleRange').oninput = e => {
+      state.vsTextScale = parseFloat(e.target.value) || 1.0;
+      document.getElementById('vsTextScaleLbl').textContent = `${Math.round(state.vsTextScale * 100)}%`;
+      saveState();
+    };
+    document.getElementById('btnResetVSLogo').onclick = () => {
+      const A = window.SIKAT_INTRO_ASSETS || {};
+      state.vsLogoDataUrl = A.vsLogoDataUrl || '';
+      state.vsLogoScale = 1.0;
+      state.vsLogoX = 0;
+      state.vsLogoY = 0;
+      state.vsTeamLogoScale = 1.0;
+      state.vsTeamLogoX = 0;
+      state.vsTeamLogoY = 0;
+      state.vsTextScale = 1.0;
+      state.vsTextX = 0;
+      state.vsTextY = 0;
+      syncVSTabUI();
+      saveState();
+    };
+    document.getElementById('btnPreviewVSIntro').onclick = () => {
+      if (state.renderMode !== 'vs' && state.renderMode !== 'all') setModeAndSync('vs');
+      const { segments } = getTimelineSegments();
+      const s = segments.find(x => x.type === 'vs_intro');
+      if (s) currentTime = s.start + 0.65;
+    };
+    document.getElementById('btnPreviewVS').onclick = () => jumpToVSPair(0);
+
+    const chkSyncLayout = document.getElementById('chkSyncLayout');
+    chkSyncLayout.checked = state.syncLayout !== false;
+    chkSyncLayout.onchange = e => {
+      state.syncLayout = e.target.checked;
+      if (state.syncLayout) {
+        syncAllLayoutFromTeamA();
+        rebuildAllTeamEditors();
+        rebuildSegmentPills();
+      }
+      saveState();
+    };
+
+    document.getElementById('btnJumpGroupA').onclick = () => jumpToTeamSegment('teamA', 'group_photo');
+    document.getElementById('btnJumpGroupB').onclick = () => jumpToTeamSegment('teamB', 'group_photo');
+    document.getElementById('btnResetFormation').onclick = () => {
+      [state.teamA, state.teamB].forEach(tObj => {
+        tObj.players.forEach((p, idx) => {
+          const slot = DEFAULT_GROUP_SLOTS[idx % DEFAULT_GROUP_SLOTS.length];
+          p.groupX = slot.gx;
+          p.groupY = slot.gy;
+          p.groupScale = slot.gScale;
+          p.groupZ = slot.z;
+          p.groupNameX = 0;
+          p.groupNameY = 0;
+          p.showGroupName = true;
+          p.vsX = 0;
+          p.vsY = 0;
+          p.vsScale = 1.0;
+        });
+      });
+      saveState();
+      rebuildAllTeamEditors();
+    };
+
+    document.getElementById('btnUploadAudio').onclick = () => document.getElementById('audioFileInput').click();
+    document.getElementById('audioFileInput').onchange = e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        state.bgmDataUrl = ev.target.result;
+        state.bgmName = f.name;
+        loadBgmAudio();
+        saveState();
+      };
+      r.readAsDataURL(f);
+    };
+    document.getElementById('btnResetAudio').onclick = () => {
+      const A = window.SIKAT_INTRO_ASSETS || {};
+      state.bgmDataUrl = A.bgmDataUrl || '';
+      state.bgmName = 'Reference Esports Intro BGM';
+      loadBgmAudio();
+      saveState();
+    };
+
+    document.getElementById('btnResetDefaults').onclick = () => {
+      if (!confirm('Reset all positions, sizes, and customizations back to defaults?')) return;
+      localStorage.removeItem(STORAGE_KEY_V2);
+      state = getDefaultState();
+      imageCache.clear();
+      setModeAndSync('teamA');
+      rebuildAllTeamEditors();
+      syncVSTabUI();
+      loadBgmAudio();
+      currentTime = 0;
+    };
+
+    document.getElementById('btnExportConfig').onclick = () => {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      const sanitize = s => (s || '').trim().replace(/[\\/:*?"<>|]+/g, '_').replace(/\s+/g, '_');
+      const name = sanitize(state.teamA.teamName) || 'intro_layout';
+      a.download = `${name}_config.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
+    document.getElementById('btnImportConfig').onclick = () => {
+      document.getElementById('importConfigFileInput').click();
+    };
+
+    document.getElementById('importConfigFileInput').onchange = e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (parsed && (parsed.teamA || parsed.teamB)) {
+            const def = getDefaultState();
+            state = Object.assign(def, parsed);
+            if (parsed.teamA) state.teamA = ensureTeamProps(Object.assign(def.teamA, parsed.teamA));
+            if (parsed.teamB) state.teamB = ensureTeamProps(Object.assign(def.teamB, parsed.teamB));
+            if (state.teamA && state.teamA.players) state.teamA.players.forEach(ensurePlayerProps);
+            if (state.teamB && state.teamB.players) state.teamB.players.forEach(ensurePlayerProps);
+            saveState();
+            rebuildAllTeamEditors();
+            syncVSTabUI();
+            rebuildSegmentPills();
+            loadBgmAudio();
+            alert('Project settings and positions successfully loaded!');
+          }
+        } catch (err) {
+          alert('Failed to load project file: Invalid JSON format.');
+        }
+      };
+      r.readAsText(f);
+      e.target.value = '';
+    };
+
+    document.getElementById('btnPlayPause').onclick = () => {
+      if (isPlaying) pausePlayback();
+      else startPlayback();
+    };
+    document.getElementById('btnRestart').onclick = () => {
+      currentTime = 0;
+      if (isPlaying && bgmAudio.src) bgmAudio.currentTime = 0;
+    };
+    document.getElementById('timelineScrubber').oninput = e => {
+      currentTime = parseFloat(e.target.value) || 0;
+      if (isPlaying && bgmAudio.src) {
+        bgmAudio.currentTime = currentTime % (bgmAudio.duration || 25.33);
+      }
+    };
+
+    document.getElementById('btnFullscreen').onclick = () => document.body.classList.toggle('stage-only');
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.classList.contains('stage-only')) {
+        document.body.classList.remove('stage-only');
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && e.target.tagName !== 'INPUT' && hoveredHitBox && hoveredHitBox.mode === 'group_name') {
+        e.preventDefault();
+        hoveredHitBox.player.showGroupName = false;
+        syncPlayerLayoutProps(hoveredHitBox.teamKey || hoveredHitBox.teamObj, hoveredHitBox.playerIndex, hoveredHitBox.player);
+        hoveredHitBox = null;
+        saveState();
+        rebuildAllTeamEditors();
+      } else if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        if (isPlaying) pausePlayback();
+        else startPlayback();
+      }
+    });
+
+    document.getElementById('btnRenderVideo').onclick = renderAndDownloadVideo;
+    document.getElementById('btnCancelRender').onclick = () => {
+      renderCanceled = true;
+      if (activeRecorder && activeRecorder.state !== 'inactive') activeRecorder.stop();
+    };
+
+    // =========================================================================
+    // Team Category / Folder Presets Loader (teams_data.js)
+    // =========================================================================
+    function getAvailableTeamPresets() {
+      return (window.SIKAT_TEAMS_PRESETS && typeof window.SIKAT_TEAMS_PRESETS === 'object')
+        ? window.SIKAT_TEAMS_PRESETS
+        : {};
+    }
+
+    // -----------------------------------------------------------------------
+    // Central Control presets (template-here server)
+    // When the studio is served from the template-here server at /playersintro/,
+    // teams + players come from /api/presets. Local teams_data.js stays as the
+    // offline fallback and as the source of intro styling/layout defaults.
+    // -----------------------------------------------------------------------
+
+    function resolvePresetPhoto(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      if (/^(data:|blob:|https?:)/i.test(raw)) return raw;
+      return '/' + raw.replace(/^\/+/, '');
+    }
+
+    function buildTeamPresetsFromCentral(central) {
+      const local = getAvailableTeamPresets();
+      const centralTeams = Array.isArray(central && central.teams) ? central.teams : [];
+      const centralPlayers = Array.isArray(central && central.players) ? central.players : [];
+      const playersById = new Map(centralPlayers.map(player => [player.id, player]));
+      const localByName = new Map(Object.keys(local).map(name => [String(name).toLowerCase(), local[name]]));
+
+      const result = {};
+      centralTeams.forEach(team => {
+        const name = String(team.name || 'Untitled team');
+        const base = localByName.get(name.toLowerCase()) || {};
+        const localPlayers = Array.isArray(base.players) ? base.players : [];
+
+        const ordered = (Array.isArray(team.roster) ? team.roster : [])
+          .map(id => playersById.get(id))
+          .filter(Boolean);
+        const roster = ordered.length
+          ? ordered
+          : centralPlayers
+              .filter(player => player.teamId === team.id)
+              .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        const players = roster.map((player, index) => {
+          const layout = localPlayers[index] || {};
+          return {
+            ...layout,
+            name: player.ign || layout.name || `Player ${index + 1}`,
+            title: player.realName || '',
+            photo: resolvePresetPhoto(player.photo) || layout.photo || '',
+            removeBg: layout.removeBg || false
+          };
+        });
+
+        result[name] = {
+          ...base,
+          key: base.key || name.replace(/[^a-zA-Z0-9]/g, '_'),
+          teamName: name,
+          introTitle: base.introTitle || `${name} PLAYERS INTRO`,
+          introSub: base.introSub || 'CAVITE STATE UNIVERSITY',
+          groupSub: base.groupSub || 'OFFICIAL SQUAD LINEUP',
+          vsSub: base.vsSub || name,
+          logo: resolvePresetPhoto(team.logo) || base.logo || null,
+          colPrimary: base.colPrimary || '#24103a',
+          colSecondary: base.colSecondary || '#5b21b6',
+          colAccent: base.colAccent || '#9d7bea',
+          colBg: base.colBg || '#090410',
+          players
+        };
+      });
+
+      return result;
+    }
+
+    async function loadCentralPresets() {
+      if (window.location.protocol === 'file:') return false;
+      try {
+        const response = await fetch('/api/presets', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const central = await response.json();
+        if (!central || !Array.isArray(central.teams)) return false;
+        window.SIKAT_TEAMS_PRESETS = buildTeamPresetsFromCentral(central);
+        return true;
+      } catch (error) {
+        console.warn('Players Intro: Central Control presets unavailable, using local teams_data.js.', error);
+        return false;
+      }
+    }
+
+    function populateTeamPresetDropdowns() {
+      const presets = getAvailableTeamPresets();
+      const names = Object.keys(presets).sort();
+
+      const selects = [
+        { el: document.getElementById('presetTeamASelect'), target: 'teamA', defaultLabel: '-- Select Team A Preset --' },
+        { el: document.getElementById('presetTeamBSelect'), target: 'teamB', defaultLabel: '-- Select Team B Preset --' },
+        { el: document.getElementById('vsPresetSelectA'), target: 'teamA', defaultLabel: '📂 Preset A...' },
+        { el: document.getElementById('vsPresetSelectB'), target: 'teamB', defaultLabel: '📂 Preset B...' }
+      ];
+
+      selects.forEach(({ el, defaultLabel }) => {
+        if (!el) return;
+        const curVal = el.value;
+        el.innerHTML = `<option value="">${defaultLabel}</option>`;
+        names.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name;
+          const pCount = presets[name].players ? presets[name].players.length : 0;
+          const logoTag = presets[name].logo ? ' • 🛡️ Logo' : '';
+          opt.textContent = `${name} (${pCount} players${logoTag})`;
+          el.appendChild(opt);
+        });
+        el.value = curVal;
+      });
+    }
+
+    function applyTeamPreset(targetTeamKey, presetName) {
+      const presets = getAvailableTeamPresets();
+      if (!presetName || !presets[presetName]) return;
+      const src = presets[presetName];
+      const targetTeam = targetTeamKey === 'teamB' ? state.teamB : state.teamA;
+
+      // Retain custom sizes and layout offsets, but update branding, colors, and player roster with transparent cutouts
+      targetTeam.teamName = src.teamName || presetName;
+      targetTeam.introTitle = src.introTitle || `${presetName} PLAYERS INTRO`;
+      targetTeam.introSub = src.introSub || 'CAVITE STATE UNIVERSITY';
+      targetTeam.groupSub = src.groupSub || 'OFFICIAL SQUAD LINEUP';
+      targetTeam.vsSub = src.vsSub || presetName;
+      targetTeam.colPrimary = src.colPrimary || targetTeam.colPrimary;
+      targetTeam.colSecondary = src.colSecondary || targetTeam.colSecondary;
+      targetTeam.colAccent = src.colAccent || targetTeam.colAccent;
+      targetTeam.colBg = src.colBg || targetTeam.colBg;
+
+      // Update team transparent logo if found in preset (or keep current logo if not provided so user can upload manually)
+      if (src.logo) {
+        targetTeam.logoDataUrl = src.logo;
+        if (targetTeamKey === 'teamA') {
+          const hLogo = document.getElementById('headerLogo');
+          if (hLogo) hLogo.src = src.logo;
+        }
+      }
+
+      // Deep clone player roster
+      if (Array.isArray(src.players)) {
+        targetTeam.players = JSON.parse(JSON.stringify(src.players)).map((p, idx) => {
+          ensurePlayerProps(p, idx);
+          // Retain synced global scale/zoom if sync is active
+          if (state.syncLayout !== false && state.teamA.players[0]) {
+            p.scale = state.teamA.players[0].scale || 1.0;
+            p.textScale = state.teamA.players[0].textScale || 1.0;
+            p.vsScale = state.teamA.players[0].vsScale || 1.0;
+          }
+          return p;
+        });
+      }
+
+      saveState();
+      rebuildAllTeamEditors();
+      syncVSTabUI();
+      rebuildSegmentPills();
+      jumpToTeamSegment(targetTeamKey, 'team_intro');
+    }
+
+    document.getElementById('presetTeamASelect').onchange = e => {
+      applyTeamPreset('teamA', e.target.value);
+    };
+    document.getElementById('presetTeamBSelect').onchange = e => {
+      applyTeamPreset('teamB', e.target.value);
+    };
+    document.getElementById('vsPresetSelectA').onchange = e => {
+      applyTeamPreset('teamA', e.target.value);
+    };
+    document.getElementById('vsPresetSelectB').onchange = e => {
+      applyTeamPreset('teamB', e.target.value);
+    };
+    document.getElementById('btnRescanTeamsFolder').onclick = () => {
+      alert('To rescan your teams folder after adding new photos into transparent/, double-click "UPDATE_TEAMS.bat" or run "python build_teams.py" in your folder, then refresh this page!');
+    };
+
+    // Init
+    loadBgmAudio();
+    populateTeamPresetDropdowns();
+    rebuildAllTeamEditors();
+    syncVSTabUI();
+    setModeAndSync(state.renderMode || 'teamA');
+
+    // Pull the live Central Control presets when served by template-here.
+    loadCentralPresets().then(loaded => {
+      if (!loaded) return;
+      populateTeamPresetDropdowns();
+      syncVSTabUI();
+    });
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

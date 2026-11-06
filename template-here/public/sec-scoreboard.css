@@ -1,0 +1,75 @@
+/* SEC SERIES — scoreboard overlay skin.
+   Reuses scoreboard.html and displaynicknamelogo.js. */
+
+.sec-scoreboard-page .scoreboard {
+    background-image: none;
+    background: transparent;
+}
+
+.sec-scoreboard-page .upper {
+    height: 102px;
+    background:
+        linear-gradient(180deg, rgba(24, 11, 32, 0.88), rgba(24, 11, 32, 0.36) 72%, transparent),
+        radial-gradient(ellipse at 50% 0%, rgba(216, 180, 254, 0.12), transparent 62%);
+    border-bottom: 1px solid rgba(222, 196, 242, 0.14);
+}
+
+.sec-scoreboard-page .lower {
+    height: 38px;
+    background: linear-gradient(180deg, rgba(24, 11, 32, 0.42), transparent);
+}
+
+.sec-scoreboard-page .logo {
+    position: relative;
+    border-radius: 14px;
+    background: radial-gradient(circle at 50% 40%, rgba(216, 180, 254, 0.14), transparent 68%);
+}
+
+.sec-scoreboard-page .logo img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.48));
+}
+
+.sec-scoreboard-page .uppermid {
+    color: var(--sec-white);
+}
+
+.sec-scoreboard-page .upper .uppermid {
+    height: 100%;
+}
+
+.sec-scoreboard-page .upper .sec-brand-logo {
+    max-width: 78%;
+    max-height: 68px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 22px rgba(216, 180, 254, 0.16));
+}
+
+.sec-scoreboard-page .teamnamesc {
+    margin-top: -27px;
+}
+
+.sec-scoreboard-page .tn {
+    color: var(--sec-white);
+    font-size: 35px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.72);
+}
+
+.sec-scoreboard-page .score {
+    color: var(--sec-white);
+    font-size: 42px;
+    text-shadow: 0 0 18px rgba(216, 180, 254, 0.55);
+}
+
+.sec-scoreboard-page .midscorename {
+    color: var(--sec-white);
+}
+
+.sec-scoreboard-page .gb1,
+.sec-scoreboard-page .gb2 {
+    background: transparent;
+}
+
+.sec-scoreboard-page .hide {
+    opacity: 0;
+}

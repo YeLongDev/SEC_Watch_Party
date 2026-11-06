@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Editor — Layout, Images & Draft Timing</title>
+    <link rel="stylesheet" href="displayeditor.css">
+</head>
+<body>
+
+<header class="de-header">
+    <div class="de-brand">
+        <div class="de-brand-mark">DE</div>
+        <div>
+            <h1>Display Editor</h1>
+            <p>Live layout, image overrides and draft timing</p>
+        </div>
+    </div>
+    <div class="de-header-actions">
+        <span id="saveStatus" class="de-status">READY</span>
+        <button id="reloadPreview" class="de-btn ghost" type="button">Reload Preview</button>
+        <button id="resetPage" class="de-btn danger" type="button">Reset This Display</button>
+    </div>
+</header>
+
+<div class="de-layout">
+    <aside class="de-sidebar">
+        <div class="de-section-title">Displays</div>
+        <div id="displayTabs" class="de-display-tabs">
+            <button class="de-display-tab active" data-page="display.html" type="button">
+                <span class="dot blue"></span>
+                <span>Draft Display</span>
+                <small>display.html</small>
+            </button>
+            <button class="de-display-tab" data-page="postdraftcostum.html" type="button">
+                <span class="dot purple"></span>
+                <span>Custom Post Draft</span>
+                <small>postdraftcostum.html</small>
+            </button>
+            <button class="de-display-tab" data-page="postgame.html" type="button">
+                <span class="dot green"></span>
+                <span>Postgame</span>
+                <small>postgame.html</small>
+            </button>
+            <button class="de-display-tab" data-page="mvpdisplay.html" type="button">
+                <span class="dot pink"></span>
+                <span>MVP Display</span>
+                <small>mvpdisplay.html</small>
+            </button>
+            <button class="de-display-tab" data-page="__draft__" type="button">
+                <span class="dot amber"></span>
+                <span>Draft Timing</span>
+                <small>countdown &amp; phases</small>
+            </button>
+        </div>
+
+        <div id="slotPanel">
+            <div class="de-section-title">
+                Image Slots
+                <input id="slotSearch" type="search" placeholder="Search slot…" autocomplete="off">
+            </div>
+            <div id="slotList" class="de-slot-list"></div>
+        </div>
+    </aside>
+
+    <main class="de-main">
+        <div class="de-toolbar">
+            <div class="de-toolbar-left">
+                <label class="de-check"><input id="selectMode" type="checkbox" checked> Click-to-select</label>
+                <span id="pageLabel" class="de-page-label">display.html</span>
+            </div>
+            <div class="de-toolbar-right">
+                <span id="selectionLabel" class="de-selection-label">No slot selected</span>
+            </div>
+        </div>
+        <div id="stage" class="de-stage">
+            <div id="stageInner" class="de-stage-inner">
+                <iframe id="previewFrame" title="Display preview"></iframe>
+            </div>
+        </div>
+        <div class="de-stage-hint">Tip: select a slot, drag it in the preview, or fine-tune it on the right. Changes save automatically.</div>
+    </main>
+
+    <aside class="de-properties">
+        <div id="propertyPanel">
+            <div class="de-empty-state">
+                <div class="de-empty-icon">◎</div>
+                <h2>Select a slot</h2>
+                <p>Click a picture in the preview, or pick a slot from the left list.</p>
+            </div>
+        </div>
+
+        <div id="draftPanel" class="de-draft-panel" hidden>
+            <div class="de-section-title">Live Draft Status</div>
+            <div class="de-draft-status">
+                <div><span>Phase</span><strong id="draftPhase">—</strong></div>
+                <div><span>Time left</span><strong id="draftTime">—</strong></div>
+                <div><span>State</span><strong id="draftRunning">—</strong></div>
+            </div>
+            <div class="de-draft-controls">
+                <button class="de-btn primary" data-draft-action="start" type="button">Start</button>
+                <button class="de-btn" data-draft-action="pause" type="button">Pause</button>
+                <button class="de-btn" data-draft-action="next" type="button">Next Phase</button>
+                <button class="de-btn danger" data-draft-action="reset" type="button">Reset Draft</button>
+            </div>
+
+            <div class="de-field-row">
+                <label class="de-field">
+                    <span>Set current timer (seconds)</span>
+                    <input id="draftSetTime" type="number" min="0" max="3600" step="1">
+                </label>
+                <button id="applyDraftTime" class="de-btn primary" type="button">Apply Time</button>
+            </div>
+
+            <label class="de-check de-auto-advance">
+                <input id="autoAdvance" type="checkbox" checked>
+                Auto-advance to the next phase when the timer reaches 0
+            </label>
+
+            <div class="de-section-title">Phase Durations (seconds)</div>
+            <div id="phaseDurationList" class="de-phase-list"></div>
+
+            <div class="de-draft-actions">
+                <button id="saveDraftConfig" class="de-btn primary" type="button">Save Timing</button>
+                <button id="resetDraftTiming" class="de-btn ghost" type="button">Restore Default 30/60</button>
+            </div>
+            <p class="de-note">New phase durations apply the next time a phase is started or advanced. The current countdown can be changed with “Apply Time”.</p>
+        </div>
+    </aside>
+</div>
+
+<datalist id="assetList"></datalist>
+<input id="uploadFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+
+<script src="script/displayeditor.js"></script>
+</body>
+</html>

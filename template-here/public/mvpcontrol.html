@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP Control - Prime Reveal</title>
+    <style>
+        @font-face {
+            font-family: 'Big Noodle Titling';
+            src: url('Assets/Font/big_noodle_titling.ttf') format('truetype');
+        }
+
+        :root {
+            --bg: #08090d;
+            --panel: rgba(17, 19, 26, 0.78);
+            --panel-strong: rgba(22, 25, 34, 0.92);
+            --border: rgba(255, 255, 255, 0.09);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text: #eef2f7;
+            --muted: #8a94a6;
+            --gold: #f5c451;
+            --gold-dim: rgba(245, 196, 81, 0.15);
+            --blue: #00d9ff;
+            --red: #ff3b5c;
+            --green: #35e08b;
+            --danger: #ff5d6c;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 85% 10%, rgba(245, 196, 81, 0.07), transparent 28%),
+                radial-gradient(circle at 8% 80%, rgba(0, 217, 255, 0.06), transparent 30%),
+                var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 24px 28px 40px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                repeating-linear-gradient(115deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 90px),
+                repeating-linear-gradient(25deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 140px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .topbar {
+            max-width: 1800px;
+            margin: 0 auto 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-mark {
+            width: 62px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, var(--gold), #b98514);
+            color: #08090d;
+            font-family: 'Big Noodle Titling', sans-serif;
+            font-size: 22px;
+            letter-spacing: 1px;
+            clip-path: polygon(0 0, 100% 0, 100% 78%, 78% 100%, 0 100%);
+            box-shadow: 0 0 32px rgba(245, 196, 81, 0.25);
+        }
+
+        .brand h1 {
+            font-family: 'Big Noodle Titling', sans-serif;
+            font-size: 2.45rem;
+            font-weight: normal;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .brand p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .top-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.26);
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            border-radius: 999px;
+        }
+
+        .pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .pill.connected { color: var(--green); border-color: rgba(53, 224, 139, 0.35); }
+        .pill.connected .dot { background: var(--green); box-shadow: 0 0 9px var(--green); }
+        .pill.live { color: var(--gold); border-color: rgba(245, 196, 81, 0.4); background: rgba(245, 196, 81, 0.08); }
+        .pill.live .dot { background: var(--gold); box-shadow: 0 0 9px var(--gold); }
+        button.pill { cursor: pointer; font: inherit; background: transparent; }
+        button.pill:hover { border-color: var(--accent); color: var(--accent); }
+        .pill.manual { color: #ff9fbe; border-color: rgba(255, 159, 190, 0.45); }
+        .pill.manual .dot { background: #ff9fbe; box-shadow: 0 0 9px #ff9fbe; }
+
+        .layout {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 390px minmax(430px, 1fr) minmax(440px, 1.12fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), transparent 55%);
+            opacity: 0.8;
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.16);
+        }
+
+        .panel-head h2 {
+            font-family: 'Big Noodle Titling', sans-serif;
+            font-size: 1.6rem;
+            font-weight: normal;
+            letter-spacing: 1.4px;
+        }
+
+        .panel-head .hint {
+            color: var(--muted);
+            font-family: 'Consolas', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .panel-body { padding: 20px 22px 24px; }
+
+        /* ---------- PHOTO ---------- */
+        .photo-editor { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+        .photo-drop {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 4.4;
+            min-height: 250px;
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.025) 25%, transparent 25%) 0 0 / 22px 22px,
+                linear-gradient(225deg, rgba(255,255,255,0.025) 25%, transparent 25%) 0 0 / 22px 22px,
+                linear-gradient(315deg, rgba(255,255,255,0.025) 25%, transparent 25%) 0 0 / 22px 22px,
+                linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%) 0 0 / 22px 22px,
+                rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .photo-drop:hover,
+        .photo-drop.dragging {
+            border-color: var(--gold);
+            box-shadow: inset 0 0 0 1px rgba(245, 196, 81, 0.22), 0 0 24px rgba(245, 196, 81, 0.08);
+        }
+
+        .photo-drop img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: bottom center;
+            display: block;
+            padding: 12px;
+            filter: drop-shadow(0 18px 18px rgba(0,0,0,0.55));
+        }
+
+        .photo-hint {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            padding: 8px 10px;
+            background: rgba(3, 5, 9, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-align: center;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .photo-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .photo-actions select { grid-column: 1 / -1; }
+
+        /* ---------- FIELDS ---------- */
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .field.full { grid-column: 1 / -1; }
+
+        .field > span,
+        .section-label {
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(245, 196, 81, 0.55);
+            box-shadow: 0 0 0 3px rgba(245, 196, 81, 0.07);
+        }
+
+        select option { background: #11141b; color: var(--text); }
+
+        .input-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 4px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-with-icon:focus-within {
+            border-color: rgba(245, 196, 81, 0.55);
+            box-shadow: 0 0 0 3px rgba(245, 196, 81, 0.07);
+        }
+
+        .input-with-icon img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #05070b;
+            flex: 0 0 38px;
+        }
+
+        .input-with-icon input {
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            min-height: 36px;
+            padding-left: 2px;
+        }
+
+        .segmented {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .segmented button {
+            min-height: 36px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            background: transparent;
+            color: var(--muted);
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .segmented button.active[data-side="blue"] {
+            color: var(--blue);
+            border-color: rgba(0, 217, 255, 0.4);
+            background: rgba(0, 217, 255, 0.1);
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.08);
+        }
+
+        .segmented button.active[data-side="red"] {
+            color: var(--red);
+            border-color: rgba(255, 59, 92, 0.4);
+            background: rgba(255, 59, 92, 0.1);
+            box-shadow: 0 0 16px rgba(255, 59, 92, 0.08);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+
+        /* ---------- MATCH LOAD ---------- */
+        .quick-load {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .quick-load span {
+            color: var(--gold);
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        /* ---------- STATS / LOADOUT ---------- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .stats-grid .full { grid-column: 1 / -1; }
+
+        .slot-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 50px;
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .slot-picker:hover {
+            border-color: rgba(245, 196, 81, 0.5);
+            background: rgba(245, 196, 81, 0.04);
+        }
+
+        .slot-picker img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: #05070b;
+            border: 1px solid rgba(0, 217, 255, 0.4);
+            flex: 0 0 36px;
+        }
+
+        .slot-picker span {
+            color: var(--text);
+            font-size: 0.85rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .items-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 10px;
+        }
+
+        .items-head .hint {
+            color: var(--muted);
+            font-family: 'Consolas', monospace;
+            font-size: 0.64rem;
+            letter-spacing: 1px;
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px;
+        }
+
+        .item-slot {
+            position: relative;
+            min-height: 92px;
+            padding: 8px 6px 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: linear-gradient(150deg, rgba(21, 27, 39, 0.8), rgba(4, 7, 12, 0.88));
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .item-slot:hover {
+            border-color: rgba(245, 196, 81, 0.55);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }
+
+        .item-slot img { width: 48px; height: 48px; object-fit: contain; }
+        .item-slot span {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.65rem;
+            letter-spacing: 0.4px;
+        }
+
+        .item-slot.empty { border-style: dashed; opacity: 0.7; }
+        .item-slot .empty-mark { font-size: 1.5rem; color: #4b5567; line-height: 1; }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-top: 22px;
+        }
+
+        .actions .primary { grid-column: 1 / -1; }
+
+        .btn {
+            min-height: 44px;
+            padding: 10px 13px;
+            border: 1px solid var(--border-strong);
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { border-color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.07); }
+        .btn:disabled { opacity: 0.45; cursor: wait; transform: none !important; }
+
+        .btn.primary {
+            border-color: rgba(245, 196, 81, 0.55);
+            background: linear-gradient(135deg, #f5c451, #c9951d);
+            color: #08090d;
+            box-shadow: 0 8px 24px rgba(245, 196, 81, 0.16);
+        }
+
+        .btn.primary:hover { filter: brightness(1.08); box-shadow: 0 10px 30px rgba(245, 196, 81, 0.25); }
+        .btn.danger { color: var(--danger); border-color: rgba(255, 93, 108, 0.35); }
+        .btn.danger:hover { background: rgba(255, 93, 108, 0.08); }
+
+        .status-line {
+            margin-top: 12px;
+            min-height: 18px;
+            color: var(--muted);
+            font-size: 0.76rem;
+            letter-spacing: 0.3px;
+        }
+
+        .status-line.ok { color: var(--green); }
+        .status-line.error { color: var(--danger); }
+        .status-line.busy { color: var(--gold); }
+
+        /* ---------- PREVIEW ---------- */
+        .preview-panel { position: sticky; top: 24px; }
+        .preview-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #020307;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #previewFrame {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1920px;
+            height: 1080px;
+            border: 0;
+            transform-origin: center center;
+            background: #020307;
+        }
+
+        .preview-note {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.5;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .meta-grid div { display: flex; flex-direction: column; gap: 4px; }
+        .meta-grid span { color: var(--muted); font-size: 0.62rem; letter-spacing: 1.2px; text-transform: uppercase; }
+        .meta-grid strong { font-family: 'Consolas', monospace; font-size: 0.8rem; font-weight: normal; color: #cdd5e1; }
+
+        .output-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .output-row input { font-family: 'Consolas', monospace; font-size: 0.7rem; }
+        .output-row .btn { flex: 0 0 auto; white-space: nowrap; }
+
+        /* ---------- PICKER MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-card {
+            width: min(980px, 94vw);
+            max-height: 84vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel-strong);
+            border: 1px solid rgba(245, 196, 81, 0.32);
+            border-radius: 12px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.65);
+            overflow: hidden;
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .modal-head h3 {
+            font-family: 'Big Noodle Titling', sans-serif;
+            font-size: 1.7rem;
+            font-weight: normal;
+            letter-spacing: 1.2px;
+        }
+
+        .modal-close {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover { color: #fff; border-color: var(--border-strong); }
+
+        .modal-search { padding: 14px 22px; border-bottom: 1px solid var(--border); }
+
+        .picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+            gap: 8px;
+            padding: 18px 22px 24px;
+            overflow-y: auto;
+        }
+
+        .picker-item {
+            min-height: 104px;
+            padding: 9px 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.24);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text);
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .picker-item:hover {
+            border-color: var(--gold);
+            background: rgba(245, 196, 81, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .picker-item img { width: 54px; height: 54px; object-fit: contain; }
+        .picker-item span {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.66rem;
+            color: #c8d0dc;
+        }
+
+        .picker-item.clear { border-color: rgba(255, 93, 108, 0.35); }
+        .picker-item.clear .clear-x { color: var(--danger); font-size: 1.7rem; line-height: 1; }
+
+        .picker-empty {
+            grid-column: 1 / -1;
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1320px) {
+            .layout { grid-template-columns: 360px minmax(380px, 1fr); }
+            .preview-panel { grid-column: 1 / -1; position: static; }
+            .preview-frame { max-width: 900px; margin: 0 auto; }
+        }
+
+        @media (max-width: 860px) {
+            body { padding: 16px; }
+            .topbar { align-items: flex-start; flex-direction: column; }
+            .layout { grid-template-columns: 1fr; }
+            .brand h1 { font-size: 2rem; }
+            .preview-panel { grid-column: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">MVP</div>
+            <div>
+                <h1>MVP CONTROL</h1>
+                <p>Build, preview, and push the MVP reveal</p>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="pill" id="connStatus"><span class="dot"></span><span id="connText">CONNECTING</span></div>
+            <div class="pill" id="liveStatus"><span class="dot"></span><span id="liveText">HIDDEN</span></div>
+            <button class="pill" id="syncPostgameBtn" type="button" title="Load the MVP ticked in postgame control">SYNC POSTGAME</button>
+            <div class="pill" id="mvpSource"><span class="dot"></span><span id="mvpSourceText">AUTO</span></div>
+        </div>
+    </header>
+
+    <main class="layout">
+
+        <!-- ================= PLAYER ================= -->
+        <section class="panel">
+            <div class="panel-head">
+                <h2>PLAYER</h2>
+                <span class="hint">01 / IDENTITY</span>
+            </div>
+            <div class="panel-body">
+
+                <div class="photo-editor">
+                    <div class="photo-drop" id="photoDrop">
+                        <img id="photoPreview" src="Assets/player/playertemp.png" alt="MVP player">
+                        <div class="photo-hint">Click or drop a transparent PNG</div>
+                    </div>
+                    <div class="photo-actions">
+                        <input type="file" id="photoInput" accept="image/png,image/jpeg,image/webp" hidden>
+                        <button class="btn" id="uploadBtn" type="button">UPLOAD PHOTO</button>
+                        <button class="btn danger" id="removePhotoBtn" type="button">REMOVE</button>
+                        <select id="existingPhoto">
+                            <option value="">Choose existing photo...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="field-grid">
+                    <label class="field full">
+                        <span>Nickname</span>
+                        <input id="nickname" type="text" placeholder="Player name" maxlength="24">
+                    </label>
+                    <label class="field full">
+                        <span>Team name</span>
+                        <input id="teamName" type="text" placeholder="BLUE TEAM" maxlength="30">
+                    </label>
+                    <div class="field full">
+                        <span>Side</span>
+                        <div class="segmented" id="sideToggle">
+                            <button type="button" data-side="blue" class="active">BLUE SIDE</button>
+                            <button type="button" data-side="red">RED SIDE</button>
+                        </div>
+                    </div>
+                    <label class="field full">
+                        <span>Hero</span>
+                        <div class="input-with-icon">
+                            <img id="heroPreview" src="Assets/HeroPick/idle.png" alt="Hero">
+                            <input id="hero" type="text" list="heroList" placeholder="Search hero...">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="quick-load">
+                    <span>Load player from match data</span>
+                    <select id="matchPlayer">
+                        <option value="">Select a player...</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= STATS ================= -->
+        <section class="panel">
+            <div class="panel-head">
+                <h2>STATS &amp; LOADOUT</h2>
+                <span class="hint">02 / MATCH DATA</span>
+            </div>
+            <div class="panel-body">
+
+                <div class="stats-grid">
+                    <label class="field">
+                        <span>Level</span>
+                        <input id="level" type="number" min="0" max="99" value="15">
+                    </label>
+                    <label class="field">
+                        <span>Gold</span>
+                        <input id="gold" type="number" min="0" value="0">
+                    </label>
+                    <label class="field full">
+                        <span>K / D / A</span>
+                        <input id="kda" type="text" value="0/0/0" maxlength="18">
+                    </label>
+                    <div class="field full">
+                        <span>Spell</span>
+                        <div class="slot-picker" id="spellPicker">
+                            <img id="spellIcon" src="Assets/itemandspell/Inspire.png" alt="Spell">
+                            <span id="spellText">Choose spell</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items-head">
+                    <span class="section-label">Item build</span>
+                    <span class="hint">CLICK A SLOT TO CHANGE</span>
+                </div>
+                <div class="item-grid" id="itemGrid"></div>
+
+                <div class="actions">
+                    <button class="btn primary" id="updateBtn" type="button">UPDATE DISPLAY</button>
+                    <button class="btn" id="hideBtn" type="button">HIDE MVP</button>
+                    <button class="btn danger" id="clearBtn" type="button">CLEAR FORM</button>
+                </div>
+
+                <div class="status-line" id="statusLine">Ready. Load a player or fill the form.</div>
+            </div>
+        </section>
+
+        <!-- ================= PREVIEW ================= -->
+        <section class="panel preview-panel">
+            <div class="panel-head">
+                <h2>LIVE PREVIEW</h2>
+                <span class="hint">03 / OUTPUT</span>
+            </div>
+            <div class="panel-body">
+                <div class="preview-frame" id="previewFrameWrap">
+                    <iframe id="previewFrame" src="mvpdisplay.html?preview=1" scrolling="no" title="MVP preview"></iframe>
+                </div>
+                <div class="preview-note">
+                    This preview is a draft. Click <strong>UPDATE DISPLAY</strong> to send it to the OBS browser source.
+                </div>
+
+                <div class="meta-grid">
+                    <div><span>Last sync</span><strong id="lastSync">--:--:--</strong></div>
+                    <div><span>Output size</span><strong>1920 × 1080</strong></div>
+                </div>
+
+                <div class="output-row">
+                    <input id="outputUrl" type="text" readonly>
+                    <button class="btn" id="copyUrlBtn" type="button">COPY URL</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= PICKER MODAL ================= -->
+    <div class="modal-overlay" id="pickerModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3 id="pickerTitle">SELECT ITEM</h3>
+                <button class="modal-close" id="closePicker" type="button">&times;</button>
+            </div>
+            <div class="modal-search">
+                <input id="pickerSearch" type="text" placeholder="Search...">
+            </div>
+            <div class="picker-grid" id="pickerGrid"></div>
+        </div>
+    </div>
+
+    <datalist id="heroList"></datalist>
+
+    <script>
+        const SPELL_NAMES = new Set([
+            'Execute', 'Inspire', 'Retribution', 'Flame Retribution', 'Ice Retribution',
+            'Bloody_Retributio', 'Sprint', 'Flicker', 'Purify', 'Aegis', 'Arrival',
+            'Flameshot', 'Petrify', 'Vengeance', 'Revitalize', 'Encourage', 'Healing Necklace'
+        ]);
+
+        const state = {
+            side: 'blue',
+            nickname: '',
+            teamName: 'BLUE TEAM',
+            hero: '',
+            playerPhoto: 'Assets/player/playertemp.png',
+            level: '15',
+            kda: '0/0/0',
+            gold: '0',
+            spell: '',
+            items: ['', '', '', '', '', ''],
+            checkboxId: 'mvp-manual'
+        };
+
+        let assets = { heroes: [], itemAssets: [], players: [] };
+        let spells = [];
+        let items = [];
+        let matchData = null;
+        let pickerContext = { type: 'item', index: 0 };
+        let previewTimer = null;
+        let socket = null;
+        let reconnectTimer = null;
+        // Postgame control is the authoritative MVP source. This panel mirrors it live
+        // until the operator presses UPDATE DISPLAY (manual override).
+        let manualOverride = false;
+
+        const $ = (id) => document.getElementById(id);
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function nowTime() {
+            return new Date().toLocaleTimeString([], { hour12: false });
+        }
+
+        function setStatus(message, type = '') {
+            const el = $('statusLine');
+            el.textContent = message;
+            el.className = `status-line ${type}`.trim();
+        }
+
+        function setConnection(connected) {
+            const pill = $('connStatus');
+            pill.classList.toggle('connected', connected);
+            $('connText').textContent = connected ? 'SERVER CONNECTED' : 'RECONNECTING';
+        }
+
+        function setLive(isLive) {
+            const pill = $('liveStatus');
+            pill.classList.toggle('live', !!isLive);
+            $('liveText').textContent = isLive ? 'LIVE' : 'HIDDEN';
+        }
+
+        function defaultTeamName(side) {
+            return side === 'red' ? 'RED TEAM' : 'BLUE TEAM';
+        }
+
+        function assetName(value, folder) {
+            if (!value) return '';
+            const text = String(value).trim();
+            if (!text || text === 'idle') return '';
+            if (text.startsWith(`Assets/${folder}/`)) {
+                return text.slice(`Assets/${folder}/`.length).replace(/\.[^.]+$/, '');
+            }
+            if (text.includes('/')) return text.split('/').pop().replace(/\.[^.]+$/, '');
+            return text.replace(/\.[^.]+$/, '');
+        }
+
+        function assetPath(value, folder) {
+            if (!value) return '';
+            const text = String(value).trim();
+            if (!text || text === 'idle') return '';
+            if (/^(https?:|data:|blob:|\/)/i.test(text)) return text;
+            if (text.startsWith('Assets/')) return text;
+            if (text.includes('/')) return text;
+            return `Assets/${folder}/${text}.png`;
+        }
+
+        function photoUrl() {
+            return state.playerPhoto || 'Assets/player/playertemp.png';
+        }
+
+        function heroUrl() {
+            return state.hero ? assetPath(state.hero, 'HeroPick') : 'Assets/HeroPick/idle.png';
+        }
+
+        function spellUrl() {
+            return state.spell ? assetPath(state.spell, 'itemandspell') : '';
+        }
+
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
+        function syncUIFromState() {
+            $('nickname').value = state.nickname;
+            $('teamName').value = state.teamName;
+            $('level').value = state.level;
+            $('gold').value = state.gold;
+            $('kda').value = state.kda;
+            $('hero').value = state.hero;
+
+            const preview = $('photoPreview');
+            preview.onerror = () => { preview.src = 'Assets/player/playertemp.png'; };
+            preview.src = photoUrl();
+
+            const hero = $('heroPreview');
+            hero.onerror = () => { hero.src = 'Assets/HeroPick/idle.png'; };
+            hero.src = heroUrl();
+
+            const spellImg = $('spellIcon');
+            const spellText = $('spellText');
+            if (state.spell) {
+                spellImg.style.display = '';
+                spellImg.onerror = () => { spellImg.style.display = 'none'; };
+                spellImg.src = spellUrl();
+                spellText.textContent = state.spell;
+            } else {
+                spellImg.style.display = 'none';
+                spellText.textContent = 'Choose spell';
+            }
+
+            document.querySelectorAll('#sideToggle button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.side === state.side);
+            });
+
+            const existing = $('existingPhoto');
+            if (state.playerPhoto && state.playerPhoto.startsWith('Assets/player/')) {
+                existing.value = state.playerPhoto.slice('Assets/player/'.length).replace(/\.[^.]+$/, '');
+            } else {
+                existing.value = '';
+            }
+
+            renderItemSlots();
+        }
+
+        function renderItemSlots() {
+            const grid = $('itemGrid');
+            grid.innerHTML = '';
+
+            state.items.forEach((item, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = `item-slot ${item ? '' : 'empty'}`.trim();
+                button.title = item || 'Empty slot';
+                button.addEventListener('click', () => openPicker('item', index));
+
+                if (item) {
+                    const img = document.createElement('img');
+                    img.src = assetPath(item, 'itemandspell');
+                    img.alt = item;
+                    img.onerror = () => { img.style.display = 'none'; };
+                    const label = document.createElement('span');
+                    label.textContent = item;
+                    button.appendChild(img);
+                    button.appendChild(label);
+                } else {
+                    const mark = document.createElement('span');
+                    mark.className = 'empty-mark';
+                    mark.textContent = '+';
+                    const label = document.createElement('span');
+                    label.textContent = 'Empty';
+                    button.appendChild(mark);
+                    button.appendChild(label);
+                }
+
+                grid.appendChild(button);
+            });
+        }
+
+        function buildPayload() {
+            const teamName = state.teamName.trim() || defaultTeamName(state.side);
+            const itemsPayload = {};
+            for (let i = 0; i < 6; i++) {
+                itemsPayload[`ITEM ${i + 1}`] = state.items[i] || 'idle';
+            }
+
+            return {
+                mvp: {
+                    checkboxId: state.checkboxId || 'mvp-manual',
+                    side: state.side,
+                    nickname: state.nickname.trim() || 'PLAYER',
+                    teamName,
+                    heroImg: heroUrl(),
+                    playerPhoto: photoUrl(),
+                    stats: {
+                        LVL: String(state.level || '0'),
+                        KDA: state.kda.trim() || '0/0/0',
+                        GOLD: String(state.gold || '0'),
+                        SPELL: state.spell || '',
+                        ...itemsPayload
+                    }
+                }
+            };
+        }
+
+        function schedulePreview() {
+            clearTimeout(previewTimer);
+            previewTimer = setTimeout(sendPreview, 120);
+        }
+
+        function sendPreview() {
+            const frame = $('previewFrame');
+            if (!frame.contentWindow) return;
+            frame.contentWindow.postMessage({ type: 'mvp_preview', data: buildPayload().mvp }, '*');
+        }
+
+        function fitPreview() {
+            const wrap = $('previewFrameWrap');
+            const frame = $('previewFrame');
+            if (!wrap || !frame) return;
+            const scale = Math.min(wrap.clientWidth / 1920, wrap.clientHeight / 1080);
+            frame.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        function hydrateFromMvp(mvp) {
+            if (!mvp) return;
+            const stats = mvp.stats || {};
+
+            state.side = mvp.side === 'red' ? 'red' : 'blue';
+            state.nickname = mvp.nickname || '';
+            state.teamName = mvp.teamName || mvp.team || defaultTeamName(state.side);
+            state.hero = assetName(mvp.heroImg, 'HeroPick');
+            if (state.hero === 'idle') state.hero = '';
+            state.playerPhoto = mvp.playerPhoto || 'Assets/player/playertemp.png';
+            state.level = String(stats.LVL ?? stats.lvl ?? '0');
+            state.kda = stats.KDA ?? stats.kda ?? '0/0/0';
+            state.gold = String(stats.GOLD ?? stats.gold ?? '0');
+            state.spell = assetName(stats.SPELL ?? stats.spell ?? '', 'itemandspell');
+            state.checkboxId = mvp.checkboxId || 'mvp-manual';
+            state.items = [1, 2, 3, 4, 5, 6].map(i => {
+                const value = stats[`ITEM ${i}`] ?? stats[`item${i}`] ?? '';
+                return assetName(value, 'itemandspell');
+            });
+
+            syncUIFromState();
+            schedulePreview();
+        }
+
+        async function loadAssets() {
+            try {
+                const response = await fetch('/api/mvp-assets');
+                if (!response.ok) throw new Error('MVP asset API returned ' + response.status);
+                assets = await response.json();
+            } catch (error) {
+                console.warn('MVP asset API unavailable, falling back to /api/items.', error);
+                try {
+                    const fallback = await fetch('/api/items').then(r => r.json());
+                    assets = { heroes: [], itemAssets: Array.isArray(fallback) ? fallback : [], players: [] };
+                } catch (fallbackError) {
+                    assets = { heroes: [], itemAssets: [], players: [] };
+                }
+                setStatus('Asset list unavailable. Restart server.js to enable hero and photo lists.', 'error');
+            }
+
+            assets.heroes = Array.isArray(assets.heroes) ? assets.heroes : [];
+            assets.itemAssets = Array.isArray(assets.itemAssets) ? assets.itemAssets : [];
+            assets.players = Array.isArray(assets.players) ? assets.players : [];
+
+            spells = assets.itemAssets.filter(name => SPELL_NAMES.has(name));
+            items = assets.itemAssets.filter(name => !SPELL_NAMES.has(name));
+
+            $('heroList').innerHTML = assets.heroes
+                .map(name => `<option value="${escapeHtml(name)}"></option>`)
+                .join('');
+
+            const photoSelect = $('existingPhoto');
+            const players = assets.players.filter(name => !['noplayer', 'playertemp'].includes(name));
+            photoSelect.innerHTML = '<option value="">Choose existing photo...</option>' +
+                players.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+        }
+
+        async function loadSavedMvp() {
+            try {
+                const response = await fetch('/api/mvp');
+                if (!response.ok) throw new Error('MVP API returned ' + response.status);
+                const data = await response.json();
+                if (data && data.mvp) {
+                    hydrateFromMvp(data.mvp);
+                    setLive(true);
+                    setStatus('Loaded the saved MVP. You can edit and push a new version.', 'ok');
+                } else {
+                    syncUIFromState();
+                    setLive(false);
+                }
+            } catch (error) {
+                console.error('Failed to load saved MVP:', error);
+                syncUIFromState();
+                setStatus('Could not load saved MVP.', 'error');
+            }
+        }
+
+        async function loadMatchData() {
+            try {
+                const response = await fetch('/api/matchdata');
+                if (!response.ok) throw new Error('Match data API returned ' + response.status);
+                matchData = await response.json();
+
+                const select = $('matchPlayer');
+                const options = ['<option value="">Select a player...</option>'];
+                const teams = [
+                    { key: 'blueteam', label: 'BLUE' },
+                    { key: 'redteam', label: 'RED' }
+                ];
+
+                teams.forEach(teamInfo => {
+                    const team = matchData.teamdata && matchData.teamdata[teamInfo.key];
+                    if (!team || !Array.isArray(team.playerlist)) return;
+                    team.playerlist.forEach((player, index) => {
+                        const name = player.name || `Player ${index + 1}`;
+                        const heroName = assetName(player.hero, 'HeroPick');
+                        const hero = heroName ? ` · ${heroName}` : '';
+                        options.push(`<option value="${teamInfo.key}:${index}">${teamInfo.label} ${index + 1} — ${escapeHtml(name)}${escapeHtml(hero)}</option>`);
+                    });
+                });
+
+                select.innerHTML = options.join('');
+            } catch (error) {
+                console.error('Failed to load match data:', error);
+            }
+        }
+
+        async function applyMatchPlayer(value) {
+            if (!matchData || !value) return;
+            const [teamKey, indexText] = value.split(':');
+            const index = Number(indexText);
+            const team = matchData.teamdata && matchData.teamdata[teamKey];
+            const player = team && team.playerlist && team.playerlist[index];
+            if (!player) return;
+
+            state.side = teamKey === 'blueteam' ? 'blue' : 'red';
+            state.nickname = player.name || '';
+            state.teamName = team.teamname || defaultTeamName(state.side);
+            state.hero = assetName(player.hero, 'HeroPick');
+            state.level = String(player.level ?? '0');
+            state.kda = player.KDA || '0/0/0';
+            state.gold = String(player.gold ?? '0');
+            state.spell = assetName(player.spell, 'itemandspell');
+            state.items = Array.from({ length: 6 }, (_, i) => {
+                const item = player.itemlist && player.itemlist[i];
+                return assetName(item, 'itemandspell');
+            });
+            state.checkboxId = `mvp-${teamKey}-${index}`;
+
+            const candidate = (player.photo && String(player.photo).trim() !== '')
+                ? player.photo
+                : (player.name ? `Assets/player/${player.name}.png` : '');
+            if (candidate) {
+                const exists = await checkImageExists(candidate);
+                state.playerPhoto = exists ? candidate : 'Assets/player/playertemp.png';
+            } else {
+                state.playerPhoto = 'Assets/player/playertemp.png';
+            }
+
+            syncUIFromState();
+            schedulePreview();
+            setStatus(`Loaded ${player.name || 'player'} from match data. Upload a photo if needed.`, 'ok');
+        }
+
+        async function uploadPhoto(file) {
+            if (!file) return;
+            if (!/^image\/(png|jpeg|jpg|webp)$/i.test(file.type)) {
+                setStatus('Use a PNG, JPG, or WEBP image.', 'error');
+                return;
+            }
+
+            const localUrl = URL.createObjectURL(file);
+            $('photoPreview').src = localUrl;
+            setStatus('Uploading photo...', 'busy');
+
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                const response = await fetch('/api/mvp-photo', { method: 'POST', body: formData });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Upload failed');
+
+                state.playerPhoto = data.path;
+                syncUIFromState();
+                schedulePreview();
+                setStatus('Photo uploaded. Click UPDATE DISPLAY to push it live.', 'ok');
+            } catch (error) {
+                console.error('MVP photo upload failed:', error);
+                syncUIFromState();
+                setStatus('Photo upload failed: ' + error.message, 'error');
+            } finally {
+                URL.revokeObjectURL(localUrl);
+            }
+        }
+
+        function openPicker(type, index = 0) {
+            pickerContext = { type, index };
+            $('pickerTitle').textContent = type === 'spell' ? 'SELECT SPELL' : 'SELECT ITEM';
+            $('pickerSearch').value = '';
+            $('pickerModal').classList.add('show');
+            $('pickerSearch').focus();
+            renderPicker('');
+        }
+
+        function closePicker() {
+            $('pickerModal').classList.remove('show');
+        }
+
+        function renderPicker(search) {
+            const grid = $('pickerGrid');
+            const query = (search || '').toLowerCase();
+            const list = (pickerContext.type === 'spell' ? spells : items)
+                .filter(name => name.toLowerCase().includes(query));
+
+            grid.innerHTML = '';
+
+            const clear = document.createElement('button');
+            clear.type = 'button';
+            clear.className = 'picker-item clear';
+            clear.innerHTML = '<span class="clear-x">&times;</span><span>CLEAR</span>';
+            clear.addEventListener('click', () => applyPicker(''));
+            grid.appendChild(clear);
+
+            list.forEach(name => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'picker-item';
+
+                const img = document.createElement('img');
+                img.src = assetPath(name, 'itemandspell');
+                img.alt = name;
+                img.onerror = () => { img.style.display = 'none'; };
+
+                const label = document.createElement('span');
+                label.textContent = name;
+
+                button.appendChild(img);
+                button.appendChild(label);
+                button.addEventListener('click', () => applyPicker(name));
+                grid.appendChild(button);
+            });
+
+            if (!list.length) {
+                const empty = document.createElement('div');
+                empty.className = 'picker-empty';
+                empty.textContent = 'No assets match your search.';
+                grid.appendChild(empty);
+            }
+        }
+
+        function applyPicker(value) {
+            if (pickerContext.type === 'spell') {
+                state.spell = value;
+            } else {
+                state.items[pickerContext.index] = value;
+            }
+            syncUIFromState();
+            schedulePreview();
+            closePicker();
+            setStatus(value ? `Selected ${value}. Click UPDATE DISPLAY to push it live.` : 'Slot cleared. Click UPDATE DISPLAY to push it live.', 'ok');
+        }
+
+        function setMvpSource() {
+            const pill = $('mvpSource');
+            const text = $('mvpSourceText');
+            if (!pill || !text) return;
+            pill.classList.toggle('manual', manualOverride);
+            text.textContent = manualOverride ? 'MANUAL' : 'AUTO';
+        }
+
+        async function syncFromPostgame() {
+            manualOverride = false;
+            setMvpSource();
+            try {
+                const data = await fetch('/api/mvp').then(r => r.json());
+                if (data && data.mvp) {
+                    hydrateFromMvp(data.mvp);
+                    setLive(true);
+                    setStatus('Synced the MVP ticked in postgame control.', 'ok');
+                } else {
+                    setLive(false);
+                    setStatus('No MVP is ticked in postgame control yet.', '');
+                }
+                $('lastSync').textContent = nowTime();
+            } catch (error) {
+                console.error('Sync from postgame failed:', error);
+                setStatus('Could not read the postgame MVP.', 'error');
+            }
+        }
+
+        async function pushMvp() {
+            const button = $('updateBtn');
+            button.disabled = true;
+            manualOverride = true;
+            setMvpSource();
+            setStatus('Pushing MVP to the display...', 'busy');
+
+            try {
+                const response = await fetch('/api/mvp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(buildPayload())
+                });
+                if (!response.ok) throw new Error('Server returned ' + response.status);
+
+                setLive(true);
+                $('lastSync').textContent = nowTime();
+                setStatus('Live. The MVP display has been updated.', 'ok');
+            } catch (error) {
+                console.error('MVP push failed:', error);
+                setStatus('Could not update the display: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        async function hideMvp() {
+            setStatus('Hiding MVP...', 'busy');
+            try {
+                const response = await fetch('/api/mvp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mvp: null })
+                });
+                if (!response.ok) throw new Error('Server returned ' + response.status);
+
+                setLive(false);
+                $('lastSync').textContent = nowTime();
+                setStatus('MVP hidden. The display is now clear.', 'ok');
+            } catch (error) {
+                console.error('Hide MVP failed:', error);
+                setStatus('Could not hide MVP: ' + error.message, 'error');
+            }
+        }
+
+        function clearForm() {
+            state.side = 'blue';
+            state.nickname = '';
+            state.teamName = 'BLUE TEAM';
+            state.hero = '';
+            state.playerPhoto = 'Assets/player/playertemp.png';
+            state.level = '15';
+            state.kda = '0/0/0';
+            state.gold = '0';
+            state.spell = '';
+            state.items = ['', '', '', '', '', ''];
+            state.checkboxId = 'mvp-manual';
+            syncUIFromState();
+            schedulePreview();
+            setStatus('Form cleared. The live display was not changed.', '');
+        }
+
+        function connectSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            socket = new WebSocket(`${protocol}//${window.location.host}`);
+
+            socket.onopen = () => {
+                clearTimeout(reconnectTimer);
+                setConnection(true);
+            };
+
+            socket.onmessage = (event) => {
+                try {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'mvp_update') {
+                        setLive(!!msg.data);
+                        $('lastSync').textContent = nowTime();
+                        // Postgame control is authoritative: mirror its MVP unless the
+                        // operator has taken manual control on this page.
+                        if (!manualOverride && msg.data) {
+                            hydrateFromMvp(msg.data);
+                            setStatus('Auto-loaded the MVP from postgame control.', 'ok');
+                        }
+                        setMvpSource();
+                    }
+                } catch (error) {
+                    console.error('MVP control WS error:', error);
+                }
+            };
+
+            socket.onclose = () => {
+                setConnection(false);
+                reconnectTimer = setTimeout(connectSocket, 2500);
+            };
+
+            socket.onerror = () => {
+                try { socket.close(); } catch (error) {}
+            };
+        }
+
+        async function copyOutputUrl() {
+            const url = `${window.location.origin}/mvpdisplay.html`;
+            try {
+                await navigator.clipboard.writeText(url);
+                setStatus('OBS URL copied to clipboard.', 'ok');
+            } catch (error) {
+                $('outputUrl').select();
+                document.execCommand('copy');
+                setStatus('OBS URL copied to clipboard.', 'ok');
+            }
+        }
+
+        function bindEvents() {
+            $('syncPostgameBtn').addEventListener('click', syncFromPostgame);
+            $('photoInput').addEventListener('change', (event) => uploadPhoto(event.target.files[0]));
+            $('uploadBtn').addEventListener('click', () => $('photoInput').click());
+            $('removePhotoBtn').addEventListener('click', () => {
+                state.playerPhoto = '';
+                syncUIFromState();
+                schedulePreview();
+                setStatus('Photo removed. The display will use the fallback image.', '');
+            });
+
+            const drop = $('photoDrop');
+            drop.addEventListener('click', () => $('photoInput').click());
+            drop.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                drop.classList.add('dragging');
+            });
+            drop.addEventListener('dragleave', () => drop.classList.remove('dragging'));
+            drop.addEventListener('drop', (event) => {
+                event.preventDefault();
+                drop.classList.remove('dragging');
+                uploadPhoto(event.dataTransfer.files[0]);
+            });
+
+            $('existingPhoto').addEventListener('change', (event) => {
+                if (!event.target.value) return;
+                state.playerPhoto = `Assets/player/${event.target.value}.png`;
+                syncUIFromState();
+                schedulePreview();
+                setStatus('Existing photo selected. Click UPDATE DISPLAY to push it live.', 'ok');
+            });
+
+            $('nickname').addEventListener('input', (event) => {
+                state.nickname = event.target.value;
+                schedulePreview();
+            });
+            $('teamName').addEventListener('input', (event) => {
+                state.teamName = event.target.value;
+                schedulePreview();
+            });
+            $('level').addEventListener('input', (event) => {
+                state.level = event.target.value;
+                schedulePreview();
+            });
+            $('gold').addEventListener('input', (event) => {
+                state.gold = event.target.value;
+                schedulePreview();
+            });
+            $('kda').addEventListener('input', (event) => {
+                state.kda = event.target.value;
+                schedulePreview();
+            });
+            $('hero').addEventListener('input', (event) => {
+                state.hero = event.target.value;
+                const hero = $('heroPreview');
+                hero.onerror = () => { hero.src = 'Assets/HeroPick/idle.png'; };
+                hero.src = heroUrl();
+                schedulePreview();
+            });
+
+            document.querySelectorAll('#sideToggle button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const nextSide = button.dataset.side;
+                    const oldDefault = defaultTeamName(state.side);
+                    state.side = nextSide;
+                    if (!state.teamName || state.teamName === oldDefault) {
+                        state.teamName = defaultTeamName(nextSide);
+                    }
+                    syncUIFromState();
+                    schedulePreview();
+                });
+            });
+
+            $('matchPlayer').addEventListener('change', (event) => {
+                applyMatchPlayer(event.target.value);
+                event.target.value = '';
+            });
+
+            $('spellPicker').addEventListener('click', () => openPicker('spell'));
+            $('updateBtn').addEventListener('click', pushMvp);
+            $('hideBtn').addEventListener('click', hideMvp);
+            $('clearBtn').addEventListener('click', clearForm);
+            $('copyUrlBtn').addEventListener('click', copyOutputUrl);
+
+            $('closePicker').addEventListener('click', closePicker);
+            $('pickerModal').addEventListener('click', (event) => {
+                if (event.target === $('pickerModal')) closePicker();
+            });
+            $('pickerSearch').addEventListener('input', (event) => renderPicker(event.target.value));
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closePicker();
+            });
+
+            $('previewFrame').addEventListener('load', sendPreview);
+            window.addEventListener('resize', fitPreview);
+        }
+
+        async function init() {
+            $('outputUrl').value = `${window.location.origin}/mvpdisplay.html`;
+            bindEvents();
+            setMvpSource();
+            await loadAssets();
+            await Promise.all([loadSavedMvp(), loadMatchData()]);
+            syncUIFromState();
+            connectSocket();
+            fitPreview();
+            sendPreview();
+        }
+
+        init();
+    </script>
+</body>
+</html>

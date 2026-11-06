@@ -1,0 +1,75 @@
+        
+        body {
+            display: flex;
+            justify-content: space-between;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .side {
+            display: flex;
+            flex-direction: column;
+             margin-top: 4px;
+        }
+        .player {
+            display: flex;
+            gap: 5px;
+            background-color: rgba(17, 17, 17, 0.267);
+            margin: 3px;
+   
+        }
+        .player div {
+            width: 50px;
+            height: 50px;
+            background-size: 140%;
+            background-position: center;
+            scale: 0.9;
+            border: 1px solid #f0f0f0;
+        }
+        #middle {
+            width: 200px;
+        }
+
+        .mainbox{
+            width: 1920px;
+            height: 1080px;
+
+            display: flex;
+            align-items: end;
+            justify-content: center;
+        }
+
+        .buildbox{
+            width: 1100px;
+            height: 300px;
+            background-color: #3a2660;
+            background-image:
+                radial-gradient(ellipse at 20% 60%, rgba(255,255,255,0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 40%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                repeating-linear-gradient(125deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 80px),
+                repeating-linear-gradient(35deg,  rgba(255,255,255,0.02) 0 1px, transparent 1px 130px);
+            background-size: cover;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+           
+        }
+
+        .hero{
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            overflow: hidden;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 7.3px;
+        
+        }
+
+        .hero img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            margin-top: -5px;
+        }

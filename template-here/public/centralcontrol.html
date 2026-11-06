@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Control</title>
+    <link rel="stylesheet" href="centralcontrol.css">
+</head>
+
+<body>
+    <div class="background-container">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">CC</div>
+            <div>
+                <h1>CENTRAL CONTROL</h1>
+                <p>Team &amp; player presets · match setup · live actions · panels</p>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="pill" id="connStatus"><span class="dot"></span><span id="connText">CONNECTING</span></div>
+            <div class="pill" id="presetCount">0 TEAMS / 0 PLAYERS</div>
+            <a class="pill link-pill" href="hub.html">OPEN HUB</a>
+        </div>
+    </header>
+
+    <nav class="tabs" id="tabs">
+        <button type="button" data-tab="presets" class="active">PRESETS</button>
+        <button type="button" data-tab="intro">PLAYERS INTRO</button>
+        <button type="button" data-tab="setup">MATCH SETUP</button>
+        <button type="button" data-tab="live">LIVE ACTIONS</button>
+        <button type="button" data-tab="panels">CONTROL PANELS</button>
+        <button type="button" data-tab="links">ALL PAGES</button>
+    </nav>
+
+    <main class="content">
+
+        <!-- ================= PRESETS ================= -->
+        <section class="tab-panel active" id="tab-presets">
+            <div class="grid-2">
+
+                <!-- TEAMS -->
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2>TEAMS</h2>
+                        <span class="hint">NAME + LOGO</span>
+                    </div>
+                    <div class="panel-body">
+                        <form id="teamForm" class="form">
+                            <input type="text" id="teamName" placeholder="Team name (e.g. DCS)" maxlength="60" required>
+                            <div class="upload-row">
+                                <input type="file" id="teamLogo" accept="image/*">
+                                <span class="upload-hint" id="teamLogoHint">All image formats · max 50 MB</span>
+                            </div>
+                            <div class="logo-preview" id="teamLogoPreview" hidden>
+                                <img id="teamLogoPreviewImg" alt="Team logo preview">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" id="teamSubmit" class="btn primary">ADD TEAM</button>
+                                <button type="button" id="teamCancel" class="btn" hidden>CANCEL EDIT</button>
+                            </div>
+                        </form>
+                        <div id="teamList" class="list"></div>
+                    </div>
+                </div>
+
+                <!-- PLAYERS -->
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2>PLAYERS</h2>
+                        <span class="hint">PHOTO · IGN · ROLE · TEAM</span>
+                    </div>
+                    <div class="panel-body">
+                        <form id="playerForm" class="form">
+                            <input type="text" id="playerIgn" placeholder="In-game name (primary)" maxlength="60" required>
+                            <input type="text" id="playerRealName" placeholder="Full name (secondary, optional)" maxlength="120">
+                            <div class="form-row">
+                                <label class="field">
+                                    <span>Role</span>
+                                    <select id="playerRole">
+                                        <option value="gold">Gold</option>
+                                        <option value="exp">Exp</option>
+                                        <option value="mid">Mid</option>
+                                        <option value="junggle">Jungle</option>
+                                        <option value="roam">Roam</option>
+                                        <option value="sub">Sub / Reserve</option>
+                                    </select>
+                                </label>
+                                <label class="field">
+                                    <span>Team</span>
+                                    <select id="playerTeam"></select>
+                                </label>
+                            </div>
+                            <div class="upload-row">
+                                <input type="file" id="playerPhoto" accept="image/*">
+                                <span class="upload-hint" id="playerPhotoHint">All image formats (Transparent PNG recommended) · max 50 MB</span>
+                            </div>
+                            <div class="logo-preview" id="playerPhotoPreview" hidden>
+                                <img id="playerPhotoPreviewImg" alt="Player photo preview">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" id="playerSubmit" class="btn primary">ADD PLAYER</button>
+                                <button type="button" id="playerCancel" class="btn" hidden>CANCEL EDIT</button>
+                            </div>
+                        </form>
+                        <div id="playerList" class="list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel note-panel">
+                <div class="panel-body note">
+                    Presets are stored in <code>database/presets.json</code> and images in
+                    <code>Assets/presets/</code>. A player can belong to one team at a time; players with
+                    <b>no team</b> are free agents and can still be picked into a match.
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PLAYERS INTRO ================= -->
+        <section class="tab-panel" id="tab-intro">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>PLAYERS INTRO STUDIO</h2>
+                    <span class="hint">READS /api/presets AS ITS SOURCE</span>
+                </div>
+                <div class="panel-body">
+                    <div class="intro-toolbar">
+                        <div>
+                            <div class="card-title">Preset source</div>
+                            <div class="card-sub" id="introStatus">Loading presets…</div>
+                        </div>
+                        <div class="btn-row">
+                            <a class="btn primary" href="playersintro/" target="_blank" rel="noopener">OPEN PLAYERS INTRO</a>
+                            <button type="button" class="btn" id="refreshIntroBtn">REFRESH PRESETS</button>
+                        </div>
+                    </div>
+                    <div class="note" style="margin:14px 0 18px;">
+                        The studio opens at <code>/playersintro/</code> and pulls team names, player IGNs, full
+                        names and photos straight from these presets. Edit a player or team here, then refresh
+                        the studio to see it. Team logos are optional and can be uploaded in the PRESETS tab.
+                    </div>
+                    <div id="introTeams" class="intro-team-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MATCH SETUP ================= -->
+        <section class="tab-panel" id="tab-setup">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>MATCH SETUP</h2>
+                    <span class="hint">APPLIES TO MATCHDATA</span>
+                </div>
+                <div class="panel-body">
+                    <div class="setup-teams">
+                        <label class="field">
+                            <span>Blue team</span>
+                            <select id="setupBlueTeam"></select>
+                        </label>
+                        <label class="field">
+                            <span>Red team</span>
+                            <select id="setupRedTeam"></select>
+                        </label>
+                    </div>
+
+                    <div class="setup-grid">
+                        <div class="setup-side blue">
+                            <div class="setup-side-head">
+                                <img id="setupBlueLogo" class="setup-logo" alt="Blue logo" hidden>
+                                <div>
+                                    <div class="setup-side-name" id="setupBlueName">BLUE TEAM</div>
+                                    <div class="setup-side-score">SLOTS 1–5 · AUTO BY ROLE</div>
+                                </div>
+                            </div>
+                            <div id="setupBlueSlots" class="slot-list"></div>
+                        </div>
+
+                        <div class="setup-side red">
+                            <div class="setup-side-head">
+                                <img id="setupRedLogo" class="setup-logo" alt="Red logo" hidden>
+                                <div>
+                                    <div class="setup-side-name" id="setupRedName">RED TEAM</div>
+                                    <div class="setup-side-score">SLOTS 1–5 · AUTO BY ROLE</div>
+                                </div>
+                            </div>
+                            <div id="setupRedSlots" class="slot-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="check-row">
+                        <label><input type="checkbox" id="resetStats" checked> Reset player stats &amp; team objectives</label>
+                        <label><input type="checkbox" id="resetScore" checked> Reset score &amp; winner</label>
+                        <label><input type="checkbox" id="resetDraft" checked> Reset draft (picks, bans, timer)</label>
+                        <label><input type="checkbox" id="resetMvp" checked> Clear the MVP display</label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="applyBtn" class="btn primary big">APPLY TO MATCH</button>
+                        <button type="button" id="reloadBtn" class="btn">RELOAD FROM SERVER</button>
+                    </div>
+
+                    <div class="apply-status" id="applyStatus">Choose a blue and a red team preset.</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>CURRENT MATCH</h2>
+                    <span class="hint">LIVE FROM /api/matchdata</span>
+                </div>
+                <div class="panel-body">
+                    <div id="currentMatch" class="current-match"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LIVE ACTIONS ================= -->
+        <section class="tab-panel" id="tab-live">
+            <div class="grid-2">
+                <div class="panel">
+                    <div class="panel-head"><h2>SEC COUNTDOWN</h2><span class="hint">SERVER-AUTHORITATIVE</span></div>
+                    <div class="panel-body">
+                        <div class="btn-row">
+                            <button class="btn" data-sec="start">START</button>
+                            <button class="btn" data-sec="pause">PAUSE</button>
+                            <button class="btn" data-sec="reset">RESET</button>
+                            <button class="btn" data-sec="reveal">REVEAL ROLES</button>
+                            <button class="btn" data-sec="hide">HIDE ROLES</button>
+                        </div>
+                        <div class="live-readout" id="secReadout">Reading timer…</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head"><h2>MATCH RECORDS</h2><span class="hint">ARCHIVE &amp; CLEANUP</span></div>
+                    <div class="panel-body">
+                        <div class="btn-row">
+                            <button class="btn" id="archiveDraftBtn">SAVE DRAFT TO PREVIOUS</button>
+                            <button class="btn" id="saveRecordBtn">ARCHIVE MATCH RECORD</button>
+                            <button class="btn danger" id="deleteRecordsBtn">DELETE ALL RECORDS</button>
+                        </div>
+                        <div class="live-readout" id="recordReadout">Archive keeps 7 rotating match records.</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head"><h2>MVP</h2><span class="hint">POSTGAME CONTROLS THE MVP</span></div>
+                    <div class="panel-body">
+                        <div class="btn-row">
+                            <button class="btn danger" id="hideMvpBtn">HIDE MVP DISPLAY</button>
+                            <a class="btn" href="postgamecontrol.html" target="_blank" rel="noopener">OPEN POSTGAME</a>
+                            <a class="btn" href="mvpcontrol.html" target="_blank" rel="noopener">OPEN MVP CONTROL</a>
+                        </div>
+                        <div class="live-readout" id="mvpReadout">No MVP selected.</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head"><h2>KILL NOTIFICATIONS</h2><span class="hint">/api/notification</span></div>
+                    <div class="panel-body">
+                        <div class="btn-row wrap" id="notifButtons"></div>
+                        <div class="live-readout" id="notifReadout">Nothing triggered yet.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PANELS ================= -->
+        <section class="tab-panel" id="tab-panels">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>CONTROL PANELS</h2>
+                    <span class="hint">EMBEDDED · SAME SERVER</span>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-toolbar">
+                        <select id="panelSelect"></select>
+                        <button class="btn" id="refreshPanelBtn">REFRESH</button>
+                        <a class="btn" id="openPanelBtn" href="control.html" target="_blank" rel="noopener">OPEN IN NEW TAB</a>
+                    </div>
+                    <div class="iframe-wrap">
+                        <iframe id="panelFrame" src="control.html" title="Control panel"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LINKS ================= -->
+        <section class="tab-panel" id="tab-links">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>ALL PAGES</h2>
+                    <span class="hint">OPEN LOCALLY OR FROM ANOTHER MACHINE</span>
+                </div>
+                <div class="panel-body">
+                    <div id="linkGrid" class="link-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script/centralcontrol.js"></script>
+</body>
+</html>

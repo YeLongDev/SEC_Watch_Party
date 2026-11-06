@@ -1,0 +1,697 @@
+{
+  "version": 1,
+  "teams": [
+    {
+      "id": "team_intro_dcs_1",
+      "name": "DCS 1",
+      "logo": "Assets/presets/asset_preset_1793793663791.png",
+      "roster": [
+        "player_intro_dcs_1_1",
+        "player_intro_dcs_1_2",
+        "player_intro_dcs_1_3",
+        "player_intro_dcs_1_4",
+        "player_intro_dcs_1_5",
+        "player_intro_dcs_1_6",
+        "player_mw4nulh0_ymvb2c"
+      ],
+      "createdAt": 1793793419935,
+      "updatedAt": 1793793663807
+    },
+    {
+      "id": "team_intro_dcs_2",
+      "name": "DCS 2",
+      "logo": "Assets/presets/asset_preset_1793793673954.png",
+      "roster": [
+        "player_intro_dcs_2_1",
+        "player_intro_dcs_2_2",
+        "player_intro_dcs_2_3",
+        "player_intro_dcs_2_4",
+        "player_intro_dcs_2_5",
+        "player_intro_dcs_2_6"
+      ],
+      "createdAt": 1793793419942,
+      "updatedAt": 1793793673980
+    },
+    {
+      "id": "team_intro_de_1",
+      "name": "DE 1",
+      "logo": "Assets/presets/asset_preset_1793793685133.png",
+      "roster": [
+        "player_intro_de_1_1",
+        "player_intro_de_1_2",
+        "player_intro_de_1_3",
+        "player_intro_de_1_5",
+        "player_intro_de_1_6",
+        "player_mw4mafhg_hgu443"
+      ],
+      "createdAt": 1793793419949,
+      "updatedAt": 1793793685152
+    },
+    {
+      "id": "team_intro_de_2",
+      "name": "DE 2",
+      "logo": "Assets/presets/asset_preset_1793793699921.png",
+      "roster": [
+        "player_intro_de_2_1",
+        "player_intro_de_2_2",
+        "player_intro_de_2_3",
+        "player_intro_de_2_4",
+        "player_intro_de_2_5"
+      ],
+      "createdAt": 1793793419956,
+      "updatedAt": 1793793699942
+    },
+    {
+      "id": "team_intro_dhm_1",
+      "name": "DHM 1",
+      "logo": "Assets/presets/asset_preset_1793793706388.png",
+      "roster": [
+        "player_intro_dhm_1_1",
+        "player_intro_dhm_1_2",
+        "player_intro_dhm_1_3",
+        "player_intro_dhm_1_4",
+        "player_intro_dhm_1_5"
+      ],
+      "createdAt": 1793793419962,
+      "updatedAt": 1793793706402
+    },
+    {
+      "id": "team_intro_dhm_2",
+      "name": "DHM 2",
+      "logo": "Assets/presets/asset_preset_1793793719699.png",
+      "roster": [
+        "player_intro_dhm_2_1",
+        "player_intro_dhm_2_2",
+        "player_intro_dhm_2_3",
+        "player_intro_dhm_2_4",
+        "player_intro_dhm_2_5",
+        "player_mw38l3ky_ppizc0"
+      ],
+      "createdAt": 1793793419968,
+      "updatedAt": 1793793719711
+    },
+    {
+      "id": "team_intro_dit_1",
+      "name": "DIT 1",
+      "logo": "Assets/presets/asset_preset_1793793725592.png",
+      "roster": [
+        "player_intro_dit_1_1",
+        "player_intro_dit_1_2",
+        "player_intro_dit_1_3",
+        "player_intro_dit_1_4",
+        "player_intro_dit_1_5"
+      ],
+      "createdAt": 1793793419975,
+      "updatedAt": 1793793725603
+    },
+    {
+      "id": "team_intro_dit_2",
+      "name": "DIT 2",
+      "logo": "Assets/presets/asset_preset_1793793734584.png",
+      "roster": [
+        "player_intro_dit_2_1",
+        "player_intro_dit_2_2",
+        "player_intro_dit_2_3",
+        "player_intro_dit_2_4",
+        "player_intro_dit_2_5"
+      ],
+      "createdAt": 1793793419981,
+      "updatedAt": 1793793734598
+    },
+    {
+      "id": "team_intro_dte_1",
+      "name": "DTE 1",
+      "logo": "Assets/presets/asset_preset_1793793743914.png",
+      "roster": [
+        "player_intro_dte_1_1",
+        "player_intro_dte_1_2",
+        "player_intro_dte_1_3",
+        "player_intro_dte_1_4",
+        "player_intro_dte_1_5",
+        "player_intro_dte_1_6"
+      ],
+      "createdAt": 1793793419987,
+      "updatedAt": 1793793743938
+    }
+  ],
+  "players": [
+    {
+      "id": "player_intro_dcs_1_1",
+      "ign": "Finx Lunarnyx",
+      "realName": "Dhan Aeron T. Bulda",
+      "photo": "Assets/presets/playersintro/dcs_1/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dcs_1",
+      "order": 0,
+      "createdAt": 1793793419936,
+      "updatedAt": 1793793419936
+    },
+    {
+      "id": "player_intro_dcs_1_2",
+      "ign": "Aizen.",
+      "realName": "Lance Chrisstian C. Cajigas",
+      "photo": "Assets/presets/player-photo_player_intro_dcs_1_2_1793957230372.jpg",
+      "role": "exp",
+      "teamId": "team_intro_dcs_1",
+      "order": 1,
+      "createdAt": 1793793419937,
+      "updatedAt": 1793957230376
+    },
+    {
+      "id": "player_intro_dcs_1_3",
+      "ign": "bewitched cyann",
+      "realName": "Lawrence P. Catapang",
+      "photo": "Assets/presets/player-photo_player_intro_dcs_1_3_1793957243748.jpg",
+      "role": "mid",
+      "teamId": "team_intro_dcs_1",
+      "order": 2,
+      "createdAt": 1793793419938,
+      "updatedAt": 1793957264004
+    },
+    {
+      "id": "player_intro_dcs_1_4",
+      "ign": "Nozu",
+      "realName": "Paul Jerome U. Daraog",
+      "photo": "Assets/presets/playersintro/dcs_1/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dcs_1",
+      "order": 3,
+      "createdAt": 1793793419939,
+      "updatedAt": 1793793419939
+    },
+    {
+      "id": "player_intro_dcs_1_5",
+      "ign": "Jung",
+      "realName": "Horace M. Doneza",
+      "photo": "Assets/presets/playersintro/dcs_1/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dcs_1",
+      "order": 4,
+      "createdAt": 1793793419940,
+      "updatedAt": 1793793419940
+    },
+    {
+      "id": "player_intro_dcs_1_6",
+      "ign": "Sua",
+      "realName": "David Sean G. Garcia",
+      "photo": "Assets/presets/playersintro/dcs_1/06.png",
+      "role": "sub",
+      "teamId": "team_intro_dcs_1",
+      "order": 5,
+      "createdAt": 1793793419941,
+      "updatedAt": 1793793419941
+    },
+    {
+      "id": "player_intro_dcs_2_1",
+      "ign": "Vin.",
+      "realName": "Arvin Paez Blancaflor",
+      "photo": "Assets/presets/playersintro/dcs_2/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dcs_2",
+      "order": 0,
+      "createdAt": 1793793419943,
+      "updatedAt": 1793793419943
+    },
+    {
+      "id": "player_intro_dcs_2_2",
+      "ign": "bryan.",
+      "realName": "Bryan Asma",
+      "photo": "Assets/presets/playersintro/dcs_2/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dcs_2",
+      "order": 1,
+      "createdAt": 1793793419944,
+      "updatedAt": 1793793419944
+    },
+    {
+      "id": "player_intro_dcs_2_3",
+      "ign": "Macchiato",
+      "realName": "Charles Ivan Malanay",
+      "photo": "Assets/presets/playersintro/dcs_2/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dcs_2",
+      "order": 2,
+      "createdAt": 1793793419945,
+      "updatedAt": 1793793419945
+    },
+    {
+      "id": "player_intro_dcs_2_4",
+      "ign": "Yujin.",
+      "realName": "Eugene Abarro",
+      "photo": "Assets/presets/playersintro/dcs_2/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dcs_2",
+      "order": 3,
+      "createdAt": 1793793419946,
+      "updatedAt": 1793793419946
+    },
+    {
+      "id": "player_intro_dcs_2_5",
+      "ign": "Karl",
+      "realName": "Karl Jan Vincent Alejo",
+      "photo": "Assets/presets/playersintro/dcs_2/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dcs_2",
+      "order": 4,
+      "createdAt": 1793793419947,
+      "updatedAt": 1793793419947
+    },
+    {
+      "id": "player_intro_dcs_2_6",
+      "ign": "ISPENSER",
+      "realName": "Spencer Bagaoisan",
+      "photo": "Assets/presets/playersintro/dcs_2/06.png",
+      "role": "sub",
+      "teamId": "team_intro_dcs_2",
+      "order": 5,
+      "createdAt": 1793793419948,
+      "updatedAt": 1793793419948
+    },
+    {
+      "id": "player_intro_de_1_1",
+      "ign": "Zaizen.",
+      "realName": "Daven Brylle Gutay",
+      "photo": "Assets/presets/playersintro/de_1/01.png",
+      "role": "gold",
+      "teamId": "team_intro_de_1",
+      "order": 0,
+      "createdAt": 1793793419950,
+      "updatedAt": 1793955797165
+    },
+    {
+      "id": "player_intro_de_1_2",
+      "ign": "Jhin.",
+      "realName": "John Aron Gadingan",
+      "photo": "Assets/presets/playersintro/de_1/02.png",
+      "role": "exp",
+      "teamId": "team_intro_de_1",
+      "order": 1,
+      "createdAt": 1793793419951,
+      "updatedAt": 1793793419951
+    },
+    {
+      "id": "player_intro_de_1_3",
+      "ign": "Axiom",
+      "realName": "Jommel Dacusin",
+      "photo": "Assets/presets/playersintro/de_1/03.png",
+      "role": "mid",
+      "teamId": "team_intro_de_1",
+      "order": 2,
+      "createdAt": 1793793419952,
+      "updatedAt": 1793793419952
+    },
+    {
+      "id": "player_intro_de_1_5",
+      "ign": "Zedd.",
+      "realName": "Raine Jhayden Endozo",
+      "photo": "Assets/presets/player-photo_player_intro_de_1_5_1793955300500.png",
+      "role": "roam",
+      "teamId": "team_intro_de_1",
+      "order": 4,
+      "createdAt": 1793793419954,
+      "updatedAt": 1793955300524
+    },
+    {
+      "id": "player_intro_de_1_6",
+      "ign": "Licht",
+      "realName": "Rohg Aron Delos Reyes",
+      "photo": "Assets/presets/player-photo_player_intro_de_1_6_1793955735228.png",
+      "role": "sub",
+      "teamId": "team_intro_de_1",
+      "order": 5,
+      "createdAt": 1793793419955,
+      "updatedAt": 1793955735253
+    },
+    {
+      "id": "player_intro_de_2_1",
+      "ign": "att.Y9H3KlUGdkazxQAQtUzzCht2wK1v2FBy4_Nz8z_NPAo",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/de_2/01.png",
+      "role": "gold",
+      "teamId": "team_intro_de_2",
+      "order": 0,
+      "createdAt": 1793793419957,
+      "updatedAt": 1793793419957
+    },
+    {
+      "id": "player_intro_de_2_2",
+      "ign": "b1b0b81abbb48477273ae2ab380fa9ea",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/de_2/02.png",
+      "role": "exp",
+      "teamId": "team_intro_de_2",
+      "order": 1,
+      "createdAt": 1793793419958,
+      "updatedAt": 1793793419958
+    },
+    {
+      "id": "player_intro_de_2_3",
+      "ign": "Img_6030",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/de_2/03.png",
+      "role": "mid",
+      "teamId": "team_intro_de_2",
+      "order": 2,
+      "createdAt": 1793793419959,
+      "updatedAt": 1793793419959
+    },
+    {
+      "id": "player_intro_de_2_4",
+      "ign": "Img_6034",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/de_2/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_de_2",
+      "order": 3,
+      "createdAt": 1793793419960,
+      "updatedAt": 1793793419960
+    },
+    {
+      "id": "player_intro_de_2_5",
+      "ign": "Img_6069",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/de_2/05.png",
+      "role": "roam",
+      "teamId": "team_intro_de_2",
+      "order": 4,
+      "createdAt": 1793793419961,
+      "updatedAt": 1793793419961
+    },
+    {
+      "id": "player_intro_dhm_1_1",
+      "ign": "Axe Dhaniel R. Molina YOKITSSS",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_1/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dhm_1",
+      "order": 0,
+      "createdAt": 1793793419963,
+      "updatedAt": 1793793419963
+    },
+    {
+      "id": "player_intro_dhm_1_2",
+      "ign": "Doodge Lester A. Cabahug",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_1/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dhm_1",
+      "order": 1,
+      "createdAt": 1793793419964,
+      "updatedAt": 1793793419964
+    },
+    {
+      "id": "player_intro_dhm_1_3",
+      "ign": "Joseph L. Red",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_1/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dhm_1",
+      "order": 2,
+      "createdAt": 1793793419965,
+      "updatedAt": 1793793419965
+    },
+    {
+      "id": "player_intro_dhm_1_4",
+      "ign": "June Carlo A. Legaspi",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_1/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dhm_1",
+      "order": 3,
+      "createdAt": 1793793419966,
+      "updatedAt": 1793793419966
+    },
+    {
+      "id": "player_intro_dhm_1_5",
+      "ign": "Luis Angelo S. Montemayor",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_1/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dhm_1",
+      "order": 4,
+      "createdAt": 1793793419967,
+      "updatedAt": 1793793419967
+    },
+    {
+      "id": "player_intro_dhm_2_1",
+      "ign": "Haise",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_2/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dhm_2",
+      "order": 0,
+      "createdAt": 1793793419969,
+      "updatedAt": 1793793419969
+    },
+    {
+      "id": "player_intro_dhm_2_2",
+      "ign": "jeydi",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_2/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dhm_2",
+      "order": 1,
+      "createdAt": 1793793419970,
+      "updatedAt": 1793793419970
+    },
+    {
+      "id": "player_intro_dhm_2_3",
+      "ign": "LilyOfTheValley",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_2/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dhm_2",
+      "order": 2,
+      "createdAt": 1793793419971,
+      "updatedAt": 1793793419971
+    },
+    {
+      "id": "player_intro_dhm_2_4",
+      "ign": "mycho",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_2/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dhm_2",
+      "order": 3,
+      "createdAt": 1793793419972,
+      "updatedAt": 1793793419972
+    },
+    {
+      "id": "player_intro_dhm_2_5",
+      "ign": "PamPalonyPamPo",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dhm_2/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dhm_2",
+      "order": 4,
+      "createdAt": 1793793419973,
+      "updatedAt": 1793793419973
+    },
+    {
+      "id": "player_intro_dit_1_1",
+      "ign": "1793106743805",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dit_1/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dit_1",
+      "order": 0,
+      "createdAt": 1793793419976,
+      "updatedAt": 1793793419976
+    },
+    {
+      "id": "player_intro_dit_1_2",
+      "ign": "1793107101796",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dit_1/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dit_1",
+      "order": 1,
+      "createdAt": 1793793419977,
+      "updatedAt": 1793793419977
+    },
+    {
+      "id": "player_intro_dit_1_3",
+      "ign": "1793107362791",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dit_1/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dit_1",
+      "order": 2,
+      "createdAt": 1793793419978,
+      "updatedAt": 1793793419978
+    },
+    {
+      "id": "player_intro_dit_1_4",
+      "ign": "1793112082730",
+      "realName": "",
+      "photo": "Assets/presets/playersintro/dit_1/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dit_1",
+      "order": 3,
+      "createdAt": 1793793419979,
+      "updatedAt": 1793793419979
+    },
+    {
+      "id": "player_intro_dit_1_5",
+      "ign": "1793114049187",
+      "realName": "",
+      "photo": "Assets/presets/player-photo_player_intro_dit_1_5_1793956456377.png",
+      "role": "roam",
+      "teamId": "team_intro_dit_1",
+      "order": 4,
+      "createdAt": 1793793419980,
+      "updatedAt": 1793956456385
+    },
+    {
+      "id": "player_intro_dit_2_1",
+      "ign": "EARL",
+      "realName": "Dustin Earl Detera",
+      "photo": "Assets/presets/playersintro/dit_2/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dit_2",
+      "order": 0,
+      "createdAt": 1793793419982,
+      "updatedAt": 1793793419982
+    },
+    {
+      "id": "player_intro_dit_2_2",
+      "ign": "BERT",
+      "realName": "Jobert Derla",
+      "photo": "Assets/presets/playersintro/dit_2/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dit_2",
+      "order": 1,
+      "createdAt": 1793793419983,
+      "updatedAt": 1793793419983
+    },
+    {
+      "id": "player_intro_dit_2_3",
+      "ign": "COLMS",
+      "realName": "John Ray Colmenar",
+      "photo": "Assets/presets/playersintro/dit_2/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dit_2",
+      "order": 2,
+      "createdAt": 1793793419984,
+      "updatedAt": 1793793419984
+    },
+    {
+      "id": "player_intro_dit_2_4",
+      "ign": "CEL",
+      "realName": "Marcel John Bola",
+      "photo": "Assets/presets/playersintro/dit_2/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dit_2",
+      "order": 3,
+      "createdAt": 1793793419985,
+      "updatedAt": 1793793419985
+    },
+    {
+      "id": "player_intro_dit_2_5",
+      "ign": "GELO",
+      "realName": "Ralph Angelo Abeleda",
+      "photo": "Assets/presets/playersintro/dit_2/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dit_2",
+      "order": 4,
+      "createdAt": 1793793419986,
+      "updatedAt": 1793793419986
+    },
+    {
+      "id": "player_intro_dte_1_1",
+      "ign": "Artézia.",
+      "realName": "Auljosh C. Romero",
+      "photo": "Assets/presets/playersintro/dte_1/01.png",
+      "role": "gold",
+      "teamId": "team_intro_dte_1",
+      "order": 0,
+      "createdAt": 1793793419988,
+      "updatedAt": 1793793419988
+    },
+    {
+      "id": "player_intro_dte_1_2",
+      "ign": "Saru",
+      "realName": "Christian Martin M. Sajonia",
+      "photo": "Assets/presets/playersintro/dte_1/02.png",
+      "role": "exp",
+      "teamId": "team_intro_dte_1",
+      "order": 1,
+      "createdAt": 1793793419989,
+      "updatedAt": 1793793419989
+    },
+    {
+      "id": "player_intro_dte_1_3",
+      "ign": "ppppppppppppp",
+      "realName": "Dwayne Miel S. Villanueva",
+      "photo": "Assets/presets/playersintro/dte_1/03.png",
+      "role": "mid",
+      "teamId": "team_intro_dte_1",
+      "order": 2,
+      "createdAt": 1793793419990,
+      "updatedAt": 1793793419990
+    },
+    {
+      "id": "player_intro_dte_1_4",
+      "ign": "vienusaur",
+      "realName": "John Arvie C. Solero",
+      "photo": "Assets/presets/playersintro/dte_1/04.png",
+      "role": "junggle",
+      "teamId": "team_intro_dte_1",
+      "order": 3,
+      "createdAt": 1793793419991,
+      "updatedAt": 1793793419991
+    },
+    {
+      "id": "player_intro_dte_1_5",
+      "ign": "Mitchi",
+      "realName": "Michiko James A. Marasigan",
+      "photo": "Assets/presets/playersintro/dte_1/05.png",
+      "role": "roam",
+      "teamId": "team_intro_dte_1",
+      "order": 4,
+      "createdAt": 1793793419992,
+      "updatedAt": 1793793419992
+    },
+    {
+      "id": "player_intro_dte_1_6",
+      "ign": "hakdog",
+      "realName": "Renner L. Garcia",
+      "photo": "Assets/presets/playersintro/dte_1/06.png",
+      "role": "sub",
+      "teamId": "team_intro_dte_1",
+      "order": 5,
+      "createdAt": 1793793419993,
+      "updatedAt": 1793793419993
+    },
+    {
+      "id": "player_mw38l3ky_ppizc0",
+      "ign": "shika",
+      "realName": "",
+      "photo": "Assets/presets/asset_preset_1793864464742.png",
+      "role": "gold",
+      "teamId": "team_intro_dhm_2",
+      "createdAt": 1793864464779,
+      "updatedAt": 1793864464779
+    },
+    {
+      "id": "player_mw4mafhg_hgu443",
+      "ign": "愛してる",
+      "realName": "Kyle Dominic Samaniego",
+      "photo": "Assets/presets/player-photo_player_mw4mafhg_hgu443_1793955641074.png",
+      "role": "gold",
+      "teamId": "team_intro_de_1",
+      "createdAt": 1793947947796,
+      "updatedAt": 1793955641091
+    },
+    {
+      "id": "player_mw4nulh0_ymvb2c",
+      "ign": "testing",
+      "realName": "",
+      "photo": "",
+      "role": "gold",
+      "teamId": "team_intro_dcs_1",
+      "createdAt": 1793950568285,
+      "updatedAt": 1793950568285
+    }
+  ]
+}

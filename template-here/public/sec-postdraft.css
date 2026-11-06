@@ -1,0 +1,136 @@
+/* SEC SERIES — post-draft display skin.
+   Reuses the existing postdraft2.html layout and scripts. */
+
+.sec-postdraft-page .mainbox {
+    background-image: none;
+    background: transparent;
+}
+
+.sec-postdraft-page .upper {
+    height: 246px;
+    border-bottom: 1px solid rgba(222, 196, 242, 0.12);
+}
+
+.sec-postdraft-page .logoteam {
+    background-image:
+        radial-gradient(circle at 50% 38%, rgba(216, 180, 254, 0.18), transparent 62%),
+        linear-gradient(145deg, rgba(72, 39, 93, 0.9), rgba(23, 10, 31, 0.94));
+    border: 1px solid var(--sec-border);
+    border-radius: 18px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.sec-postdraft-page .logoteam img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.42));
+}
+
+.sec-postdraft-page .teamnameblue,
+.sec-postdraft-page .teamnamered {
+    color: var(--sec-white);
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.72);
+}
+
+.sec-postdraft-page .scoreinfo {
+    background-image: none;
+    background:
+        linear-gradient(145deg, rgba(74, 38, 94, 0.9), rgba(22, 9, 30, 0.96));
+    border: 1px solid var(--sec-border);
+    border-radius: 12px;
+    color: var(--sec-white);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.sec-postdraft-page .midscore {
+    height: 239px;
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: 1px solid var(--sec-border);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(216, 180, 254, 0.16), transparent 66%),
+        linear-gradient(145deg, rgba(75, 39, 97, 0.64), rgba(21, 9, 29, 0.88));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--sec-shadow);
+}
+
+.sec-postdraft-page .midscore img {
+    width: auto;
+    max-width: 86%;
+    max-height: 74%;
+    margin-top: 0;
+    scale: 1;
+    object-fit: contain;
+}
+
+.sec-postdraft-page .middle {
+    margin-top: 26px;
+}
+
+.sec-postdraft-page .pick {
+    background:
+        linear-gradient(180deg, rgba(91, 50, 113, 0.3), rgba(19, 8, 26, 0.9));
+    border: 1px solid rgba(222, 196, 242, 0.28);
+    border-radius: 9px;
+    box-shadow: inset 0 0 26px rgba(216, 180, 254, 0.05);
+}
+
+.sec-postdraft-page .middle > .pick:nth-child(2),
+.sec-postdraft-page .middle > .pick:nth-child(3),
+.sec-postdraft-page .middle > .pick:nth-child(4),
+.sec-postdraft-page .middle > .pick:nth-child(5),
+.sec-postdraft-page .middle > .pick:nth-child(6) {
+    border-top-color: rgba(156, 201, 255, 0.52);
+}
+
+.sec-postdraft-page .middle > .pick:nth-child(8),
+.sec-postdraft-page .middle > .pick:nth-child(9),
+.sec-postdraft-page .middle > .pick:nth-child(10),
+.sec-postdraft-page .middle > .pick:nth-child(11),
+.sec-postdraft-page .middle > .pick:nth-child(12) {
+    border-top-color: rgba(255, 159, 190, 0.52);
+}
+
+.sec-postdraft-page .image-box {
+    filter: contrast(1.06) drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+}
+
+.sec-postdraft-page .pickmid {
+    position: relative;
+    background:
+        linear-gradient(180deg, transparent, rgba(216, 180, 254, 0.26) 30%, rgba(216, 180, 254, 0.26) 70%, transparent);
+    width: 2px;
+    margin-left: 69px;
+    margin-right: 69px;
+    opacity: 0.8;
+}
+
+.sec-postdraft-page .pickmid::after {
+    content: 'VS';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px 8px;
+    border: 1px solid var(--sec-border);
+    border-radius: 999px;
+    background: rgba(24, 11, 32, 0.94);
+    color: var(--sec-muted);
+    font-family: 'SEC Display Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.sec-postdraft-page .bluenick,
+.sec-postdraft-page .rednick {
+    color: var(--sec-white);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.72);
+}
+
+.sec-postdraft-page .lane-icon {
+    background-color: rgba(26, 12, 34, 0.94);
+    border: 1px solid rgba(222, 196, 242, 0.26);
+    border-radius: 5px;
+}
+
+.sec-postdraft-page .name-image-box {
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.3));
+}
